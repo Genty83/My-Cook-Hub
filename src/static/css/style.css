@@ -29,6 +29,9 @@ TO ENSURE THE FILE STAYS CLEAN AND ORGANISED
     font-size: 1rem;
     font-weight: 300;
 }
+body {
+    position: relative;
+}
 a {
     text-decoration: none;
 }
@@ -342,6 +345,28 @@ h3 {
     padding: 5%;
     text-wrap: nowrap;
 }
+
+/* ##### SIGN IN/OUT FORM ##### */
+.sign-in-out-form {
+    width: 50%;
+    height: auto;
+    border: 1px solid var(--light-two-clr);
+    border-radius: var(--base-radius);
+    box-shadow: 3px 3px 6px var(--light-two-clr);
+    background-color: var(--light-three-clr);
+    padding: 1rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -100%);
+    z-index: 99999;
+}
+.sign-in-out-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
 
 /* ##### TOOLBAR ##### */
 .toolbar {
