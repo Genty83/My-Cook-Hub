@@ -46,5 +46,85 @@
             </a>
           </div>
      </header>
+
+     <!-- Main block -->
+      {% block content %}
+      {% endblock %}
+
+      <!-- Footer -->
+       <footer class="footer-wrapper">
+        <!-- Divider -->
+        <div class="footer-divider-top-1719649700">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
+        <!-- Top wrapper -->
+        <div class="footer-top-wrapper">
+            <!-- Logo -->
+            <a class="logo logo-light" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
+            <div class="footer-social-icons-wrapper">
+                <a href="#" class="social-media-btn tooltip" tooltip-text="Facebook" aria-label="Go To Facebook">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+                <a href="#" class="social-media-btn tooltip" tooltip-text="Instagram" aria-label="Go To Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="#" class="social-media-btn tooltip" tooltip-text="Twitter" aria-label="Go To Twitter">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+                <a href="#" class="social-media-btn tooltip" tooltip-text="Youtube" aria-label="Go To Youtube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+            </div>
+        </div>
+        <!-- Footer top seperator -->
+         <div class="top-seperator"></div>
+        <!-- Middle wrapper -->
+        <div class="footer-middle-wrapper">
+            <div class="footer-content">
+                <h3>About Us</h3>
+                <div class="footer-seperator"></div>
+                <p>
+                    Welcome to my cook hub. Here, we love all things cooking! 
+                    Join us and create your own personal cook book.
+                    Create recipes, view and share with others.
+                </p>
+            </div>
+            <div class="footer-content">
+                <h3>Useful Links</h3>
+                <div class="footer-seperator"></div>
+                <a href="" class="footer-link"><i class="fa-brands fa-facebook"></i>Facebook</a>
+                <a href="" class="footer-link"><i class="fa-brands fa-instagram"></i>Instagram</a>
+                <a href="" class="footer-link"><i class="fa-brands fa-twitter"></i>Twitter</a>
+                <a href="" class="footer-link"><i class="fa-brands fa-youtube"></i>Youtube</a>
+            </div>
+            <div class="footer-content">
+                <h3>Find Us</h3>
+                <div class="footer-seperator"></div>
+                <a href="" class="footer-link"><i class="fa-solid fa-home"></i>Facebook</a>
+                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>Instagram</a>
+                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>Twitter</a>
+                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>Youtube</a>
+            </div>
+            <div class="footer-content">
+                <h3>Subscribe To Our Newsletter</h3>
+                <div class="footer-seperator"></div>
+                <p>
+                    Subscribe to our newsletter and recieve all the latest news and updates! 
+                </p>
+                <div class="subscribe-input-wrapper">
+                    <input type="text" name="email" placeholder="Enter Email:">
+                    <button class="btn btn-max-height" type="submit">Subscribe</button>
+                </div>
+            </div>
+        </div>
+        <!-- Bottom wrapper -->
+        <div class="footer-bottom-wrapper">
+            <p>
+                &#169; All rights reserved - Craig Gent
+            </p>
+        </div>
+       </footer>
 </body>
 </html>
