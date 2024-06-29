@@ -343,6 +343,18 @@ h3 {
     text-wrap: nowrap;
 }
 
+/* ##### TOOLBAR ##### */
+.toolbar {
+    height: 50px;
+    width: 100%;
+    background-color: var(--light-three-clr);
+    color: var(--dark-one-clr);
+    box-shadow: 0px 3px 7px var(--light-two-clr);
+    display: flex;
+    align-items: center;
+    padding: 0 5%;
+}
+
 
 /* UI ELEMENTS */
 
@@ -354,15 +366,14 @@ h3 {
     align-items: center;
     gap: 0.4rem;
     padding: 0.4rem;
-    border: 1px solid var(--light-two-clr);
-    border-radius: var(--base-radius);
+    border-bottom: 1px solid var(--light-two-clr);
     transition: var(--base-transition);
 }
 .form-input:hover {
-    border: 1px solid var(--light-one-clr);
+    border-bottom: 1px solid var(--light-one-clr);
 }
 .form-input:focus-within {
-    box-shadow: 0px 0px 7px var(--blue-one-clr);
+    box-shadow: 0px 3px 7px var(--blue-one-clr);
 }
 .form-input input {
     width: 100%;
