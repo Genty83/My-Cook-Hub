@@ -8,8 +8,43 @@
     <title>Document</title>
     <!-- Link Tags -->
      <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" type="text/css">
 </head>
 <body>
-    hello
+    <!-- BANNER -->
+    <div class="banner">
+        <p>
+            Join today to and start creating your perfect recipes!!
+        </p>
+    </div>
+    <!-- HEADER SECTION -->
+     <header class="header-wrapper">
+        <!-- Logo -->
+         <a class="logo logo-dark" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
+         <!-- Navbar -->
+          <nav class="navbar">
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('home') }}">View Recipes</a></li>
+                <li><a href="{{ url_for('home') }}">My Recipes</a></li>
+                <li><a href="{{ url_for('home') }}">Create Recipe</a></li>
+            </ul>
+            <div class="nav-btns-wrapper">
+                <a class="btn btn-md" href="#"><i class="fa-solid fa-user-plus"></i>Create Account</a>
+                <a class="btn btn-md" href="#"><i class="fa-solid fa-user"></i>Sign In</a>
+            </div>
+          </nav>
+          <div class="nav-icon-btns-wrapper">
+            <a id="side-menu-btn" class="icon-btn tooltip" href="#" tooltip-text="Sign In">
+                <i class="fa-solid fa-user"></i>
+            </a>
+            <a id="side-menu-btn" class="icon-btn tooltip" href="#" tooltip-text="Create Account">
+                <i class="fa-solid fa-user-plus"></i>
+            </a>
+            <a id="side-menu-btn" class="icon-btn tooltip" href="#" tooltip-text="Open Side Menu">
+                <i class="fa-solid fa-bars"></i>
+            </a>
+          </div>
+     </header>
 </body>
 </html>
