@@ -7,8 +7,10 @@
     <!-- Title Tag -->
     <title>Document</title>
     <!-- Link Tags -->
-     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" type="text/css">
+    <!-- Script Tags -->
+    <script src="{{ url_for('static', filename='js/main.js') }} " defer></script>
 </head>
 <body>
     <!-- BANNER -->
@@ -33,13 +35,11 @@
             </ul>
             <div class="nav-btns-wrapper">
                 <a class="btn btn-md" href="{{ url_for('account') }}"><i class="fa-solid fa-user-plus"></i>Create Account</a>
-                <a class="btn btn-md" href="#"><i class="fa-solid fa-user"></i>
-                    {% if session.user %}
-                        {{session.user}}
-                    {% else %}
-                        Sign In
-                    {% endif %}
-                </a>
+                {% if session.user %}
+                    <a class="btn btn-md" href="{{ url_for('sign_out') }}"><i class="fa-solid fa-user"></i>{{session.user}}</a>
+                {% else %}
+                    <a class="btn btn-md" href="{{ url_for('sign_in') }}"><i class="fa-solid fa-user"></i>Sign In</a>
+                {% endif %}
             </div>
           </nav>
           <div class="nav-icon-btns-wrapper">
@@ -54,6 +54,7 @@
             </a>
           </div>
      </header>
+
 
      <!-- Main block -->
       {% block content %}
