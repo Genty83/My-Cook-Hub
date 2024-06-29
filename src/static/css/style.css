@@ -38,6 +38,10 @@ p {
 li {
     list-style: none;
 }
+h1 {
+    font-size: 2.3rem;
+    font-weight: 500; 
+}
 h3 {
     font-size: 1.3rem;
     font-weight: 500;
@@ -70,6 +74,8 @@ h3 {
     top: 0;
     border-bottom: 1px solid var(--light-two-clr);
     padding: 0 1%;
+    background-color: #ffffff;
+    z-index: 99999;
 }
 
 /* Logo */
@@ -131,6 +137,61 @@ h3 {
     gap: 0.1rem;
 }
 
+/* ###### HERO STYLING ###### */
+
+/**/
+.hero-divider-bottom-1719657143 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+}
+
+.hero-divider-bottom-1719657143 svg {
+    position: relative;
+    display: block;
+    width: calc(126% + 1.3px);
+    height: 178px;
+}
+
+.hero-divider-bottom-1719657143 .shape-fill {
+    fill: #FFFFFF;
+}
+
+/* Wrapper */
+.hero-wrapper {
+    height: 60vh;
+    position: relative;
+}
+/* Hero image */
+.hero-img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+/* Hero overlay */
+.hero-overlay {
+    background: linear-gradient(to right, var(--dark-three-clr) 40%, #00000099);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--light-three-clr);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1%;
+}
+/**/
+.hero-btn-wrapper {
+    display: flex;
+    gap: 1rem;
+}
+
 /* ###### FOOTER STYLING ###### */
 
 /* Footer divider */
@@ -141,6 +202,7 @@ h3 {
     width: 100%;
     overflow: hidden;
     line-height: 0;
+    z-index: 2;
 }
 .footer-divider-top-1719649700 svg {
     position: relative;
@@ -399,6 +461,13 @@ h3 {
 
 /* Media queries greater than a min width of 1261px */
 @media all and (min-width: 1261px) {
+    h1 {
+        font-size: 3.3rem;
+    }
+    /* Hero overlay */
+    .hero-overlay {
+        padding-top: 5%;
+    }
     /* Footer middle wrapper */
     .footer-middle-wrapper {
         --footer-middle-grid-cols: 4;
