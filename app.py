@@ -2,7 +2,8 @@
 
 import os
 from src import app, mongo
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, session, flash, url_for
+from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -21,7 +22,7 @@ def account():
 
     if request.method == "POST":
         # check if username already exists in database
-        existing_user = mongo.db.users.find_one(
+        existing_user = mongo.db.account.find_one(
             {"username": request.form.get("username").lower()})
 
         if existing_user:
@@ -43,6 +44,7 @@ def account():
         # put the new_user into 'session' cookie
         session["user"] = request.form.get("username").lower()
         flash("Account Creation Successful", "success")
+        
 
     return render_template("account.html")
 
