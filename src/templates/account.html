@@ -1,0 +1,50 @@
+<!-- HOME PAGE TEMPLATE -->
+{% extends "base.html" %}
+
+{% block content %}
+   
+<section class="base-section">
+
+    <div class="create-account-form">
+        <div class="form-content-wrapper">
+            <h2>Create Account</h2>
+        </div>
+        <!-- Create account form -->
+        <form action="{{ url_for('account') }}" method="post">
+            <div class="form-input">
+                <i class="fa-solid fa-user"></i>
+                <input id="fname" name="fname" type="text" minlength="5"
+                    maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" placeholder="First Name:" required>
+            </div>
+            <div class="form-input">
+                <i class="fa-solid fa-user"></i>
+                <input id="lname" name="lname" type="text" minlength="5"
+                    maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" placeholder="Last Name:" required>
+            </div>
+            <div class="form-input">
+                <i class="fa-solid fa-user"></i>
+                <input id="username" name="username" type="text" minlength="5"
+                    maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" placeholder="Username:" required>
+            </div>
+            <div class="form-input">
+                <i class="fa-solid fa-user"></i>
+                <input id="dob" name="dob" type="text" minlength="5"
+                    maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" placeholder="Date Of Birth:" required>
+            </div>
+            <div class="form-input">
+                <i class="fa-solid fa-envelope"></i>
+                <input id="email" name="email" type="email" minlength="5"
+                    maxlength="35" pattern="^[a-zA-Z0-9]{5,15}$" placeholder="Email:" required>
+            </div>
+            <div class="form-input">
+                <i class="fa-solid fa-user"></i>
+                <input id="password" name="password" type="password" minlength="5"
+                    maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" placeholder="Password:" required>
+            </div>
+            <button class="btn btn-lg" type="submit"><i class="fa-solid fa-sign-in-alt"></i>Create Account</button>
+        </form>
+    </div>
+
+    
+</section>
+{% endblock %}
