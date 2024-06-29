@@ -44,10 +44,50 @@ def account():
         # put the new_user into 'session' cookie
         session["user"] = request.form.get("username").lower()
         flash("Account Creation Successful", "success")
-        
+
 
     return render_template("account.html")
 
+
+# Account page 
+@app.route("/sign_in", methods=["GET", "POST"])
+def sign_in():
+    """
+    Shows the sign-in form and
+    functionality to sign the user in.
+    """
+    if request.method == "POST":
+        # check if username already exists in database
+        existing_user = mongo.db.account.find_one(
+            {"username": request.form.get("username").lower()})
+
+        if existing_user:
+            # ensure hashed password matches user input
+            if check_password_hash(
+                    existing_user["password"], request.form.get("password")):
+                session["user"] = request.form.get("username").lower()
+                flash("Welcome, {}".format(
+                    request.form.get("username")), "success")
+            else:
+                # invalid password match
+                flash("Incorrect Username and/or Password", "error")
+                return redirect(url_for("sign_in"))
+        else:
+            # username doesn't exist
+            flash("Incorrect Username and/or Password", "error")
+            return redirect(url_for("sign_in"))
+    return render_template("sign_in.html")
+
+
+@app.route("/sign_out")
+def sign_out():
+    """
+    Sign-out function - signs the user out.
+    """
+    # remove user from session cookies
+    flash("You have been logged out", "success")
+    session.pop("user")
+    return redirect(url_for("sign_in"))
 
 
 if __name__ == "__main__":
