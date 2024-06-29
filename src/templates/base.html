@@ -26,12 +26,20 @@
             <ul>
                 <li><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('home') }}">View Recipes</a></li>
-                <li><a href="{{ url_for('home') }}">My Recipes</a></li>
+                {% if session.user %}
+                    <li><a href="{{ url_for('home') }}">My Recipes</a></li>
+                {% endif %}
                 <li><a href="{{ url_for('home') }}">Create Recipe</a></li>
             </ul>
             <div class="nav-btns-wrapper">
                 <a class="btn btn-md" href="{{ url_for('account') }}"><i class="fa-solid fa-user-plus"></i>Create Account</a>
-                <a class="btn btn-md" href="#"><i class="fa-solid fa-user"></i>Sign In</a>
+                <a class="btn btn-md" href="#"><i class="fa-solid fa-user"></i>
+                    {% if session.user %}
+                        {{session.user}}
+                    {% else %}
+                        Sign In
+                    {% endif %}
+                </a>
             </div>
           </nav>
           <div class="nav-icon-btns-wrapper">
