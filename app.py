@@ -5,6 +5,8 @@ from src import app, mongo
 from flask import render_template, redirect, request, session, flash, url_for
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import date
+
 
 
 # Landing page
@@ -90,9 +92,59 @@ def sign_out():
     return redirect(url_for("sign_in"))
 
 
-@app.route("/create_recipe")
+@app.route("/create_recipe", methods=["GET", "POST"])
 def create_recipe():
-    """ """
+    
+    """
+    Add-Recipe view - shows add-recipe page and
+    functionality for adding a recipe.
+    """
+    if request.method == "POST":
+
+        ingredients_lst = []
+        for ingredient in request.form.getlist("ingredients[]"):
+            if ingredient == "":
+                continue
+            else:
+                ingredients_lst.append(ingredient)
+
+        steps_lst = []
+        for step in request.form.getlist("step_desc[]"):
+            if step == "":
+                continue
+            else:
+                steps_lst.append(step)
+
+        recipe_img = {}
+        if request.form.get("recipe_img") == "":
+            recipe_img = {
+                "src": "",
+                "alt": ""
+            }
+        else:
+            recipe_img = {
+                "src": request.form.get("recipe_img"),
+                "alt": "Image of {0} recipe.".format(
+                    request.form.get("recipe_name"))
+            }
+
+        new_recipe = {
+            "recipe_name": request.form.get("recipe_name"),
+            "recipe_desc": request.form.get("recipe_desc"),
+            "meal_type": request.form.get("meal_type"),
+            "servings": request.form.get("servings"),
+            "cook_time": request.form.get("cook_time"),
+            "prep_time": request.form.get("prep_time"),
+            "ingredients": ingredients_lst,
+            "method": steps_lst,
+            "created_by": session["user"],
+            "date": date.today().strftime("%d/%m/%Y"),
+            "recipe_img": recipe_img
+        }
+
+        mongo.db.recipe.insert_one(new_recipe)
+        flash("Recipe Successfully Added", "success")
+        return redirect(url_for("create_recipe"))
 
     return render_template("create_recipe.html")
 
