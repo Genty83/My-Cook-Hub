@@ -1,0 +1,90 @@
+<!-- CREATE RECIPE TEMPLATE -->
+
+{% extends "base.html" %}
+
+{% block content %}
+   
+<section class="base-section">
+
+    <div class="create_recipe_form">
+
+        <form action="{{ url_for('create_recipe') }}" method="post">
+
+            <h3>Create New Recipe</h3>
+
+            <fieldset class="f-set">
+                <legend>Recipe Name/Description/Image</legend>
+
+                <div class="form-input">
+                    <i class="fa-solid fa-pen"></i>
+                    <input id="prep_time" name="prep_time" type="text" minlength="5"
+                        maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" placeholder="Recipe Name:" required>
+                </div>
+
+                <div class="form-textarea">
+                    <i class="fa-solid fa-pen"></i>
+                    <textarea id="recipe_desc" name="recipe_desc" minlength="5"
+                        maxlength="700" placeholder="Recipe Description" required></textarea>
+                </div>
+
+                <div class="form-input">
+                    <i class="fa-solid fa-image"></i>
+                    <input id="recipe_img" name="recipe_img" type="text" minlength="5"
+                        maxlength="180" placeholder="e.g. https://img.freepik.com/free-photo/default-title_422131-141:">
+                </div>
+
+
+
+            </fieldset>
+
+            <fieldset class="f-set auto-cols">
+                <legend>Overview</legend>
+
+                <div class="form-input">
+                    <i class="fa-solid fa-clock"></i>
+                    <input id="prep_time" name="prep_time" type="text" minlength="5"
+                        maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" placeholder="Prep Time:" required>
+                </div>
+                <div class="form-input">
+                    <i class="fa-solid fa-clock"></i>
+                    <input id="cook_time" name="cook_time" type="text" minlength="5"
+                        maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" placeholder="Cook Time:" required>
+                </div>
+                <div class="form-input">
+                    <i class="fa-solid fa-clock"></i>
+                    <input id="servings" name="servings" type="text" minlength="5"
+                        maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" placeholder="Servings:" required>
+                </div>
+                <div class="form-combo">
+                    <i class="fa-solid fa-bowl-food"></i>
+                    <select id="meal_type" name="meal_type" required>
+                        <option value="" disabled selected>Meal Type:</option>
+                        <option value="">One</option>
+                    </select>
+                </div>
+                
+            </fieldset>
+
+            <table id="method-table">
+                <thead>
+                    <tr>
+                        <th>Step</th>
+                        <th>Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1.</strong></td>
+                        <td><></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+
+        </form>
+
+    </div>
+</section>
+
+{% endblock %}
+
