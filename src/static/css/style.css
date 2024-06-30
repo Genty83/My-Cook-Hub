@@ -223,7 +223,7 @@ h3 {
 
 /* Footer wrapper */
 .footer-wrapper {
-    padding-top: 155px;
+    padding-top: 165px;
     position: relative;
     min-height: 300px;
     background: linear-gradient(to right, var(--dark-one-clr) 45%, var(--dark-three-clr));
@@ -315,6 +315,7 @@ h3 {
     min-height: 600px;
     display: grid;
     place-items: center;
+    padding: 1%;
 }
 
 /* Create account form */
@@ -367,6 +368,21 @@ h3 {
     gap: 1rem;
 }
 
+/* ###### CREATE RECIPE PAGE ###### */
+
+.create_recipe_form {
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--light-two-clr);
+    border-radius: var(--base-radius);
+    box-shadow: 3px 3px 6px var(--light-two-clr);
+    background-color: var(--light-three-clr);
+    padding: 1%;
+}
+.create_recipe_form form {
+    display: grid;
+    gap: 1rem;
+}
 
 /* ##### TOOLBAR ##### */
 .toolbar {
@@ -383,6 +399,76 @@ h3 {
 
 /* UI ELEMENTS */
 
+/* Form Combo */
+.form-combo {
+    height: 35px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem;
+    border-bottom: 1px solid var(--light-two-clr);
+    transition: var(--base-transition);
+}
+.form-combo:hover {
+    border-bottom: 1px solid var(--light-one-clr);
+}
+.form-combo:focus-within {
+    border: 1px solid var(--light-two-clr);
+    border-radius: var(--base-radius);
+    box-shadow: 0px 0px 7px var(--light-two-clr);
+}
+.form-combo i {
+    color: var(--blue-one-clr);
+}
+
+.form-combo select {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    color: var(--dark-two-clr);
+    font-size: 0.9rem;
+    font-weight: 400;
+    resize: none;
+}
+.form-combo option {
+    background-color: var(--light-three-clr);
+}
+
+/* Form textarea */
+.form-textarea {
+    min-height: 100px;
+    width: 100%;
+    display: flex;
+    align-items: top;
+    gap: 0.4rem;
+    padding: 0.4rem;
+    border-bottom: 1px solid var(--light-two-clr);
+    transition: var(--base-transition);
+}
+.form-textarea:hover {
+    border-bottom: 1px solid var(--light-one-clr);
+}
+.form-textarea:focus-within {
+    border: 1px solid var(--light-two-clr);
+    border-radius: var(--base-radius);
+    box-shadow: 0px 0px 7px var(--light-two-clr);
+}
+.form-textarea textarea {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    color: var(--dark-two-clr);
+    font-size: 0.9rem;
+    font-weight: 400;
+    resize: none;
+}
+.form-textarea i {
+    color: var(--blue-one-clr);
+}
+
 /* Form input */
 .form-input {
     height: 35px;
@@ -398,7 +484,9 @@ h3 {
     border-bottom: 1px solid var(--light-one-clr);
 }
 .form-input:focus-within {
-    box-shadow: 0px 3px 7px var(--blue-one-clr);
+    border: 1px solid var(--light-two-clr);
+    border-radius: var(--base-radius);
+    box-shadow: 0px 0px 7px var(--light-two-clr);
 }
 .form-input input {
     width: 100%;
@@ -535,6 +623,25 @@ h3 {
     opacity: 1;
 }
 
+.f-set {
+    border: 1px solid var(--light-two-clr);
+    border-radius: var(--base-radius);
+    padding: 1%;
+    display: grid;
+    gap: 1rem;
+}
+.f-set legend {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0 0.2rem;
+    background-color: inherit;
+}
+
+/**/
+.auto-cols {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
 /* ###### MEDIA QUERIES ###### */
 
 /* Media queries greater than a min width of 661px */
@@ -576,11 +683,11 @@ h3 {
 /* Media queries greater than a min width of 1261px */
 @media all and (min-width: 1261px) {
     h1 {
-        font-size: 3.3rem;
+        font-size: 2.8rem;
     }
     /* Hero overlay */
     .hero-overlay {
-        padding-top: 5%;
+        padding-top: 2%;
     }
     /* Footer middle wrapper */
     .footer-middle-wrapper {
