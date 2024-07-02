@@ -394,6 +394,7 @@ h3 {
     display: flex;
     align-items: center;
     padding: 0 5%;
+    font-weight: 600;
 }
 
 
@@ -673,7 +674,7 @@ h3 {
 
 /**/
 .auto-cols {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 /* ###### MEDIA QUERIES ###### */
