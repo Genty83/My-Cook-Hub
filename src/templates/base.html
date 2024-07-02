@@ -29,14 +29,14 @@
                 <li><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('home') }}">View Recipes</a></li>
                 {% if session.user %}
-                    <li><a href="{{ url_for('home') }}">My Recipes</a></li>
+                    <li><a href="{{ url_for('my_recipes') }}">My Recipes</a></li>
+                    <li><a href="{{ url_for('create_recipe') }}">Create Recipe</a></li>
                 {% endif %}
-                <li><a href="{{ url_for('create_recipe') }}">Create Recipe</a></li>
             </ul>
             <div class="nav-btns-wrapper">
                 <a class="btn btn-md" href="{{ url_for('account') }}"><i class="fa-solid fa-user-plus"></i>Create Account</a>
                 {% if session.user %}
-                    <a class="btn btn-md" href="{{ url_for('sign_out') }}"><i class="fa-solid fa-user"></i>{{session.user}}</a>
+                    <a class="btn btn-md" href="{{ url_for('sign_out') }}"><i class="fa-solid fa-user"></i>Sign Out</a>
                 {% else %}
                     <a class="btn btn-md" href="{{ url_for('sign_in') }}"><i class="fa-solid fa-user"></i>Sign In</a>
                 {% endif %}
