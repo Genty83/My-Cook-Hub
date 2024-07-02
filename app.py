@@ -68,8 +68,7 @@ def sign_in():
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
-                flash("Welcome, {}".format(
-                    request.form.get("username")), "success")
+                flash(f"Welcome, {request.form.get("username")}", "success")
             else:
                 # invalid password match
                 flash("Incorrect Username and/or Password", "error")
@@ -103,9 +102,7 @@ def create_recipe():
 
         ingredients_lst = []
         for ingredient in request.form.getlist("ingredients[]"):
-            if ingredient == "":
-                continue
-            else:
+            if not ingredient == "":
                 ingredients_lst.append(ingredient)
 
         steps_lst = []
@@ -148,6 +145,17 @@ def create_recipe():
 
     return render_template("create_recipe.html")
 
+
+@app.route("/my_recipes", methods=["GET", "POST"])
+def my_recipes():
+    """ """
+    return render_template("my_recipes.html")
+
+
+@app.route("/all_recipes", methods=["GET", "POST"])
+def all_recipes():
+    """ """ 
+    return
 
 
 if __name__ == "__main__":
