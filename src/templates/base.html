@@ -55,6 +55,21 @@
           </div>
      </header>
 
+        <!-- Flash messaging -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-container {{ category }}">
+                        <ul>   
+                            <li>{{ message }}</li>
+                        </ul>
+                        <button class="close-btn" type="button"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+     
+
 
      <!-- Main block -->
       {% block content %}
@@ -135,5 +150,6 @@
             </p>
         </div>
        </footer>
+
 </body>
 </html>
