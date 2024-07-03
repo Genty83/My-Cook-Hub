@@ -19,7 +19,7 @@ def home():
 @app.route("/account", methods=["GET", "POST"])
 def account():
     """
-    Shows the create account page and form for creating account
+    Shows the create account page and form for creating a user account
     """
 
     if request.method == "POST":
