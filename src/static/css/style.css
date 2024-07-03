@@ -384,19 +384,35 @@ h3 {
     gap: 1rem;
 }
 
-/* ##### TOOLBAR ##### */
-.toolbar {
-    height: 50px;
-    width: 100%;
-    background-color: var(--light-three-clr);
-    color: var(--dark-one-clr);
-    box-shadow: 0px 3px 7px var(--light-two-clr);
+/* ##### FLASH MESSAGES CONTAINER  ##### */
+.flash-container {
+    border-radius: var(--base-radius);
     display: flex;
     align-items: center;
-    padding: 0 5%;
+    justify-content: space-between;
+    margin: 10px;
+    padding: 10px;
+}
+.flash-container li {
+    font-size: 0.9rem;
     font-weight: 600;
 }
-
+.error {
+    border: 1px solid #f45757;
+    background-color: #f2a8a8;
+}
+.success {
+    border: 1px solid #57f484;
+    background-color: #b8f3c9;
+}
+.warning {
+    border: 1px solid #ecf457;
+    background-color: #f1f4bc;
+}
+.info {
+    border: 1px solid #578bf4;
+    background-color: #c3d3f4;
+}
 
 /* UI ELEMENTS */
 
@@ -543,7 +559,7 @@ h3 {
 .btn:hover {
     border-radius: 100px;
 }
-
+/* Icon Btn */
 .icon-btn {
     width: 30px;
     height: 30px;
@@ -556,7 +572,7 @@ h3 {
 .icon-btn:hover {
     background-color: var(--blue-two-clr);
 }
-
+/* Social media btn */
 .social-media-btn {
     width: 35px;
     height: 35px;
@@ -571,6 +587,26 @@ h3 {
     border: 2px solid var(--blue-one-clr);
     box-shadow: 0px 0px 7px var(--blue-one-clr);
     color: var(--blue-one-clr);
+}
+/* Close Btn */
+.close-btn {
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: var(--dark-three-clr);
+    border: none;
+    background-color: #ffffff88;
+    transition: var(--base-transition);
+    border-radius: 5px;
+    
+}
+.close-btn:hover {
+    background-color: #ffffff99;
+}
+.close-btn  i {
+    font-size: 0.7rem;
 }
 
 .footer-link {
@@ -672,7 +708,7 @@ h3 {
     resize: none;
 }
 
-/**/
+/* grid styling */
 .auto-cols {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
@@ -727,5 +763,8 @@ h3 {
     /* Footer middle wrapper */
     .footer-middle-wrapper {
         --footer-middle-grid-cols: 4;
+    }
+    .create_recipe_form {
+        width: 70%;
     }
 }
