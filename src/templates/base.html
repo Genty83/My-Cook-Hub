@@ -14,31 +14,31 @@
 </head>
 <body>
     <!-- BANNER -->
-    <div class="banner">
-        <p>
+    <div class="banner padding-sm">
+        <p class="font-sm">
             Join today to and start creating your perfect recipes!!
         </p>
     </div>
     <!-- HEADER SECTION -->
-     <header class="header-wrapper">
+     <header class="header-wrapper flex-row-center-space-between">
         <!-- Logo -->
          <a class="logo logo-dark" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
          <!-- Navbar -->
           <nav class="navbar">
             <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('home') }}">View Recipes</a></li>
+                <li class="grid-items-center"><a href="{{ url_for('home') }}">Home</a></li>
+                <li class="grid-items-center"><a href="{{ url_for('home') }}">View Recipes</a></li>
                 {% if session.user %}
-                    <li><a href="{{ url_for('my_recipes') }}">My Recipes</a></li>
-                    <li><a href="{{ url_for('create_recipe') }}">Create Recipe</a></li>
+                    <li class="grid-items-center"><a href="{{ url_for('my_recipes') }}">My Recipes</a></li>
+                    <li class="grid-items-center"><a href="{{ url_for('create_recipe') }}">Create Recipe</a></li>
                 {% endif %}
             </ul>
             <div class="nav-btns-wrapper">
-                <a class="btn btn-md" href="{{ url_for('account') }}"><i class="fa-solid fa-user-plus"></i>Create Account</a>
+                <a class="btn std-btn btn-md" href="{{ url_for('account') }}"><i class="fa-solid fa-user-plus"></i>Create Account</a>
                 {% if session.user %}
-                    <a class="btn btn-md" href="{{ url_for('sign_out') }}"><i class="fa-solid fa-user"></i>Sign Out</a>
+                    <a class="btn std-btn btn-md" href="{{ url_for('sign_out') }}"><i class="fa-solid fa-user"></i>Sign Out</a>
                 {% else %}
-                    <a class="btn btn-md" href="{{ url_for('sign_in') }}"><i class="fa-solid fa-user"></i>Sign In</a>
+                    <a class="btn std-btn btn-md" href="{{ url_for('sign_in') }}"><i class="fa-solid fa-user"></i>Sign In</a>
                 {% endif %}
             </div>
           </nav>
@@ -59,11 +59,11 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="flash-container {{ category }}">
+                    <div class="flash-container {{ category }} flex-row-center-space-between padding-md">
                         <ul>   
                             <li>{{ message }}</li>
                         </ul>
-                        <button class="close-btn" type="button"><i class="fa-solid fa-xmark"></i></button>
+                        <button class="btn close-btn" type="button"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -87,17 +87,17 @@
         <div class="footer-top-wrapper">
             <!-- Logo -->
             <a class="logo logo-light" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
-            <div class="footer-social-icons-wrapper">
-                <a href="#" class="social-media-btn tooltip" tooltip-text="Facebook" aria-label="Go To Facebook">
+            <div class="flex-row-center-all gap-sm">
+                <a href="#" class="btn social-media-btn tooltip" tooltip-text="Facebook" aria-label="Go To Facebook">
                     <i class="fa-brands fa-facebook"></i>
                 </a>
-                <a href="#" class="social-media-btn tooltip" tooltip-text="Instagram" aria-label="Go To Instagram">
+                <a href="#" class="btn social-media-btn tooltip" tooltip-text="Instagram" aria-label="Go To Instagram">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
-                <a href="#" class="social-media-btn tooltip" tooltip-text="Twitter" aria-label="Go To Twitter">
+                <a href="#" class="btn social-media-btn tooltip" tooltip-text="Twitter" aria-label="Go To Twitter">
                     <i class="fa-brands fa-twitter"></i>
                 </a>
-                <a href="#" class="social-media-btn tooltip" tooltip-text="Youtube" aria-label="Go To Youtube">
+                <a href="#" class="btn social-media-btn tooltip" tooltip-text="Youtube" aria-label="Go To Youtube">
                     <i class="fa-brands fa-youtube"></i>
                 </a>
             </div>
@@ -106,7 +106,7 @@
          <div class="top-seperator"></div>
         <!-- Middle wrapper -->
         <div class="footer-middle-wrapper">
-            <div class="footer-content">
+            <div class="footer-content flex-col gap-md">
                 <h3>About Us</h3>
                 <div class="footer-seperator"></div>
                 <p>
@@ -115,23 +115,23 @@
                     Create recipes, view and share with others.
                 </p>
             </div>
-            <div class="footer-content">
-                <h3>Useful Links</h3>
+            <div class="footer-content flex-col gap-md">
+                <h3>Find Us</h3>
                 <div class="footer-seperator"></div>
                 <a href="" class="footer-link"><i class="fa-brands fa-facebook"></i>Facebook</a>
                 <a href="" class="footer-link"><i class="fa-brands fa-instagram"></i>Instagram</a>
                 <a href="" class="footer-link"><i class="fa-brands fa-twitter"></i>Twitter</a>
                 <a href="" class="footer-link"><i class="fa-brands fa-youtube"></i>Youtube</a>
             </div>
-            <div class="footer-content">
-                <h3>Find Us</h3>
+            <div class="footer-content flex-col gap-md">
+                <h3>Useful Links</h3>
                 <div class="footer-seperator"></div>
-                <a href="" class="footer-link"><i class="fa-solid fa-home"></i>Facebook</a>
-                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>Instagram</a>
-                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>Twitter</a>
-                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>Youtube</a>
+                <a href="" class="footer-link"><i class="fa-solid fa-home"></i>Home</a>
+                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>View Recipes</a>
+                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>My Recipes</a>
+                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>Create Recipe</a>
             </div>
-            <div class="footer-content">
+            <div class="footer-content flex-col gap-md">
                 <h3>Subscribe To Our Newsletter</h3>
                 <div class="footer-seperator"></div>
                 <p>
@@ -139,7 +139,7 @@
                 </p>
                 <div class="subscribe-input-wrapper">
                     <input type="text" name="email" placeholder="Enter Email:">
-                    <button class="btn btn-max-height" type="submit">Subscribe</button>
+                    <button class="btn std-btn btn-max-height padding-sm" type="submit">Subscribe</button>
                 </div>
             </div>
         </div>
