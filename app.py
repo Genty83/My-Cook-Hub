@@ -86,7 +86,7 @@ def sign_out():
     Sign-out function - signs the user out.
     """
     # remove user from session cookies
-    flash("You have been logged out", "success")
+    flash("You have been logged out", "info")
     session.pop("user")
     return redirect(url_for("sign_in"))
 
@@ -147,15 +147,54 @@ def create_recipe():
 
 
 @app.route("/my_recipes", methods=["GET", "POST"])
-def my_recipes():
+def view_recipes():
     """ """
-    return render_template("my_recipes.html")
+    recipes = list(mongo.db.recipe.find())
+
+
+    return render_template("view_recipes.html", recipes = recipes)
 
 
 @app.route("/all_recipes", methods=["GET", "POST"])
 def all_recipes():
     """ """ 
+
     return
+
+
+@app.route("/recipe/<recipe_id>")
+def recipe(recipe_id):
+    """ """ 
+
+    recipe = mongo.db.recipe.find_one({"_id": ObjectId(recipe_id)})
+    meal_types = mongo.db.meal_types.find()
+
+    user_session = session.get("user")
+
+    if not user_session is None:
+        saved_recipes = mongo.db.account.find_one(
+            {"username": session["user"]}).get('my_recipes', [])
+
+        return  render_template(
+            "recipe.html", recipe_id=recipe_id)
+
+
+
+@app.route("/save_recipe/<recipe_id>", methods=["GET", "POST"])
+def save_recipe(recipe_id):
+    """
+    Save-recipe function - saves the recipe to show in
+    the 'My CookBook' tab in the user's profile.
+    """
+    if request.method == "POST":
+        mongo.db.account.update_one(
+            {"username": session["user"]},
+            {"$addToSet": {"my_recipes": recipe_id}}
+        )
+        flash("Recipe Successfully Saved", "success")
+
+    current_page = request.args.get('current_page')
+    return redirect(current_page)
 
 
 if __name__ == "__main__":
