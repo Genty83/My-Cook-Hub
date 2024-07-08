@@ -1,4 +1,4 @@
-<!-- MY RECIPES TEMPLATE -->
+<!-- CREATE RECIPES TEMPLATE -->
 
 {% extends "base.html" %}
 
@@ -22,12 +22,23 @@
                         </div>
                         <p>100 Reviews</p>
                     </div>
-                    <form action="{{ url_for('save_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
-                        method="POST">
-                        <button type="submit" class="card-add-btn tooltip" tooltip-text="Save Recipe" aria-label="Save recipe">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </form>
+                    {% if session.user %}
+                        {% if recipe._id|string in saved_recipes %}
+                            <form action="{{ url_for('remove_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
+                                method="POST">
+                                <button type="submit" class="card-btn card-delete-btn tooltip" tooltip-text="Remove Recipe" aria-label="Remove recipe">
+                                    <i class="fa-solid fa-eraser"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <form action="{{ url_for('save_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
+                                method="POST">
+                                <button type="submit" class="card-btn card-add-btn tooltip" tooltip-text="Save Recipe" aria-label="Save recipe">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
                 </div>  
             {% endfor %}
         {% endif %}
