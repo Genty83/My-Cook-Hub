@@ -146,13 +146,22 @@ def create_recipe():
     return render_template("create_recipe.html")
 
 
-@app.route("/my_recipes", methods=["GET", "POST"])
+@app.route("/view_recipes", methods=["GET", "POST"])
 def view_recipes():
     """ """
     recipes = list(mongo.db.recipe.find())
+    meal_types = mongo.db.meal_types.find()
+    user_session = session.get("user")
 
+    if not user_session is None:
+        saved_recipes = mongo.db.account.find_one(
+            {"username": session["user"]}).get('my_recipes', [])
+        return render_template(
+            "view_recipes.html", recipes=recipes,
+            meal_types=meal_types, saved_recipes=saved_recipes,
+            current_page=url_for('view_recipes'))    
 
-    return render_template("view_recipes.html", recipes = recipes)
+    return render_template("view_recipes.html", recipes=recipes) 
 
 
 @app.route("/all_recipes", methods=["GET", "POST"])
@@ -176,7 +185,14 @@ def recipe(recipe_id):
             {"username": session["user"]}).get('my_recipes', [])
 
         return  render_template(
-            "recipe.html", recipe_id=recipe_id)
+            "recipe.html", recipe=recipe,
+            meal_types=meal_types, recipe_id=recipe_id,
+            current_page=url_for('view_recipes', recipe=recipe_id))
+
+    return  render_template(
+            "recipe.html", recipe=recipe,
+            meal_types=meal_types, recipe_id=recipe_id,
+            current_page=url_for('view_recipes', recipe_id=recipe_id))
 
 
 
@@ -195,6 +211,25 @@ def save_recipe(recipe_id):
 
     current_page = request.args.get('current_page')
     return redirect(current_page)
+
+
+@app.route("/remove_recipe/<recipe_id>", methods=["GET", "POST"])
+def remove_recipe(recipe_id):
+    """
+    Forget-recipe function - removes the recipe from the
+    user's cookbook.
+    """
+    if request.method == "POST":
+        mongo.db.account.update_one(
+            {"username": session["user"]},
+            {"$pull": {"my_recipes": recipe_id}}
+        )
+        flash("Recipe Successfully Removed From Your Recipes!!", "info")
+
+    current_page = request.args.get('current_page')
+    return redirect(current_page)
+
+
 
 
 if __name__ == "__main__":
