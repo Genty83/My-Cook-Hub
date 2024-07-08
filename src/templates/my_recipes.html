@@ -1,0 +1,18 @@
+<!-- CREATE RECIPES TEMPLATE -->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="my-recipes-section padding-lg">
+    <h2>{{ username }}'s Recipes</h2>
+    <div class="auto-grid-max-content center-grid-items padding-lg gap-md">
+
+        {% for recipe in my_recipes %}
+            <div>{{recipe.cook_time}}</div>
+        {% endfor %}
+
+    </div>
+</section>
+
+{% endblock %}
