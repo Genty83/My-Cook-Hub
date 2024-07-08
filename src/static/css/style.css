@@ -61,6 +61,10 @@ h3 {
     font-size: 1.3rem;
     font-weight: 500;
 }
+h4 {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
 
 /* ###### PADDING CLASSES ###### */
 .padding-sm {
@@ -124,6 +128,13 @@ h3 {
 .auto-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.auto-grid-max-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, max-content));
+}
+.center-grid-items {
+    justify-content: center;
 }
 .grid-items-center {
     display: grid;
@@ -250,12 +261,86 @@ h3 {
     width: auto;
 }
 
+/* Tooltip */
+.tooltip {
+    position: relative;
+}
+.tooltip::before {
+    content: attr(tooltip-text);
+    background-color: var(--dark-one-clr);
+    color: var(--light-three-clr);
+    text-wrap: nowrap;
+    font-size: 0.7rem;
+    border-radius: var(--base-radius);
+    border: 1px solid var(--light-two-clr);
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    transform: translate(-100%, 100%);
+    opacity: 0;
+    height: 30px;
+    padding: 0 0.5rem;
+    display: grid;
+    place-items: center;
+    font-weight: 500;
+    transition: opacity 1s;
+}
+.tooltip:hover::before {
+    opacity: 1;
+}
+
+/* ##### CARD STYLING  ##### */
+.recipe-card {
+    width: 260px;
+    background-color: var(--light-three-clr);
+    transition: var(--base-transition);
+    position: relative;
+}
+.recipe-card img {
+    width: 260px;
+    height: 300px;
+    object-fit: cover;
+}
+.review-container {
+    color: var(--warning-clr);
+}
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--dark-one-clr);
+    transition: var(--base-transition);
+}
+.card-title:hover {
+    color: var(--blue-one-clr);
+}
+.recipe-card:hover {
+    box-shadow: 3px 3px 8px var(--dark-two-clr);
+}
+
+/**/
+.card-add-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--base-radius);
+    border: 4px solid var(--light-three-clr);
+    background-color: var(--blue-one-clr);
+    color: var(--light-three-clr);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: var(--base-transition);
+    position: absolute;
+    top: 280px;
+    right: 10px;
+}
+.card-add-btn:hover {
+    background-color: var(--success-clr);
+}
 
 
+/*
 
-
-
-
+*/
 
 
 
@@ -482,6 +567,7 @@ h3 {
     height: 100%;
     width: 100%;
     color: var(--dark-two-clr);
+    background-color: transparent;
     font-size: 0.8rem;
     font-weight: 400;
     padding-left: 0.5rem;
@@ -564,8 +650,6 @@ h3 {
     display: grid;
     gap: 1rem;
 }
-
-
 
 /* UI ELEMENTS */
 
@@ -709,33 +793,7 @@ h3 {
     background-color: var(--blue-one-clr);
 }
 
-/* Tooltip */
-.tooltip {
-    position: relative;
-}
-.tooltip::before {
-    content: attr(tooltip-text);
-    background-color: var(--dark-one-clr);
-    color: var(--light-three-clr);
-    text-wrap: nowrap;
-    font-size: 0.7rem;
-    border-radius: var(--base-radius);
-    border: 1px solid var(--light-two-clr);
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-    transform: translate(-100%, 100%);
-    opacity: 0;
-    height: 30px;
-    padding: 0 0.5rem;
-    display: grid;
-    place-items: center;
-    font-weight: 500;
-    transition: opacity 1s;
-}
-.tooltip:hover::before {
-    opacity: 1;
-}
+
 
 .f-set {
     border: 1px solid var(--light-two-clr);
@@ -783,6 +841,13 @@ h3 {
     font-size: 0.9rem;
     font-weight: 400;
     resize: none;
+}
+
+/* ###### MY RECIPES SECTION ###### */
+.my-recipes-section {
+    width: 100%;
+    min-height: 300px;
+    background-color: var(--blue-two-clr);
 }
 
 /* ###### MEDIA QUERIES ###### */
