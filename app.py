@@ -23,16 +23,17 @@ def account():
     """
 
     if request.method == "POST":
+
+        user = {"username": request.form.get("username").lower()}
         # check if username already exists in database
-        existing_user = mongo.db.account.find_one(
-            {"username": request.form.get("username").lower()})
+        existing_user = mongo.db.account.find_one(user)
 
         if existing_user:
             flash("Username already exists", "error")
             return redirect(url_for("account"))
 
         new_user = {
-            "frst_name": request.form.get("fname").lower(),
+            "first_name": request.form.get("fname").lower(),
             "last_name": request.form.get("lname").lower(),
             "username": request.form.get("username").lower(),
             "date_of_birth": request.form.get("dob").lower(),
@@ -164,13 +165,6 @@ def view_recipes():
     return render_template("view_recipes.html", recipes=recipes) 
 
 
-@app.route("/all_recipes", methods=["GET", "POST"])
-def all_recipes():
-    """ """ 
-
-    return
-
-
 @app.route("/recipe/<recipe_id>")
 def recipe(recipe_id):
     """ """ 
@@ -229,6 +223,28 @@ def remove_recipe(recipe_id):
     current_page = request.args.get('current_page')
     return redirect(current_page)
 
+
+@app.route("/my_recipes/<username>", methods=["GET", "POST"])
+def my_recipes(username):
+    """
+    
+    """
+    # grab the session user's username from the database
+    username = mongo.db.account.find_one(
+        {"username": session["user"]})["username"]
+    saved_recipes = mongo.db.account.find_one(
+        {"username": session["user"]}).get('my_recipes', [])
+    saved_recipe_ids = [ObjectId(x) for x in saved_recipes]
+    my_recipes = mongo.db.recipes.find({'_id': {'$in': saved_recipe_ids}})
+
+    if session["user"]:
+        recipes = list(mongo.db.recipes.find())
+        return render_template(
+            "my_recipes.html", username=username,
+            recipes=recipes, my_recipes=my_recipes,
+            saved_recipes=saved_recipes)
+
+    return redirect(url_for("sign_in"))
 
 
 
