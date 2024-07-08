@@ -4,7 +4,59 @@
 
 {% block content %}
 
-<section class="view-recipes-section">
+<section class="recipe-section flex-col padding-md gap-lg">
+
+    <div class="recipe-header-wrapper">
+        <h1>{{ recipe.recipe_name|title }}</h1>
+    </div>
+
+    <div class="recipe-top-wrapper auto-grid-max-content gap-lg">
+        <img class="recipe-image" src="{{ recipe.recipe_img.src }}"
+                alt="Image of '{{ recipe.recipe_name|title }}' recipe."
+                title="Image of '{{ recipe.recipe_name|title }}' recipe.">
+
+        <div class="recipe-content flex-col gap-lg">
+            <p>{{ recipe.recipe_desc }}</p>
+            <ul class="flex-col gap-lg">
+                <li class="recipe-item">
+                    <i class="fa-solid fa-utensils"></i>
+                    Meal Type: {{ recipe.meal_type }}
+                </li>
+                <li class="recipe-item">
+                    <i class="fa-solid fa-clock"></i>
+                    Prep Time: {{ recipe.prep_time }}
+                </li>
+                <li class="recipe-item">
+                    <i class="fa-solid fa-clock"></i>
+                    Cook Time: {{ recipe.cook_time }}
+                </li>
+                <li class="recipe-item">
+                    <i class="fa-solid fa-user"></i>
+                    Servings: {{ recipe.servings }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="recipe-bottom-wrapper auto-grid-max-content gap-lg">
+
+        <div class="flex-col gap-lg">
+            <h2>Ingredients</h2>
+            <ul class="flex-col gap-lg">
+                {% for ingredient in recipe.ingredients %}
+                    <li class="recipe-list-item">{{ingredient}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="flex-col gap-lg">
+            <h2>Cooking Steps</h2>
+            <ul class="flex-col gap-lg">
+                {% for x in recipe.method %}
+                    <li class="recipe-list-item">{{x}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
 </section>
 
