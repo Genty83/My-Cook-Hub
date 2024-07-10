@@ -12,6 +12,7 @@ from datetime import date
 # Landing page
 @app.route("/")
 def home():
+    """ Re-routes to the home page  """
     return render_template("home.html")
 
 
@@ -25,13 +26,14 @@ def account():
     if request.method == "POST":
 
         user = {"username": request.form.get("username").lower()}
+
         # check if username already exists in database
         existing_user = mongo.db.account.find_one(user)
-
         if existing_user:
             flash("Username already exists", "error")
             return redirect(url_for("account"))
 
+        # Create new user
         new_user = {
             "first_name": request.form.get("fname").lower(),
             "last_name": request.form.get("lname").lower(),
@@ -41,7 +43,6 @@ def account():
             "password": generate_password_hash(request.form.get("password")),
             "my_recipes": []
         }
-
         mongo.db.account.insert_one(new_user)
 
         # put the new_user into 'session' cookie
@@ -78,6 +79,7 @@ def sign_in():
             # username doesn't exist
             flash("Incorrect Username and/or Password", "error")
             return redirect(url_for("sign_in"))
+
     return render_template("sign_in.html")
 
 
@@ -103,12 +105,12 @@ def create_recipe():
 
         ingredients_lst = []
         for ingredient in request.form.getlist("ingredients[]"):
-            if not ingredient == "":
+            if not ingredient.startswith("\r\n"):
                 ingredients_lst.append(ingredient)
 
         steps_lst = []
         for step in request.form.getlist("step_desc[]"):
-            if step == "":
+            if step.startswith("\r\n"):
                 continue
             else:
                 steps_lst.append(step)
@@ -210,8 +212,7 @@ def save_recipe(recipe_id):
 @app.route("/remove_recipe/<recipe_id>", methods=["GET", "POST"])
 def remove_recipe(recipe_id):
     """
-    Forget-recipe function - removes the recipe from the
-    user's cookbook.
+    Removes the recipe from the users recipe list. 
     """
     if request.method == "POST":
         mongo.db.account.update_one(
@@ -229,20 +230,26 @@ def my_recipes(username):
     """
     
     """
+    user = session["user"]
     # grab the session user's username from the database
     username = mongo.db.account.find_one(
-        {"username": session["user"]})["username"]
+        {"username": user})["username"]
     saved_recipes = mongo.db.account.find_one(
-        {"username": session["user"]}).get('my_recipes', [])
+        {"username": user}).get('my_recipes', [])
+    
     saved_recipe_ids = [ObjectId(x) for x in saved_recipes]
-    my_recipes = mongo.db.recipes.find({'_id': {'$in': saved_recipe_ids}})
+    my_recipes = mongo.db.recipe.find({'_id': {'$in': saved_recipe_ids}})
 
-    if session["user"]:
+    if user:
         recipes = list(mongo.db.recipes.find())
+
         return render_template(
-            "my_recipes.html", username=username,
-            recipes=recipes, my_recipes=my_recipes,
-            saved_recipes=saved_recipes)
+            "my_recipes.html", 
+            username=username, 
+            recipes=recipes, 
+            my_recipes=my_recipes,
+            saved_recipes=saved_recipes
+            )
 
     return redirect(url_for("sign_in"))
 
