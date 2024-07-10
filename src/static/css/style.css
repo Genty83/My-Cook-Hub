@@ -360,13 +360,6 @@ h4 {
     background-color: var(--base-red-hover);
 }
 
-
-/*
-
-*/
-
-
-
 /* ###### BANNER SECTION ###### */
 .banner {
     background-color: var(--dark-three-clr);
@@ -502,36 +495,15 @@ h4 {
 
 /* ###### FOOTER STYLING ###### */
 
-/* Footer divider */
-.footer-divider-top-1719649700 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    z-index: 2;
-}
-.footer-divider-top-1719649700 svg {
-    position: relative;
-    display: block;
-    width: calc(126% + 1.3px);
-    height: 178px;
-}
-.footer-divider-top-1719649700 .shape-fill {
-    fill: #FFFFFF;
-}
-
 /* Footer wrapper */
 .footer-wrapper {
-    padding-top: 165px;
     position: relative;
-    min-height: 300px;
     background: linear-gradient(to right, var(--dark-one-clr) 45%, var(--dark-three-clr));
     display: grid;
     grid-template-rows: auto auto auto 40px;
     gap: 1rem;
     color: var(--light-two-clr);
+    padding-top: 1rem;
 }
 
 /* Footer top wrapper */
@@ -576,7 +548,7 @@ h4 {
 
 /* Footer content */
 .footer-content {
-    width: 290px;
+    width: 280px;
     height: auto;
 }
 
@@ -819,8 +791,7 @@ h4 {
     background-color: var(--blue-one-clr);
 }
 
-
-
+/* Fieldset */
 .f-set {
     border: 1px solid var(--light-two-clr);
     border-radius: var(--base-radius);
@@ -869,11 +840,18 @@ h4 {
     resize: none;
 }
 
+/* ###### VIEW RECIPES SECTION ###### */
+.view-recipe-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
+    justify-content: center;
+}
+
 /* ###### MY RECIPES SECTION ###### */
-.my-recipes-section {
-    width: 100%;
-    min-height: 300px;
-    background-color: var(--blue-two-clr);
+.my_recipes-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
+    justify-content: center;
 }
 
 /* ###### RECIPE SECTION ###### */
@@ -957,8 +935,5 @@ h4 {
     }
     .create_recipe_form {
         width: 70%;
-    }
-    .view-recipe-content {
-        width: 60%;
     }
 }
