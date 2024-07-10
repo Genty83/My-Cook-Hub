@@ -845,6 +845,7 @@ h4 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
     justify-content: center;
+    justify-items: center;
 }
 
 /* ###### MY RECIPES SECTION ###### */
@@ -852,6 +853,7 @@ h4 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
     justify-content: center;
+    justify-items: center;
 }
 
 /* ###### RECIPE SECTION ###### */
