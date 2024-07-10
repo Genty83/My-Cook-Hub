@@ -4,10 +4,10 @@
 
 {% block content %}
 
-<section class="my-recipes-section padding-lg">
+<section class="padding-lg">
     <h2>View Recipes</h2>
-    <div class="auto-grid-max-content center-grid-items padding-lg gap-md">
 
+    <div class="view-recipe-content padding-lg gap-md">
         {% if recipes|length > 0 %}
             {% for recipe in recipes %}
                 <div class="recipe-card">
@@ -42,7 +42,6 @@
                 </div>  
             {% endfor %}
         {% endif %}
-
     </div>
 </section>
 
