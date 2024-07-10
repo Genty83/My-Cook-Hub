@@ -110,9 +110,7 @@ def create_recipe():
 
         steps_lst = []
         for step in request.form.getlist("step_desc[]"):
-            if step.startswith("\r\n"):
-                continue
-            else:
+            if not step.startswith("\r\n"):
                 steps_lst.append(step)
 
         recipe_img = {}
