@@ -63,7 +63,9 @@
                         <ul>   
                             <li>{{ message }}</li>
                         </ul>
-                        <button class="btn close-btn" type="button"><i class="fa-solid fa-xmark"></i></button>
+                        <button class="btn close-btn" type="button" onclick="closeFlashWindow()">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
                     </div>
                 {% endfor %}
             {% endif %}
