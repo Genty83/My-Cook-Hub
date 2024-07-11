@@ -137,7 +137,8 @@ def create_recipe():
             "method": steps_lst,
             "created_by": session["user"],
             "date": date.today().strftime("%d/%m/%Y"),
-            "recipe_img": recipe_img
+            "recipe_img": recipe_img,
+            "reviews": []
         }
 
         mongo.db.recipe.insert_one(new_recipe)
@@ -251,6 +252,31 @@ def my_recipes(username):
 
     return redirect(url_for("sign_in"))
 
+
+@app.route("/search/<recipe_id>", methods=["GET", "POST"])
+def search(recipe_id):
+    """
+    Search function - allows user to search for recipes based on words
+    in the name or ingredients of the recipe.
+    """
+    search = request.form.get("search")
+    recipes = list(mongo.db.recipe.find({"$text": {"$search": search}}))
+    recipe = mongo.db.recipe.find_one({"_id": ObjectId(recipe_id)})
+
+    if not recipes:
+        
+        flash("No Recipe Found!!", "warning")
+        return render_template("recipe.html",recipe_id=recipe_id,
+        recipe=recipe, recipes=recipes
+    )
+
+    return render_template("recipe.html",recipe_id=recipe_id,
+        recipe=recipe, recipes=recipes
+    )
+
+    
+
+    
 
 
 if __name__ == "__main__":
