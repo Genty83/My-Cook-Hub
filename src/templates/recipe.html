@@ -6,16 +6,38 @@
 
 <section class="recipe-section flex-col padding-md gap-lg">
 
-    <div class="recipe-header-wrapper">
+    <div class="recipe-header-wrapper flex-col gap-lg">
         <h1>{{ recipe.recipe_name|title }}</h1>
+        <!-- Search bar -->
+         <div class="flex-col">
+            <form action="{{ url_for('search', recipe_id=recipe._id) }}" method="post" class="searchbar">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" name="search" id="search" minlength="3" placeholder="Search:" required>
+                <a href="{{ url_for('recipe', recipe_id=recipe._id) }}" class="btn std-btn btn-max-height padding-md">Reset</a>
+                <button class="btn std-btn btn-max-height padding-md" type="submit">Search</button>
+            </form>
+            {% if recipes %}
+            <div class="search-results-window flex-col gap-md padding-md">
+                {% for r in recipes %}
+                    <a class="search-result" href="{{ url_for('recipe', recipe_id=r._id) }}">
+                        <img class="search-result-img" src="{{ r.recipe_img.src }}" alt="{{ r.recipe_img.alt }}">
+                        {{ r.recipe_name }}
+
+                    </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+         </div>
     </div>
 
-    <div class="recipe-top-wrapper auto-grid-max-content gap-lg">
+    <div class="recipe-top-wrapper gap-lg">
         <img class="recipe-image" src="{{ recipe.recipe_img.src }}"
                 alt="Image of '{{ recipe.recipe_name|title }}' recipe."
                 title="Image of '{{ recipe.recipe_name|title }}' recipe.">
 
         <div class="recipe-content flex-col gap-lg">
+            <h4>Description</h4>
+            <div class="h_seperator"></div>
             <p>{{ recipe.recipe_desc }}</p>
             <ul class="flex-col gap-lg">
                 <li class="recipe-item">
@@ -36,12 +58,23 @@
                 </li>
             </ul>
         </div>
+        <div class="flex-row gap-md">
+            {% if recipe.created_by == session["user"] %}
+                <a href="" class="btn social-media-btn tooltip" tooltip-text="Edit Recipe" aria-label="Edit recipe">
+                    <i class="fa-solid fa-pencil"></i>
+                </a>
+            {% endif %}
+            <a href="" class="btn social-media-btn tooltip" tooltip-text="Leave Review" aria-label="Leave Review">
+                <i class="fa-solid fa-face-smile"></i>
+            </a>
+        </div>
     </div>
 
-    <div class="recipe-bottom-wrapper auto-grid-max-content gap-lg">
+    <div class="recipe-bottom-wrapper gap-lg">
 
         <div class="flex-col gap-lg">
             <h2>Ingredients</h2>
+            <div class="h_seperator"></div>
             <ul class="flex-col gap-lg">
                 {% for ingredient in recipe.ingredients %}
                     <li class="recipe-list-item">{{ingredient}}</li>
@@ -50,6 +83,7 @@
         </div>
         <div class="flex-col gap-lg">
             <h2>Cooking Steps</h2>
+            <div class="h_seperator"></div>
             <ul class="flex-col gap-lg">
                 {% for x in recipe.method %}
                     <li class="recipe-list-item">{{x}}</li>
