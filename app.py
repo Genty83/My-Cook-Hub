@@ -6,6 +6,7 @@ from flask import render_template, redirect, request, session, flash, url_for
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
+from statistics import mean
 
 
 
@@ -133,7 +134,7 @@ def create_recipe():
             "servings": request.form.get("servings"),
             "cook_time": request.form.get("cook_time"),
             "prep_time": request.form.get("prep_time"),
-            "ingredients": ingredients_lst,
+            "ingredients": ingredients_lst, 
             "method": steps_lst,
             "created_by": session["user"],
             "date": date.today().strftime("%d/%m/%Y"),
@@ -152,7 +153,6 @@ def create_recipe():
 def view_recipes():
     """ """
     recipes = list(mongo.db.recipe.find())
-    meal_types = mongo.db.meal_types.find()
     user_session = session.get("user")
 
     if not user_session is None:
@@ -160,7 +160,7 @@ def view_recipes():
             {"username": session["user"]}).get('my_recipes', [])
         return render_template(
             "view_recipes.html", recipes=recipes,
-            meal_types=meal_types, saved_recipes=saved_recipes,
+            saved_recipes=saved_recipes,
             current_page=url_for('view_recipes'))    
 
     return render_template("view_recipes.html", recipes=recipes) 
@@ -172,6 +172,18 @@ def recipe(recipe_id):
 
     recipe = mongo.db.recipe.find_one({"_id": ObjectId(recipe_id)})
     meal_types = mongo.db.meal_types.find()
+    reviews = list(mongo.db.recipe.find_one(
+        {"_id": ObjectId(recipe_id)}).get('reviews'))
+
+    ratings = []
+    if reviews:
+        for dct in reviews:
+            ratings.append(dct["rating"])
+        avg_rating = round(mean(ratings) * 2) / 2
+    else:
+        avg_rating = 0
+
+    total_reviews = len(ratings)
 
     user_session = session.get("user")
 
@@ -181,13 +193,17 @@ def recipe(recipe_id):
 
         return  render_template(
             "recipe.html", recipe=recipe,
-            meal_types=meal_types, recipe_id=recipe_id,
-            current_page=url_for('view_recipes', recipe=recipe_id))
+             recipe_id=recipe_id, avg_rating=avg_rating, 
+             total_reviews=total_reviews, current_page=url_for('view_recipes', 
+             recipe=recipe_id)
+             )
 
     return  render_template(
-            "recipe.html", recipe=recipe,
-            meal_types=meal_types, recipe_id=recipe_id,
-            current_page=url_for('view_recipes', recipe_id=recipe_id))
+        "recipe.html", recipe=recipe,
+        recipe_id=recipe_id, avg_rating=avg_rating, 
+        total_reviews=total_reviews, current_page=url_for('view_recipes', 
+        recipe=recipe_id)
+        )
 
 
 
@@ -275,7 +291,31 @@ def search(recipe_id):
     )
 
     
+@app.route("/review/<recipe_id>", methods=["GET", "POST"])
+def review(recipe_id):
+    """
+    Function allows the user topost a review on the displayed recipe.
+    """
 
+    recipe = mongo.db.recipe.find_one({"_id": ObjectId(recipe_id)})
+
+    if request.method == "POST":
+
+        review = {
+            "review_desc": request.form.get("review_desc"),
+            "rating": float(request.form.get("rating"))
+        }
+
+        print(review)
+
+        mongo.db.recipe.update_one(
+            {"_id": ObjectId(recipe_id)},
+            {"$addToSet": {"reviews": review}}
+        )
+        flash("Review Successfully Added!!", "success")
+
+
+    return render_template("recipe.html",recipe_id=recipe_id, recipe=recipe)
     
 
 
