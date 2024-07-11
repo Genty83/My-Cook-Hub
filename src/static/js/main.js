@@ -1,10 +1,16 @@
 
-// Variables
-var closeBtn = document.querySelector(".close-btn");
 
-/** Event listener for close button to remove flash container */
-closeBtn.addEventListener("click", () => {
+
+
+/** Function to close flash window */
+function closeFlashWindow() {
     var flashContainer = document.querySelector(".flash-container");
-
     flashContainer.remove();
-})
+}
+
+/** Function to open review form */
+function toggleReviewForm() {
+    var reviewForm = document.querySelector(".review-form");
+    reviewForm.style.opacity = 1;
+}
+
