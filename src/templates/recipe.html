@@ -6,15 +6,33 @@
 
 <section class="recipe-section flex-col padding-md gap-lg">
 
+    <!-- Review form -->
+    <form action="{{ url_for('review', recipe_id=recipe._id) }}" method="post" class="review-form flex-col padding-md gap-md">
+        <h2>Leave A Review</h2>
+        <div class="form-textarea">
+            <i class="fa-solid fa-pen"></i>
+            <textarea id="review_desc" name="review_desc" minlength="5"
+                maxlength="700" placeholder="Review Description" required></textarea>
+        </div>
+        <div class="form-input">
+            <i class="fa-solid fa-star"></i>
+            <input id="rating" name="rating" type="text" placeholder="Rating:" required>
+        </div>
+        <button class="btn std-btn btn-md" type="submit">Submit</button>
+    </form>
+
     <div class="recipe-header-wrapper flex-col gap-lg">
         <h1>{{ recipe.recipe_name|title }}</h1>
         <!-- Search bar -->
          <div class="flex-col">
             <form action="{{ url_for('search', recipe_id=recipe._id) }}" method="post" class="searchbar">
-                <i class="fa-solid fa-search"></i>
                 <input type="text" name="search" id="search" minlength="3" placeholder="Search:" required>
-                <a href="{{ url_for('recipe', recipe_id=recipe._id) }}" class="btn std-btn btn-max-height padding-md">Reset</a>
-                <button class="btn std-btn btn-max-height padding-md" type="submit">Search</button>
+                <a href="{{ url_for('recipe', recipe_id=recipe._id) }}" class="btn icon-btn tooltip" tooltip-text="Clear">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
+                <button class="btn icon-btn tooltip" type="submit" tooltip-text="Search">
+                    <i class="fa-solid fa-search"></i>
+                </button>
             </form>
             {% if recipes %}
             <div class="search-results-window flex-col gap-md padding-md">
@@ -58,15 +76,89 @@
                 </li>
             </ul>
         </div>
-        <div class="flex-row gap-md">
-            {% if recipe.created_by == session["user"] %}
-                <a href="" class="btn social-media-btn tooltip" tooltip-text="Edit Recipe" aria-label="Edit recipe">
-                    <i class="fa-solid fa-pencil"></i>
+        <div class="flex-col gap-lg">
+            <h4>Reviews</h4>
+            <div class="h_seperator"></div>
+            <div class="flex-row flex-center-align gap-md">
+                {% if avg_rating == 5 %}
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                {% elif avg_rating == 4.5 %}
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star-half"></i>
+                {% elif avg_rating == 4 %}
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                {% elif avg_rating == 3.5 %}
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star-half"></i>
+                    <i class="fa-regular fa-star"></i>
+                {% elif avg_rating == 3 %}
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                {% elif avg_rating == 2.5 %}
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star-half"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                {% elif avg_rating == 2 %}
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                {% elif avg_rating == 1.5 %}
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="rating-star fa-solid fa-star-half"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                {% elif avg_rating == 1 %}
+                    <i class="rating-star fa-solid fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                {% elif avg_rating == 0.5 %}
+                    <i class="rating-star fa-solid fa-star-half"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                {% else %}
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                {% endif %}
+                <p>from {{ total_reviews }} reviews</p>
+            </div>
+            <div class="flex-row gap-md">
+                {% if recipe.created_by == session["user"] %}
+                    <a href="" class="btn social-media-btn tooltip" tooltip-text="Edit Recipe" aria-label="Edit recipe">
+                        <i class="fa-solid fa-pencil"></i>
+                    </a>
+                {% endif %}
+                <a class="btn social-media-btn tooltip" tooltip-text="Leave Review" aria-label="Leave Review" onclick="toggleReviewForm()">
+                    <i class="fa-solid fa-face-smile"></i>
                 </a>
-            {% endif %}
-            <a href="" class="btn social-media-btn tooltip" tooltip-text="Leave Review" aria-label="Leave Review">
-                <i class="fa-solid fa-face-smile"></i>
-            </a>
+            </div>
         </div>
     </div>
 
