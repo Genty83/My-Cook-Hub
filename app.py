@@ -14,6 +14,7 @@ from statistics import mean
 @app.route("/")
 def home():
     """ Re-routes to the home page  """
+
     return render_template("home.html")
 
 
@@ -54,7 +55,7 @@ def account():
     return render_template("account.html")
 
 
-# Account page 
+# Sign in page 
 @app.route("/sign_in", methods=["GET", "POST"])
 def sign_in():
     """
@@ -99,8 +100,8 @@ def sign_out():
 def create_recipe():
     
     """
-    Add-Recipe view - shows add-recipe page and
-    functionality for adding a recipe.
+    Create recipe view:
+    Displays the user form for creating a new recipe.
     """
     if request.method == "POST":
 
@@ -123,10 +124,10 @@ def create_recipe():
         else:
             recipe_img = {
                 "src": request.form.get("recipe_img"),
-                "alt": "Image of {0} recipe.".format(
-                    request.form.get("recipe_name"))
+                "alt": f"Image of {request.form.get("recipe_name")} recipe."
             }
 
+        # New recipe dictionary
         new_recipe = {
             "recipe_name": request.form.get("recipe_name"),
             "recipe_desc": request.form.get("recipe_desc"),
@@ -141,7 +142,7 @@ def create_recipe():
             "recipe_img": recipe_img,
             "reviews": []
         }
-
+        # Add recipe to db
         mongo.db.recipe.insert_one(new_recipe)
         flash("Recipe Successfully Added", "success")
         return redirect(url_for("create_recipe"))
@@ -151,25 +152,56 @@ def create_recipe():
 
 @app.route("/view_recipes", methods=["GET", "POST"])
 def view_recipes():
-    """ """
+    """ 
+    View recipes page. Shows all available recipe cards
+    """
+
+    # Variables
     recipes = list(mongo.db.recipe.find())
     user_session = session.get("user")
+    reviews = []
+    avg_ratings = []
+    review_count = []
+
+    # Loop through recipes and add lists of ratings to reviews list
+    for index, value in enumerate(recipes):
+        lst = []
+        for index in value["reviews"]:
+            lst.append(index.get("rating"))
+        reviews.append(lst)
+
+    
+    # Loop through reviews and add values
+    #  to avg_ratings list & review_count list
+    for review in reviews:
+        if review:
+            avg_ratings.append(round(mean(review) * 2) / 2)
+            review_count.append(len(review))
+        else:
+            avg_ratings.append(0)
+            review_count.append(0)
 
     if not user_session is None:
         saved_recipes = mongo.db.account.find_one(
-            {"username": session["user"]}).get('my_recipes', [])
-        return render_template(
-            "view_recipes.html", recipes=recipes,
-            saved_recipes=saved_recipes,
-            current_page=url_for('view_recipes'))    
+            {"username": user_session}).get('my_recipes', [])
+    else:
+        saved_recipes = []
+           
 
-    return render_template("view_recipes.html", recipes=recipes) 
+    return render_template(
+            "view_recipes.html", recipes=recipes,
+            saved_recipes=saved_recipes, avg_ratings=avg_ratings,
+            review_count=review_count,current_page=url_for('view_recipes')
+            ) 
 
 
 @app.route("/recipe/<recipe_id>")
 def recipe(recipe_id):
-    """ """ 
+    """
+    Recipe view: Shows the full recipe
+    """ 
 
+    user_session = session.get("user")
     recipe = mongo.db.recipe.find_one({"_id": ObjectId(recipe_id)})
     meal_types = mongo.db.meal_types.find()
     reviews = list(mongo.db.recipe.find_one(
@@ -185,33 +217,24 @@ def recipe(recipe_id):
 
     total_reviews = len(ratings)
 
-    user_session = session.get("user")
-
     if not user_session is None:
         saved_recipes = mongo.db.account.find_one(
             {"username": session["user"]}).get('my_recipes', [])
-
-        return  render_template(
-            "recipe.html", recipe=recipe,
-             recipe_id=recipe_id, avg_rating=avg_rating, 
-             total_reviews=total_reviews, current_page=url_for('view_recipes', 
-             recipe=recipe_id)
-             )
+    else:
+        saved_recipes = []
 
     return  render_template(
         "recipe.html", recipe=recipe,
         recipe_id=recipe_id, avg_rating=avg_rating, 
-        total_reviews=total_reviews, current_page=url_for('view_recipes', 
-        recipe=recipe_id)
+        total_reviews=total_reviews, saved_recipes=saved_recipes,
+        current_page=url_for('view_recipes', recipe=recipe_id)
         )
-
 
 
 @app.route("/save_recipe/<recipe_id>", methods=["GET", "POST"])
 def save_recipe(recipe_id):
     """
-    Save-recipe function - saves the recipe to show in
-    the 'My CookBook' tab in the user's profile.
+    Function to save the recipe to the users recipes
     """
     if request.method == "POST":
         mongo.db.account.update_one(
@@ -220,8 +243,7 @@ def save_recipe(recipe_id):
         )
         flash("Recipe Successfully Saved", "success")
 
-    current_page = request.args.get('current_page')
-    return redirect(current_page)
+    return redirect(request.args.get('current_page'))
 
 
 @app.route("/remove_recipe/<recipe_id>", methods=["GET", "POST"])
@@ -236,8 +258,7 @@ def remove_recipe(recipe_id):
         )
         flash("Recipe Successfully Removed From Your Recipes!!", "info")
 
-    current_page = request.args.get('current_page')
-    return redirect(current_page)
+    return redirect(request.args.get('current_page'))
 
 
 @app.route("/my_recipes/<username>", methods=["GET", "POST"])
@@ -247,23 +268,43 @@ def my_recipes(username):
     """
     user = session["user"]
     # grab the session user's username from the database
-    username = mongo.db.account.find_one(
-        {"username": user})["username"]
+    username = mongo.db.account.find_one({"username": user})["username"]
     saved_recipes = mongo.db.account.find_one(
         {"username": user}).get('my_recipes', [])
     
     saved_recipe_ids = [ObjectId(x) for x in saved_recipes]
-    my_recipes = mongo.db.recipe.find({'_id': {'$in': saved_recipe_ids}})
+    my_recipes = list(mongo.db.recipe.find({'_id': {'$in': saved_recipe_ids}}))
 
     if user:
         recipes = list(mongo.db.recipes.find())
+        reviews = []
+        avg_ratings = []
+        review_count = []
+
+        # Loop through recipes and add lists of ratings to reviews list
+        for index, value in enumerate(my_recipes):
+            lst = []
+            for index in value["reviews"]:
+                lst.append(index.get("rating"))
+            reviews.append(lst)
+        
+        # Loop through reviews and add values
+        #  to avg_ratings list & review_count list
+        for review in reviews:
+            if review:
+                avg_ratings.append(round(mean(review) * 2) / 2)
+                review_count.append(len(review))
+            else:
+                avg_ratings.append(0)
+                review_count.append(0)
+
+        print(avg_ratings)
 
         return render_template(
-            "my_recipes.html", 
-            username=username, 
-            recipes=recipes, 
-            my_recipes=my_recipes,
-            saved_recipes=saved_recipes
+            "my_recipes.html", username=username, 
+            recipes=recipes, my_recipes=my_recipes,
+            saved_recipes=saved_recipes, avg_ratings=avg_ratings,
+            review_count=review_count
             )
 
     return redirect(url_for("sign_in"))
@@ -306,8 +347,6 @@ def review(recipe_id):
             "rating": float(request.form.get("rating"))
         }
 
-        print(review)
-
         mongo.db.recipe.update_one(
             {"_id": ObjectId(recipe_id)},
             {"$addToSet": {"reviews": review}}
@@ -315,7 +354,9 @@ def review(recipe_id):
         flash("Review Successfully Added!!", "success")
 
 
-    return render_template("recipe.html",recipe_id=recipe_id, recipe=recipe)
+    return render_template(
+        "recipe.html",recipe_id=recipe_id, recipe=recipe
+        )
     
 
 
