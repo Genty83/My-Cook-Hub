@@ -146,8 +146,14 @@ h4 {
 
 /* ###### STAR RATING CLASSES ###### */
 .rating-star {
-    color: var(--warning-clr);
+    color: var(--success-clr);
+    font-size: 0.9rem;
 }
+.rating-star-light {
+    color: var(--light-one-clr);
+    font-size: 0.9rem;
+}
+
 
 /* ##### FLASH MESSAGES CONTAINER  ##### */
 .flash-container {
@@ -452,29 +458,6 @@ h4 {
 }
 
 /* ###### HERO STYLING ###### */
-
-/* Hero Divider */
-.custom-shape-divider-bottom-1720442452 {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    transform: translateY(2px);
-}
-
-.custom-shape-divider-bottom-1720442452 svg {
-    position: relative;
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 98px;
-    transform: rotateY(180deg);
-}
-
-.custom-shape-divider-bottom-1720442452 .shape-fill {
-    fill: #FFFFFF;
-}
 
 /* Wrapper */
 .hero-wrapper {
