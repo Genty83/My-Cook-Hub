@@ -150,6 +150,61 @@ def create_recipe():
     return render_template("create_recipe.html")
 
 
+@app.route("/edit_recipe/<recipe_id>", methods=["GET", "POST"])
+def edit_recipe(recipe_id):
+    
+    """
+    Function to allow the user to edit the selected recipe.
+    """
+
+    recipe = mongo.db.recipe.find_one({"_id": ObjectId(recipe_id)})
+
+    if request.method == "POST":
+
+        ingredients_lst = []
+        for ingredient in recipe["ingredients"]:
+            if not ingredient == "":
+                ingredients_lst.append(ingredient)
+
+        steps_lst = []
+        for step in recipe["method"]:
+            if not step == "":
+                steps_lst.append(step)
+
+        recipe_img = {}
+        if request.form.get("recipe_img") == "":
+            recipe_img = {
+                "src": "",
+                "alt": ""
+            }
+        else:
+            recipe_img = {
+                "src": request.form.get("recipe_img"),
+                "alt": f"Image of {request.form.get("recipe_name")} recipe."
+            }
+
+        # Edited dictionary
+        edited_recipe = {
+            "recipe_name": request.form.get("recipe_name"),
+            "recipe_desc": request.form.get("recipe_desc"),
+            "meal_type": request.form.get("meal_type"),
+            "servings": request.form.get("servings"),
+            "cook_time": request.form.get("cook_time"),
+            "prep_time": request.form.get("prep_time"),
+            "ingredients": ingredients_lst, 
+            "method": steps_lst,
+            "created_by": session["user"],
+            "date": date.today().strftime("%d/%m/%Y"),
+            "recipe_img": recipe_img
+        }
+        # Update recipe
+        mongo.db.recipe.update_one(
+            {"_id": ObjectId(recipe_id)}, {'$set': edited_recipe})
+        flash("Recipe Successfully Updated", "success")
+        
+    return render_template("edit_recipe.html", recipe=recipe)
+
+
 @app.route("/view_recipes", methods=["GET", "POST"])
 def view_recipes():
     """ 
