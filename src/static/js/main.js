@@ -19,3 +19,13 @@ function toggleReviewForm() {
     
 }
 
+/** Function to toggle reviews board */
+function toggleReviewsBoard() {
+    var reviewsBoard = document.querySelector(".reviews-board");
+
+    if (reviewsBoard.getBoundingClientRect().height == 0) {
+        reviewsBoard.style.display = 'flex';
+    } else {
+        reviewsBoard.style.display = 'none';
+    }
+}
