@@ -1,5 +1,4 @@
-
-
+// Main js file containing all the main functions
 
 
 /** Function to close flash window */
@@ -11,6 +10,12 @@ function closeFlashWindow() {
 /** Function to open review form */
 function toggleReviewForm() {
     var reviewForm = document.querySelector(".review-form");
-    reviewForm.style.opacity = 1;
+
+    if (reviewForm.getBoundingClientRect().height == 0) {
+        reviewForm.style.display = "flex";
+    } else {
+        reviewForm.style.display = "none";
+    }
+    
 }
 
