@@ -262,6 +262,9 @@ def recipe(recipe_id):
     reviews = list(mongo.db.recipe.find_one(
         {"_id": ObjectId(recipe_id)}).get('reviews'))
 
+    related_recipes = list(mongo.db.recipe.find(
+        {"$text": {"$search": recipe["recipe_name"]}}))
+
     ratings = []
     if reviews:
         for dct in reviews:
@@ -282,7 +285,8 @@ def recipe(recipe_id):
         "recipe.html", recipe=recipe,
         recipe_id=recipe_id, avg_rating=avg_rating, 
         total_reviews=total_reviews, saved_recipes=saved_recipes,
-        current_page=url_for('view_recipes', recipe=recipe_id)
+        current_page=url_for('view_recipes', recipe=recipe_id),
+        related_recipes=related_recipes
         )
 
 
@@ -369,7 +373,7 @@ def my_recipes(username):
 def search(recipe_id):
     """
     Search function - allows user to search for recipes based on words
-    in the name or ingredients of the recipe.
+    in the name of the recipe.
     """
     search = request.form.get("search")
     recipes = list(mongo.db.recipe.find({"$text": {"$search": search}}))
@@ -399,7 +403,8 @@ def review(recipe_id):
 
         review = {
             "review_desc": request.form.get("review_desc"),
-            "rating": float(request.form.get("rating"))
+            "rating": float(request.form.get("rating")),
+            "created_by": session["user"]
         }
 
         mongo.db.recipe.update_one(
