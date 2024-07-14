@@ -258,12 +258,14 @@ def recipe(recipe_id):
 
     user_session = session.get("user")
     recipe = mongo.db.recipe.find_one({"_id": ObjectId(recipe_id)})
-    meal_types = mongo.db.meal_types.find()
     reviews = list(mongo.db.recipe.find_one(
         {"_id": ObjectId(recipe_id)}).get('reviews'))
 
-    related_recipes = list(mongo.db.recipe.find(
-        {"$text": {"$search": recipe["recipe_name"]}}))
+    related_recipes = list(
+        mongo.db.recipe.find({"$text": {"$search": recipe["recipe_name"]}}))
+
+    similar_meals = list(
+        mongo.db.recipe.find({"meal_type": recipe["meal_type"]}).limit(3))
 
     ratings = []
     if reviews:
@@ -284,9 +286,11 @@ def recipe(recipe_id):
     return  render_template(
         "recipe.html", recipe=recipe,
         recipe_id=recipe_id, avg_rating=avg_rating, 
-        total_reviews=total_reviews, saved_recipes=saved_recipes,
+        total_reviews=total_reviews, 
+        saved_recipes=saved_recipes, 
         current_page=url_for('view_recipes', recipe=recipe_id),
-        related_recipes=related_recipes
+        related_recipes=related_recipes, similar_meals=similar_meals,
+        reviews=reviews
         )
 
 
@@ -415,10 +419,9 @@ def review(recipe_id):
 
 
     return render_template(
-        "recipe.html",recipe_id=recipe_id, recipe=recipe
+        "recipe.html", recipe_id=recipe_id, recipe=recipe
         )
     
-
 
 if __name__ == "__main__":
     app.run(
