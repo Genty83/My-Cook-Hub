@@ -8,6 +8,8 @@
 <section class="flex-col gap-lg">
 
     {% include "review_form.html" %}
+    {% include "reviews_board.html" %}
+
     <div class="recipe-header flex-col gap-md padding-md">
         <form action="{{ url_for('search', recipe_id=recipe._id) }}" method="post" class="searchbar">
             <input type="text" name="search" id="search" minlength="3" placeholder="Search:" required>
@@ -103,7 +105,7 @@
                     <i class="rating-star-light fa-regular fa-star"></i>
                     <i class="rating-star-light fa-regular fa-star"></i>
                 {% endif %}
-                <a class="link-underline">from {{ total_reviews }} reviews</a>
+                <a class="link-underline" onclick="toggleReviewsBoard()">from {{ total_reviews }} reviews</a>
             </div>
     
             <div class="flex-row gap-md">
@@ -140,14 +142,14 @@
              <h2>Ingredients</h2>
              <ul class="flex-col gap-lg">
                 {% for ingredient in recipe.ingredients %}
-                    <li class="recipe-list-item">{{ingredient}}</li>
+                    <li class="recipe-list-item"><p>{{ loop.index }}.</p>{{ingredient}}</li>
                 {% endfor %}
             </ul>
             <div class="h_seperator"></div>
             <h2>Method</h2>
             <ul class="flex-col gap-lg">
                 {% for x in recipe.method %}
-                    <li class="recipe-list-item">{{x}}</li>
+                    <li class="recipe-list-item"><p>{{ loop.index }}.</p>{{x}}</li>
                 {% endfor %}
             </ul>
         </div>
@@ -163,6 +165,19 @@
                     <p><strong>By </strong>{{ x.created_by }}</p>
                 </div>
             {% endfor %}
+            <div class="h_seperator"></div>
+            <h2>More {{ recipe.meal_type }} Recipes</h2>
+            <div class="overflow-container">
+                {% for x in similar_meals %}
+                    <div class="banner-card flex-col gap-md">
+                        <img class="banner-image" src="{{ x.recipe_img.src }}"
+                        alt="Image of '{{ x.recipe_name|title }}' recipe."
+                        title="Image of '{{ x.recipe_name|title }}' recipe.">
+                        <a href="{{ url_for('recipe', recipe_id=x._id) }}" class="link-underline">{{ x.recipe_name }}</a>
+                        <p><strong>By </strong>{{ x.created_by }}</p>
+                    </div>
+                {% endfor %}
+            </div>
             <div class="h_seperator"></div>
         </div>
     
