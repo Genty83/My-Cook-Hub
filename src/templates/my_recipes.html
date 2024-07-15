@@ -8,27 +8,25 @@
     <h2>{{ username }}'s Recipes</h2>
     <div class="my_recipes-content padding-lg gap-md">
         {% for recipe in my_recipes %}
-            {% if session.user|lower == recipe.created_by|lower %}
-                <div class="recipe-card">
-                    <img src="{{ recipe.recipe_img.src }}" alt="{{ recipe.recipe_img.alt }}">
-                    <div class="flex-col padding-md gap-md">
-                        <a href="{{ url_for('recipe', recipe_id=recipe._id) }}" class="card-title">{{ recipe.recipe_name }}</a>
+            <div class="recipe-card">
+                <img src="{{ recipe.recipe_img.src }}" alt="{{ recipe.recipe_img.alt }}">
+                <div class="flex-col padding-md gap-md">
+                    <a href="{{ url_for('recipe', recipe_id=recipe._id) }}" class="card-title">{{ recipe.recipe_name }}</a>
 
-                        {% include "star_rating.html" %}
+                    {% include "star_rating.html" %}
 
-                        <p> {{ review_count[loop.index0] }} Reviews</p>
-                    </div>
-                    {% if session.user %}
-                        {% if recipe._id|string in saved_recipes %}
-                            <form action="{{ url_for('remove_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
-                                method="POST">
-                                <button type="submit" class="card-btn card-delete-btn tooltip" tooltip-text="Remove Recipe" aria-label="Remove recipe">
-                                    <i class="fa-solid fa-eraser"></i>
-                                </button>
-                            </form>
-                        {% endif %}
+                    <p> {{ review_count[loop.index0] }} Reviews</p>
+                </div>
+                {% if session.user %}
+                    {% if recipe._id|string in saved_recipes %}
+                        <form action="{{ url_for('remove_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
+                            method="POST">
+                            <button type="submit" class="card-btn card-delete-btn tooltip" tooltip-text="Remove Recipe" aria-label="Remove recipe">
+                                <i class="fa-solid fa-eraser"></i>
+                            </button>
+                        </form>
                     {% endif %}
-                </div>  
+            </div>  
             {% endif %}
         {% endfor %}
     </div>
