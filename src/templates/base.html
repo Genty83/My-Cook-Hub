@@ -85,16 +85,16 @@
             <!-- Logo -->
             <a class="logo logo-light" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
             <div class="flex-row-center-all gap-sm">
-                <a href="#" class="btn social-media-btn tooltip" tooltip-text="Facebook" aria-label="Go To Facebook">
+                <a href="http://www.facebook.com" target="_blank" class="btn social-media-btn tooltip" tooltip-text="Facebook" aria-label="Go To Facebook">
                     <i class="fa-brands fa-facebook"></i>
                 </a>
-                <a href="#" class="btn social-media-btn tooltip" tooltip-text="Instagram" aria-label="Go To Instagram">
+                <a href="http://www.instagram.com" target="_blank" class="btn social-media-btn tooltip" tooltip-text="Instagram" aria-label="Go To Instagram">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
-                <a href="#" class="btn social-media-btn tooltip" tooltip-text="Twitter" aria-label="Go To Twitter">
+                <a href="http://www.twitter.com" target="_blank" class="btn social-media-btn tooltip" tooltip-text="Twitter" aria-label="Go To Twitter">
                     <i class="fa-brands fa-twitter"></i>
                 </a>
-                <a href="#" class="btn social-media-btn tooltip" tooltip-text="Youtube" aria-label="Go To Youtube">
+                <a href="http://www.youtube.com" target="_blank" class="btn social-media-btn tooltip" tooltip-text="Youtube" aria-label="Go To Youtube">
                     <i class="fa-brands fa-youtube"></i>
                 </a>
             </div>
@@ -115,18 +115,20 @@
             <div class="footer-content flex-col gap-md">
                 <h3>Find Us</h3>
                 <div class="footer-seperator"></div>
-                <a href="" class="footer-link"><i class="fa-brands fa-facebook"></i>Facebook</a>
-                <a href="" class="footer-link"><i class="fa-brands fa-instagram"></i>Instagram</a>
-                <a href="" class="footer-link"><i class="fa-brands fa-twitter"></i>Twitter</a>
-                <a href="" class="footer-link"><i class="fa-brands fa-youtube"></i>Youtube</a>
+                <a href="http://www.facebook.com" target="_blank" class="footer-link"><i class="fa-brands fa-facebook"></i>Facebook</a>
+                <a href="http://www.instagram.com" target="_blank" class="footer-link"><i class="fa-brands fa-instagram"></i>Instagram</a>
+                <a href="http://www.twitter.com" target="_blank" class="footer-link"><i class="fa-brands fa-twitter"></i>Twitter</a>
+                <a href="http://www.youtube.com" target="_blank" class="footer-link"><i class="fa-brands fa-youtube"></i>Youtube</a>
             </div>
             <div class="footer-content flex-col gap-md">
                 <h3>Useful Links</h3>
                 <div class="footer-seperator"></div>
-                <a href="" class="footer-link"><i class="fa-solid fa-home"></i>Home</a>
-                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>View Recipes</a>
-                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>My Recipes</a>
-                <a href="" class="footer-link"><i class="fa-solid fa-circle-dot"></i>Create Recipe</a>
+                <a href="{{ url_for('home') }}" class="footer-link"><i class="fa-solid fa-home"></i>Home</a>
+                <a href="{{ url_for('view_recipes') }}" class="footer-link"><i class="fa-solid fa-circle-dot"></i>View Recipes</a>
+                {% if session.user %}
+                    <a href="{{ url_for('my_recipes', username=session['user']) }}" class="footer-link"><i class="fa-solid fa-circle-dot"></i>My Recipes</a>
+                    <a href="{{ url_for('create_recipe') }}" class="footer-link"><i class="fa-solid fa-circle-dot"></i>Create Recipe</a>
+                {% endif %}
             </div>
             <div class="footer-content flex-col gap-md">
                 <h3>Subscribe To Our Newsletter</h3>
