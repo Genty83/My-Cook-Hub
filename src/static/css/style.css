@@ -38,8 +38,6 @@ FIRST...
     padding: 0;
     margin: 0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 1rem;
-    font-weight: 300;
 }
 body {
     position: relative;
@@ -78,6 +76,9 @@ strong {
 
 .padding-lg {
     padding: 1rem;
+}
+.padding-horz-responsive {
+    padding: 1%;
 }
 
 /* ###### GAP CLASSES ###### */
@@ -375,6 +376,37 @@ strong {
     background-color: var(--base-red-hover);
 }
 
+/* ##### CARD LARGE STYLING  ##### */
+
+.card-large {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
+}
+.card-large-img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+.card-large-content {
+    background-color: var(--light-four-clr);
+}
+.card-lg-header {
+    color: var(--blue-one-clr);
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+/* ##### CARD LARGE STYLING  ##### */
+.card-small {
+    width: 100%;
+    background-color: var(--light-four-clr);
+}
+.card-sm-img {
+    width: 100%;
+    object-fit: cover;
+    height: 200px;
+}
+
 /* Links */
 .link-underline {
     color: var(--dark-one-clr);
@@ -578,6 +610,19 @@ strong {
     outline: none;
     border: none;
 }
+
+/* ###### HOME PAGE ###### */
+.home-featured-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
+    justify-content: center;
+}
+.sm-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    justify-content: center;
+}
+
 
 /* ###### CREATE ACCOUNT PAGE ###### */
 
@@ -1023,6 +1068,10 @@ strong {
 /* Media queries greater than a min width of 861px */
 @media all and (min-width: 861px) {
     
+    .padding-horz-responsive {
+        padding: 1% 5%;
+    }
+
     /* Nav btns wrapper */
     .nav-btns-wrapper {
         display: flex;
@@ -1045,6 +1094,11 @@ strong {
 
 /* Media queries greater than a min width of 1261px */
 @media all and (min-width: 1261px) {
+
+    .padding-horz-responsive {
+        padding: 1% 15%;
+    }
+
     h1 {
         font-size: 2.8rem;
     }
