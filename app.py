@@ -1,6 +1,7 @@
 """ Main app file: This file is the entry point to the application """
 
 import os
+import random
 from src import app, mongo
 from flask import render_template, redirect, request, session, flash, url_for
 from bson.objectid import ObjectId
@@ -15,7 +16,22 @@ from statistics import mean
 def home():
     """ Re-routes to the home page  """
 
-    return render_template("home.html")
+    # Variables
+    recipes = list(mongo.db.recipe.find())
+    most_recent = list(mongo.db.recipe.find().sort('_id',-1).limit(2))
+    featured = random.sample(recipes, 1)
+
+    if len(recipes) < 4:
+        more_recipes = random.sample(recipes, len(recipes))
+    else:
+        more_recipes = random.sample(recipes, 4)
+
+    
+
+    return render_template(
+        "home.html", more_recipes=more_recipes, most_recent=most_recent,
+        featured=featured
+        )
 
 
 # Account page 
@@ -261,11 +277,17 @@ def recipe(recipe_id):
     reviews = list(mongo.db.recipe.find_one(
         {"_id": ObjectId(recipe_id)}).get('reviews'))
 
+    # Get list of meals related to recipe name
     related_recipes = list(
         mongo.db.recipe.find({"$text": {"$search": recipe["recipe_name"]}}))
 
-    similar_meals = list(
-        mongo.db.recipe.find({"meal_type": recipe["meal_type"]}).limit(3))
+    # Get list of meals by relevent meal type
+    meals = list(mongo.db.recipe.find({"meal_type": recipe["meal_type"]}))
+    if (len(meals)) < 3:
+        similar_meals = random.sample(meals, len(meals))
+    else:
+        similar_meals = random.sample(meals, 3)
+    
 
     ratings = []
     if reviews:
@@ -360,8 +382,6 @@ def my_recipes(username):
             else:
                 avg_ratings.append(0)
                 review_count.append(0)
-
-        print(avg_ratings)
 
         return render_template(
             "my_recipes.html", username=username, 
