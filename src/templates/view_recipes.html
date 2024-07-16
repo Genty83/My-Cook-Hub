@@ -4,8 +4,16 @@
 
 {% block content %}
 
-<section class="padding-lg">
+<section class="flex-col gap-lg padding-lg">
     <h2>View Recipes</h2>
+
+    <div class="flex-col gap-sm">
+        <div class="flex-row gap-sm">
+            <a href="" class="tab-btn tab-active">All Recipes</a>
+            <a href="" class="tab-btn tab-inactive">A - Z</a>
+        </div>
+        <div class="h_seperator"></div>
+    </div>
 
     <div class="view-recipe-content padding-lg gap-md">
         {% if recipes|length > 0 %}
