@@ -269,6 +269,28 @@ strong {
     background-color: var(--light-two-clr);
 }
 
+.tab-btn {
+    min-height: 40px;
+    padding: 0 1rem;
+    text-wrap: nowrap;
+    font-size: 0.9rem;
+    font-weight: 400;
+    display: grid;
+    place-items: center;
+}
+.tab-active {
+    background-color: var(--blue-one-clr);
+    color: var(--light-three-clr);
+}
+.tab-inactive {
+    background-color: var(--light-four-clr);
+    color: var(--dark-one-clr);
+    transition: var(--base-transition);
+}
+.tab-inactive:hover {
+    background-color: var(--light-two-clr);
+}
+
 /* Button sizes */
 .btn-sm {
     height: 30px;
