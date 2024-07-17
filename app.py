@@ -2,13 +2,17 @@
 
 import os
 import random
+from statistics import mean
+from datetime import date
 from src import app, mongo
 from flask import render_template, redirect, request, session, flash, url_for
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import date
-from statistics import mean
 
+
+# Constants
+RECIPE_DB = mongo.db.recipe
+ACCOUNT_DB = mongo.db.account
 
 
 # Landing page
@@ -16,9 +20,8 @@ from statistics import mean
 def home():
     """ Re-routes to the home page  """
 
-    # Variables
-    recipes = list(mongo.db.recipe.find())
-    most_recent = list(mongo.db.recipe.find().sort('_id',-1).limit(2))
+    recipes = list(RECIPE_DB.find())
+    most_recent = list(RECIPE_DB.find().sort('_id',-1).limit(2))
     featured = random.sample(recipes, 1)
 
     if len(recipes) < 4:
@@ -26,92 +29,13 @@ def home():
     else:
         more_recipes = random.sample(recipes, 4)
 
-    
-
     return render_template(
         "home.html", more_recipes=more_recipes, most_recent=most_recent,
         featured=featured
         )
 
 
-# Account page 
-@app.route("/account", methods=["GET", "POST"])
-def account():
-    """
-    Shows the create account page and form for creating a user account
-    """
-
-    if request.method == "POST":
-
-        user = {"username": request.form.get("username").lower()}
-
-        # check if username already exists in database
-        existing_user = mongo.db.account.find_one(user)
-        if existing_user:
-            flash("Username already exists", "error")
-            return redirect(url_for("account"))
-
-        # Create new user
-        new_user = {
-            "first_name": request.form.get("fname").lower(),
-            "last_name": request.form.get("lname").lower(),
-            "username": request.form.get("username").lower(),
-            "date_of_birth": request.form.get("dob").lower(),
-            "email": request.form.get("email").lower(),
-            "password": generate_password_hash(request.form.get("password")),
-            "my_recipes": []
-        }
-        mongo.db.account.insert_one(new_user)
-
-        # put the new_user into 'session' cookie
-        session["user"] = request.form.get("username").lower()
-        flash("Account Creation Successful", "success")
-
-
-    return render_template("account.html")
-
-
-# Sign in page 
-@app.route("/sign_in", methods=["GET", "POST"])
-def sign_in():
-    """
-    Shows the sign-in form and
-    functionality to sign the user in.
-    """
-    if request.method == "POST":
-        # check if username already exists in database
-        existing_user = mongo.db.account.find_one(
-            {"username": request.form.get("username").lower()})
-
-        if existing_user:
-            # ensure hashed password matches user input
-            if check_password_hash(
-                    existing_user["password"], request.form.get("password")):
-                session["user"] = request.form.get("username").lower()
-                flash(f"Welcome, {request.form.get("username")}", "success")
-            else:
-                # invalid password match
-                flash("Incorrect Username and/or Password", "error")
-                return redirect(url_for("sign_in"))
-        else:
-            # username doesn't exist
-            flash("Incorrect Username and/or Password", "error")
-            return redirect(url_for("sign_in"))
-
-    return render_template("sign_in.html")
-
-
-@app.route("/sign_out")
-def sign_out():
-    """
-    Sign-out function - signs the user out.
-    """
-    # remove user from session cookies
-    flash("You have been logged out", "info")
-    session.pop("user")
-    return redirect(url_for("sign_in"))
-
-
+# Create recipe page
 @app.route("/create_recipe", methods=["GET", "POST"])
 def create_recipe():
     
@@ -122,16 +46,20 @@ def create_recipe():
     if request.method == "POST":
 
         ingredients_lst = []
+        steps_lst = []
+        recipe_img = {}
+
+        # Add ingredients to list
         for ingredient in request.form.getlist("ingredients[]"):
             if not ingredient.startswith("\r\n"):
                 ingredients_lst.append(ingredient)
 
-        steps_lst = []
+        # Add steps to step list
         for step in request.form.getlist("step_desc[]"):
             if not step.startswith("\r\n"):
                 steps_lst.append(step)
 
-        recipe_img = {}
+        # Add image and alt text to image dict
         if request.form.get("recipe_img") == "":
             recipe_img = {
                 "src": "",
@@ -159,7 +87,8 @@ def create_recipe():
             "reviews": []
         }
         # Add recipe to db
-        mongo.db.recipe.insert_one(new_recipe)
+        RECIPE_DB.insert_one(new_recipe)
+
         flash("Recipe Successfully Added", "success")
         return redirect(url_for("create_recipe"))
 
@@ -172,32 +101,35 @@ def edit_recipe(recipe_id):
     """
     Function to allow the user to edit the selected recipe.
     """
-
+    recipe_id = recipe_id
     recipe = mongo.db.recipe.find_one({"_id": ObjectId(recipe_id)})
+    ingredients_lst = []
+    steps_lst = []
+    recipe_img = {}
+
+    # Add ingredients to list
+    for ingredient in request.form.getlist("ingredients[]"):
+        if not ingredient == "":
+            ingredients_lst.append(ingredient)
+
+    # Add steps to step list
+    for step in request.form.getlist("step_desc[]"):
+        if not step == "":
+            steps_lst.append(step)
+
+    # Add image and alt text to image dict
+    if request.form.get("recipe_img") == "":
+        recipe_img = {
+            "src": "",
+            "alt": ""
+        }
+    else:
+        recipe_img = {
+            "src": request.form.get("recipe_img"),
+            "alt": f"Image of {request.form.get("recipe_name")} recipe."
+        }
 
     if request.method == "POST":
-
-        ingredients_lst = []
-        for ingredient in recipe["ingredients"]:
-            if not ingredient == "":
-                ingredients_lst.append(ingredient)
-
-        steps_lst = []
-        for step in recipe["method"]:
-            if not step == "":
-                steps_lst.append(step)
-
-        recipe_img = {}
-        if request.form.get("recipe_img") == "":
-            recipe_img = {
-                "src": "",
-                "alt": ""
-            }
-        else:
-            recipe_img = {
-                "src": request.form.get("recipe_img"),
-                "alt": f"Image of {request.form.get("recipe_name")} recipe."
-            }
 
         # Edited dictionary
         edited_recipe = {
@@ -214,7 +146,7 @@ def edit_recipe(recipe_id):
             "recipe_img": recipe_img
         }
         # Update recipe
-        mongo.db.recipe.update_one(
+        RECIPE_DB.update_one(
             {"_id": ObjectId(recipe_id)}, {'$set': edited_recipe})
         flash("Recipe Successfully Updated", "success")
         
@@ -226,10 +158,11 @@ def view_recipes():
     """ 
     View recipes page. Shows all available recipe cards
     """
-
-    # Variables
-    recipes = list(mongo.db.recipe.find())
+    
+    recipes = list(RECIPE_DB.find())
     user_session = session.get("user")
+    saved_recipes = ACCOUNT_DB.find_one(
+        {"username": user_session}).get('my_recipes', [])
     reviews = []
     avg_ratings = []
     review_count = []
@@ -241,7 +174,7 @@ def view_recipes():
             lst.append(index.get("rating"))
         reviews.append(lst)
 
-    
+
     # Loop through reviews and add values
     #  to avg_ratings list & review_count list
     for review in reviews:
@@ -252,18 +185,23 @@ def view_recipes():
             avg_ratings.append(0)
             review_count.append(0)
 
+    
     if not user_session is None:
-        saved_recipes = mongo.db.account.find_one(
-            {"username": user_session}).get('my_recipes', [])
+        my_recipes = saved_recipes
     else:
-        saved_recipes = []
-           
+        my_recipes = []
 
+    # Create a dictionary of all required template variables
+    template_vars_dct = {
+        "recipes": recipes,
+        "saved_recipes": my_recipes,
+        "avg_ratings": avg_ratings,
+        "review_count": review_count,
+        "current_page": url_for('view_recipes')
+    }
+    
     return render_template(
-            "view_recipes.html", recipes=recipes,
-            saved_recipes=saved_recipes, avg_ratings=avg_ratings,
-            review_count=review_count,current_page=url_for('view_recipes')
-            ) 
+        "view_recipes.html", **template_vars_dct)
 
 
 @app.route("/recipe/<recipe_id>")
@@ -271,25 +209,25 @@ def recipe(recipe_id):
     """
     Recipe view: Shows the full recipe
     """ 
-
+    recipe_id = recipe_id
     user_session = session.get("user")
-    recipe = mongo.db.recipe.find_one({"_id": ObjectId(recipe_id)})
-    reviews = list(mongo.db.recipe.find_one(
+    recipe = RECIPE_DB.find_one({"_id": ObjectId(recipe_id)})
+    reviews = list(RECIPE_DB.find_one(
         {"_id": ObjectId(recipe_id)}).get('reviews'))
+    ratings = []
 
     # Get list of meals related to recipe name
     related_recipes = list(
-        mongo.db.recipe.find({"$text": {"$search": recipe["recipe_name"]}}))
+        RECIPE_DB.find({"$text": {"$search": recipe["recipe_name"]}}))
 
     # Get list of meals by relevent meal type
-    meals = list(mongo.db.recipe.find({"meal_type": recipe["meal_type"]}))
+    meals = list(RECIPE_DB.find({"meal_type": recipe["meal_type"]}))
     if (len(meals)) < 3:
         similar_meals = random.sample(meals, len(meals))
     else:
         similar_meals = random.sample(meals, 3)
-    
 
-    ratings = []
+    
     if reviews:
         for dct in reviews:
             ratings.append(dct["rating"])
@@ -300,20 +238,25 @@ def recipe(recipe_id):
     total_reviews = len(ratings)
 
     if not user_session is None:
-        saved_recipes = mongo.db.account.find_one(
+        saved_recipes = ACCOUNT_DB.find_one(
             {"username": session["user"]}).get('my_recipes', [])
     else:
         saved_recipes = []
 
-    return  render_template(
-        "recipe.html", recipe=recipe,
-        recipe_id=recipe_id, avg_rating=avg_rating, 
-        total_reviews=total_reviews, 
-        saved_recipes=saved_recipes, 
-        current_page=url_for('view_recipes', recipe=recipe_id),
-        related_recipes=related_recipes, similar_meals=similar_meals,
-        reviews=reviews
-        )
+    # Create a dictionary of all required template variables
+    recipe_vars_dict = {
+    "recipe": recipe,
+    "recipe_id": recipe_id,
+    "avg_rating": avg_rating,
+    "total_reviews": total_reviews,
+    "saved_recipes": saved_recipes,
+    "current_page": url_for('view_recipes', recipe=recipe_id),
+    "related_recipes": related_recipes,
+    "similar_meals": similar_meals,
+    "reviews": reviews
+    }
+
+    return  render_template("recipe.html", **recipe_vars_dict)
 
 
 @app.route("/save_recipe/<recipe_id>", methods=["GET", "POST"])
@@ -346,22 +289,20 @@ def remove_recipe(recipe_id):
     return redirect(request.args.get('current_page'))
 
 
-@app.route("/my_recipes/<username>", methods=["GET", "POST"])
-def my_recipes(username):
-    """
-    
-    """
-    user = session["user"]
-    # grab the session user's username from the database
-    username = mongo.db.account.find_one({"username": user})["username"]
-    saved_recipes = mongo.db.account.find_one(
-        {"username": user}).get('my_recipes', [])
-    
-    saved_recipe_ids = [ObjectId(x) for x in saved_recipes]
-    my_recipes = list(mongo.db.recipe.find({'_id': {'$in': saved_recipe_ids}}))
+@app.route("/my_recipes", methods=["GET", "POST"])
+def my_recipes():
+    """ """
+    if session["user"]:
+        user = session["user"]
+        # grab the session user's username from the database
+        username = ACCOUNT_DB.find_one({"username": user})["username"]
+        saved_recipes = ACCOUNT_DB.find_one(
+            {"username": user}).get('my_recipes', [])
+        
+        saved_recipe_ids = [ObjectId(x) for x in saved_recipes]
+        my_recipes = list(RECIPE_DB.find({'_id': {'$in': saved_recipe_ids}}))
 
-    if user:
-        recipes = list(mongo.db.recipes.find())
+        recipes = list(RECIPE_DB.find())
         reviews = []
         avg_ratings = []
         review_count = []
@@ -374,7 +315,7 @@ def my_recipes(username):
             reviews.append(lst)
         
         # Loop through reviews and add values
-        #  to avg_ratings list & review_count list
+        # to avg_ratings list & review_count list
         for review in reviews:
             if review:
                 avg_ratings.append(round(mean(review) * 2) / 2)
@@ -383,12 +324,17 @@ def my_recipes(username):
                 avg_ratings.append(0)
                 review_count.append(0)
 
-        return render_template(
-            "my_recipes.html", username=username, 
-            recipes=recipes, my_recipes=my_recipes,
-            saved_recipes=saved_recipes, avg_ratings=avg_ratings,
-            review_count=review_count
-            )
+        # Create a dictionary of all required template variables
+        template_vars_dict = {
+            "username": username, 
+            "recipes": recipes, 
+            "my_recipes": my_recipes,
+            "saved_recipes": saved_recipes, 
+            "avg_ratings": avg_ratings,
+            "review_count": review_count
+        }
+
+        return render_template("my_recipes.html", **template_vars_dict)
 
     return redirect(url_for("sign_in"))
 
@@ -406,9 +352,7 @@ def search(recipe_id):
     if not recipes:
         
         flash("No Recipe Found!!", "warning")
-        return render_template("recipe.html",recipe_id=recipe_id,
-        recipe=recipe, recipes=recipes
-    )
+        return redirect(url_for("recipe", recipe_id=recipe_id))
 
     return render_template("recipe.html",recipe_id=recipe_id,
         recipe=recipe, recipes=recipes
@@ -421,27 +365,98 @@ def review(recipe_id):
     Function allows the user topost a review on the displayed recipe.
     """
 
-    recipe = mongo.db.recipe.find_one({"_id": ObjectId(recipe_id)})
-
     if request.method == "POST":
-
+        
         review = {
             "review_desc": request.form.get("review_desc"),
             "rating": float(request.form.get("rating")),
             "created_by": session["user"]
         }
 
-        mongo.db.recipe.update_one(
+        RECIPE_DB.update_one(
             {"_id": ObjectId(recipe_id)},
             {"$addToSet": {"reviews": review}}
         )
         flash("Review Successfully Added!!", "success")
 
+    return redirect(url_for("recipe", recipe_id=recipe_id))
 
-    return render_template(
-        "recipe.html", recipe_id=recipe_id, recipe=recipe
-        )
-    
+
+# Account page 
+@app.route("/account", methods=["GET", "POST"])
+def account():
+    """
+    Shows the create account page and form for creating a user account
+    """
+
+    if request.method == "POST":
+
+        user = {"username": request.form.get("username").lower()}
+        existing_user = ACCOUNT_DB.find_one(user)
+
+        if account.existing_user:
+            flash("Username already exists", "error")
+            return redirect(url_for("account"))
+
+        new_user = {
+            "first_name": request.form.get("fname").lower(),
+            "last_name": request.form.get("lname").lower(),
+            "username": request.form.get("username").lower(),
+            "date_of_birth": request.form.get("dob").lower(),
+            "email": request.form.get("email").lower(),
+            "password": generate_password_hash(request.form.get("password")),
+            "my_recipes": [],
+            "subscribed": False
+        }
+
+        ACCOUNT_DB.insert_one(new_user)
+        flash("Account Creation Successful", "success")
+
+    return render_template("account.html")
+
+
+# Sign in page 
+@app.route("/sign_in", methods=["GET", "POST"])
+def sign_in():
+    """
+    Shows the sign-in form and
+    functionality to sign the user in.
+    """
+    if request.method == "POST":
+        # check if username already exists in database
+        existing_user = mongo.db.account.find_one(
+            {"username": request.form.get("username").lower()})
+
+        if existing_user:
+            # ensure hashed password matches user input
+            if check_password_hash(
+                    existing_user["password"], request.form.get("password")):
+                session["user"] = request.form.get("username").lower()
+                flash(f"Welcome, {request.form.get("username")}", "success")
+                return redirect("/")
+            else:
+                # invalid password match
+                flash("Incorrect Username and/or Password", "error")
+                return redirect(url_for("sign_in"))
+        else:
+            # username doesn't exist
+            flash("Incorrect Username and/or Password", "error")
+            return redirect(url_for("sign_in"))
+            
+
+    return render_template("sign_in.html")
+
+
+@app.route("/sign_out")
+def sign_out():
+    """
+    Sign-out function - signs the user out.
+    """
+    # remove user from session cookies
+    flash(f"You have been logged out {session["user"]}", "info")
+    session.pop("user")
+    return redirect(url_for("sign_in"))
+
 
 if __name__ == "__main__":
     app.run(
