@@ -34,11 +34,19 @@
                 {% endif %}
             </ul>
             <div class="nav-btns-wrapper">
-                <a class="btn std-btn btn-md" href="{{ url_for('account') }}"><i class="fa-solid fa-user-plus"></i>Create Account</a>
+                {% if not session.user %}
+                    <a class="btn std-btn btn-md" href="{{ url_for('account') }}">
+                        <i class="fa-solid fa-user-plus"></i>Create Account
+                    </a>
+                {% endif %}
                 {% if session.user %}
-                    <a class="btn std-btn btn-md" href="{{ url_for('sign_out') }}"><i class="fa-solid fa-user"></i>Sign Out</a>
+                    <a class="btn std-btn btn-md" href="{{ url_for('sign_out') }}">
+                        <i class="fa-solid fa-user"></i>Sign Out
+                    </a>
                 {% else %}
-                    <a class="btn std-btn btn-md" href="{{ url_for('sign_in') }}"><i class="fa-solid fa-user"></i>Sign In</a>
+                    <a class="btn std-btn btn-md" href="{{ url_for('sign_in') }}">
+                        <i class="fa-solid fa-user"></i>Sign In
+                    </a>
                 {% endif %}
             </div>
           </nav>
@@ -46,9 +54,11 @@
             <a id="side-menu-btn" class="icon-btn tooltip" href="#" tooltip-text="Sign In">
                 <i class="fa-solid fa-user"></i>
             </a>
-            <a id="side-menu-btn" class="icon-btn tooltip" href="#" tooltip-text="Create Account">
-                <i class="fa-solid fa-user-plus"></i>
-            </a>
+            {% if not session.user %}
+                <a id="side-menu-btn" class="icon-btn tooltip" href="#" tooltip-text="Create Account">
+                    <i class="fa-solid fa-user-plus"></i>
+                </a>
+            {% endif %}
             <a id="side-menu-btn" class="icon-btn tooltip" href="#" tooltip-text="Open Side Menu">
                 <i class="fa-solid fa-bars"></i>
             </a>
