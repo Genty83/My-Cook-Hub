@@ -29,3 +29,14 @@ function toggleReviewsBoard() {
         reviewsBoard.style.display = 'none';
     }
 }
+
+/** Function to toggle reviews board */
+function toggleAlertWindow() {
+    var alertWin = document.querySelector(".alert-window");
+
+    if (alertWin.getBoundingClientRect().height == 0) {
+        alertWin.style.display = 'flex';
+    } else {
+        alertWin.style.display = 'none';
+    }
+}
