@@ -231,6 +231,7 @@ strong {
     color: var(--light-two-clr);
     border-radius: 100vh;
     transition: var(--base-transition);
+    background-color: transparent;
 }
 .social-media-btn:hover {
     border: 2px solid var(--blue-one-clr);
@@ -419,7 +420,7 @@ strong {
     font-weight: 500;
 }
 
-/* ##### CARD LARGE STYLING  ##### */
+/* ##### CARD SMALL STYLING  ##### */
 .card-small {
     width: 100%;
     background-color: var(--light-four-clr);
@@ -440,6 +441,37 @@ strong {
 .link-underline:hover {
     text-decoration: underline;
     color: var(--blue-one-clr);
+}
+
+/* ###### PAGINATION BUTTONS ###### */
+.pagination-btn {
+    min-width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background-color: var(--light-four-clr);
+    color: var(--dark-one-clr);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid #fff;
+    transition: var(--base-transition);
+    padding: 0 0.3rem;
+}
+.pagination-btn:hover {
+    background-color: var(--light-two-clr);
+}
+
+/* ###### ALERT WINDOW ###### */
+.alert-window {
+    width: 280px;
+    background-color: var(--light-three-clr);
+    border-radius: var(--base-radius);
+    box-shadow: 2px 2px 7px var(--light-two-clr);
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+    z-index: 8000;
+    display: none;
 }
 
 /* ###### BANNER SECTION ###### */
@@ -644,6 +676,24 @@ strong {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     justify-content: center;
+}
+
+/* ###### GET STARTED PAGE ###### */
+
+.get-started-top-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    justify-content: center;
+}
+
+.tile-dark {
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(to bottom right, var(--blue-one-clr) 40%, var(--blue-two-clr));
+    border-radius: var(--base-radius);
+    box-shadow: 3px 3px 6px var(--light-four-clr);
+    display: grid;
+    place-items: center;
 }
 
 
