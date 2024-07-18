@@ -36,13 +36,23 @@ def home():
 
 
 # Create recipe page
-@app.route("/create_recipe", methods=["GET", "POST"])
+@app.route("/get_started", methods=["GET","POST"])
+def get_started():
+    
+    """ """
+
+    return render_template("get_started.html")
+
+
+# Create recipe page
+@app.route("/create_recipe", methods=["GET","POST"])
 def create_recipe():
     
     """
     Create recipe view:
     Displays the user form for creating a new recipe.
     """
+
     if request.method == "POST":
 
         ingredients_lst = []
@@ -84,7 +94,8 @@ def create_recipe():
             "created_by": session["user"],
             "date": date.today().strftime("%d/%m/%Y"),
             "recipe_img": recipe_img,
-            "reviews": []
+            "reviews": [],
+            "recipe_index": len(list(RECIPE_DB.find())) + 1
         }
         # Add recipe to db
         RECIPE_DB.insert_one(new_recipe)
@@ -95,7 +106,7 @@ def create_recipe():
     return render_template("create_recipe.html")
 
 
-@app.route("/edit_recipe/<recipe_id>", methods=["GET", "POST"])
+@app.route("/edit_recipe/<recipe_id>", methods=["GET","POST"])
 def edit_recipe(recipe_id):
     
     """
@@ -153,19 +164,42 @@ def edit_recipe(recipe_id):
     return render_template("edit_recipe.html", recipe=recipe)
 
 
-@app.route("/view_recipes", methods=["GET", "POST"])
+@app.route("/view_recipes", methods=["GET","POST"])
 def view_recipes():
     """ 
     View recipes page. Shows all available recipe cards
     """
-    
-    recipes = list(RECIPE_DB.find())
-    user_session = session.get("user")
-    saved_recipes = ACCOUNT_DB.find_one(
-        {"username": user_session}).get('my_recipes', [])
+
+    if request.method == "POST":
+        page_size = 4
+        page_num = int(request.form.get("page"))
+    else:
+        page_size = 4
+        page_num  = 1
+
+    recipes = list(
+        RECIPE_DB.aggregate([
+                {'$match': {}}, 
+                {'$skip':  page_size * (page_num - 1)}, 
+                {'$limit':  page_size}
+            ])
+        )
+
+    total_records = len(list(RECIPE_DB.find()))
+    total_pages = round(total_records / page_size)
     reviews = []
     avg_ratings = []
     review_count = []
+    filtered_recipes = []
+
+    user_session = session.get("user")
+
+    if not user_session is None:
+        saved_recipes = ACCOUNT_DB.find_one(
+            {"username": user_session}).get('my_recipes', [])
+    else:
+        saved_recipes = []
+    
 
     # Loop through recipes and add lists of ratings to reviews list
     for index, value in enumerate(recipes):
@@ -192,16 +226,19 @@ def view_recipes():
         my_recipes = []
 
     # Create a dictionary of all required template variables
-    template_vars_dct = {
+    template_variables = {
         "recipes": recipes,
         "saved_recipes": my_recipes,
         "avg_ratings": avg_ratings,
         "review_count": review_count,
-        "current_page": url_for('view_recipes')
+        "current_page": url_for('view_recipes'),
+        "limit": page_size,
+        "total_records": total_records,
+        "total_pages": total_pages
     }
     
     return render_template(
-        "view_recipes.html", **template_vars_dct)
+        "view_recipes.html", **template_variables)
 
 
 @app.route("/recipe/<recipe_id>")
@@ -209,6 +246,7 @@ def recipe(recipe_id):
     """
     Recipe view: Shows the full recipe
     """ 
+
     recipe_id = recipe_id
     user_session = session.get("user")
     recipe = RECIPE_DB.find_one({"_id": ObjectId(recipe_id)})
@@ -244,7 +282,7 @@ def recipe(recipe_id):
         saved_recipes = []
 
     # Create a dictionary of all required template variables
-    recipe_vars_dict = {
+    template_variables = {
     "recipe": recipe,
     "recipe_id": recipe_id,
     "avg_rating": avg_rating,
@@ -256,7 +294,7 @@ def recipe(recipe_id):
     "reviews": reviews
     }
 
-    return  render_template("recipe.html", **recipe_vars_dict)
+    return  render_template("recipe.html", **template_variables)
 
 
 @app.route("/save_recipe/<recipe_id>", methods=["GET", "POST"])
@@ -274,24 +312,39 @@ def save_recipe(recipe_id):
     return redirect(request.args.get('current_page'))
 
 
-@app.route("/remove_recipe/<recipe_id>", methods=["GET", "POST"])
+@app.route("/remove_recipe/<recipe_id>", methods=["GET","POST"])
 def remove_recipe(recipe_id):
     """
     Removes the recipe from the users recipe list. 
     """
+    
     if request.method == "POST":
-        mongo.db.account.update_one(
+        ACCOUNT_DB.update_one(
             {"username": session["user"]},
             {"$pull": {"my_recipes": recipe_id}}
         )
         flash("Recipe Successfully Removed From Your Recipes!!", "info")
 
-    return redirect(request.args.get('current_page'))
+    return redirect("view_recipes")
 
 
-@app.route("/my_recipes", methods=["GET", "POST"])
+@app.route("/delete_recipe/<recipe_id>", methods=["GET","POST"])
+def delete_recipe(recipe_id):
+    """
+    Deletes the recipe from the database. 
+    """
+    
+    if request.method == "POST":
+        RECIPE_DB.delete_one({"_id": ObjectId(recipe_id)})
+        flash("The recipe was successfully deleted!!", "info")
+
+    return redirect(url_for("view_recipes"))
+
+
+@app.route("/my_recipes", methods=["GET","POST"])
 def my_recipes():
-    """ """
+    """ Shows the users saved recipes """
+
     if session["user"]:
         user = session["user"]
         # grab the session user's username from the database
@@ -325,7 +378,7 @@ def my_recipes():
                 review_count.append(0)
 
         # Create a dictionary of all required template variables
-        template_vars_dict = {
+        template_variables = {
             "username": username, 
             "recipes": recipes, 
             "my_recipes": my_recipes,
@@ -334,7 +387,7 @@ def my_recipes():
             "review_count": review_count
         }
 
-        return render_template("my_recipes.html", **template_vars_dict)
+        return render_template("my_recipes.html", **template_variables)
 
     return redirect(url_for("sign_in"))
 
@@ -346,8 +399,8 @@ def search(recipe_id):
     in the name of the recipe.
     """
     search = request.form.get("search")
-    recipes = list(mongo.db.recipe.find({"$text": {"$search": search}}))
-    recipe = mongo.db.recipe.find_one({"_id": ObjectId(recipe_id)})
+    recipes = list(RECIPE_DB.find({"$text": {"$search": search}}))
+    recipe = RECIPE_DB.find_one({"_id": ObjectId(recipe_id)})
 
     if not recipes:
         
@@ -455,6 +508,7 @@ def sign_out():
     # remove user from session cookies
     flash(f"You have been logged out {session["user"]}", "info")
     session.pop("user")
+
     return redirect(url_for("sign_in"))
 
 
