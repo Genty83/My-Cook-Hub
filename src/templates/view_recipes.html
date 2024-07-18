@@ -4,6 +4,7 @@
 
 {% block content %}
 
+
 <section class="flex-col gap-lg padding-lg">
     <h2>View Recipes</h2>
 
@@ -14,6 +15,21 @@
         </div>
         <div class="h_seperator"></div>
     </div>
+
+    <div class="flex-row gap-sm flex-center-align">
+        <p>
+            Showing <strong>{{ limit }}</strong> of <strong>{{ total_records }}</strong> Recipes
+        </p>
+    </div>
+
+    <form class="flex-row" action="{{ url_for('view_recipes') }}" method="post">
+        <input class="pagination-btn" name="page" type="submit" value="<">
+        {% for x in range(total_pages) %}
+            <input class="pagination-btn" name="page" type="submit" value="{{ x + 1 }}">
+        {% endfor %}
+        <input class="pagination-btn" name="page" type="submit" value=">">
+
+    </form>
 
     <div class="view-recipe-content padding-lg gap-md">
         {% if recipes|length > 0 %}
