@@ -34,16 +34,41 @@ class Pagination:
         # Convert property into an integer
         self.page = int(self.page)
 
-
+        # Set skip and limit
+        self._skip = int(self.page_size) * (int(self.page) - 1)
+        self._limit = int(self.page_size)
 
 
     def get_data(self):
         """ Returns a list of the paginated records """
 
-        return list(self._database.aggregate([
+        data = list(self._database.aggregate([
                 {'$match': {}}, 
-                {'$skip':  int(self.page_size) * (int(self.page) - 1)}, 
-                {'$limit': int(self.page_size)}
+                {'$skip':  self._skip}, 
+                {'$limit': self._limit}
             ]))
+
+        self.records = len(data)
+        self.start_index = 1 + self._skip
+        self.end_index = self.records + self._skip
+
+        return data
+
+
+    def get_recipes(self, starts_with):
+        """ Returns a list of the paginated records """
+
+        data = list(
+        self._database.find(
+            {"recipe_name": {"$regex": f"^{starts_with}"}}
+            ).skip(self._skip).limit(self._limit))
+
+        self.total_records = len(data)
+        self.total_pages = math.ceil(self.total_records / int(self.page_size))
+
+        self.start_index = 1 + self._skip
+        self.end_index = self.total_records + self._skip
+
+        return data
 
 
