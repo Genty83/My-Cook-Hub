@@ -459,6 +459,10 @@ strong {
 .pagination-btn:hover {
     background-color: var(--light-two-clr);
 }
+.pagination-active {
+    background-color: var(--blue-one-clr);
+    color: var(--light-three-clr);
+}
 
 /* ###### ALERT WINDOW ###### */
 .alert-window {
@@ -956,6 +960,22 @@ strong {
     grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
     justify-content: center;
     justify-items: center;
+}
+
+.pagination {
+    justify-content: center;
+    align-items: center;
+}
+.pagination-select {
+    height: 35px;
+    width: 40px;
+    outline: none;
+    background-color: var(--light-four-clr);
+    border: none;
+    transition: var(--base-transition);
+}
+.pagination-select:hover {
+    background-color: var(--light-two-clr);
 }
 
 /* ###### MY RECIPES SECTION ###### */
