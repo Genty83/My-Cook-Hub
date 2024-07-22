@@ -178,9 +178,6 @@ def view_recipes():
     )   
     recipes = paginate.get_data()
 
-    start_index = recipes[0]["recipe_index"]
-    end_index = recipes[-1]["recipe_index"]
-
     reviews = []
     avg_ratings = []
     review_count = []
@@ -229,14 +226,84 @@ def view_recipes():
         "limit": paginate.page_size,
         "total_records": paginate.total_records,
         "total_pages": paginate.total_pages,
-        "start_index": start_index,
-        "end_index": end_index,
+        "start_index": paginate.start_index,
+        "end_index": paginate.end_index,
         "page_num": paginate.page,
         "page_size": paginate.page_size
     }
     
     return render_template(
         "view_recipes.html", **template_variables)
+
+
+@app.route("/az_recipes/<starts_with>", methods=["GET","POST"])
+def az_recipes(starts_with):
+
+
+    paginate = Pagination(RECIPE_DB,
+        request.form.get("page"),
+        request.form.get("records_select")
+    )   
+    recipes = paginate.get_recipes(starts_with)
+    uppercase_alphabet = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
+
+    reviews = []
+    avg_ratings = []
+    review_count = []
+    filtered_recipes = []
+
+    user_session = session.get("user")
+
+    if not user_session is None:
+        saved_recipes = ACCOUNT_DB.find_one(
+            {"username": user_session}).get('my_recipes', [])
+    else:
+        saved_recipes = []
+    
+
+    # Loop through recipes and add lists of ratings to reviews list
+    for index, value in enumerate(recipes):
+        lst = []
+        for index in value["reviews"]:
+            lst.append(index.get("rating"))
+        reviews.append(lst)
+
+
+    # Loop through reviews and add values
+    #  to avg_ratings list & review_count list
+    for review in reviews:
+        if review:
+            avg_ratings.append(round(mean(review) * 2) / 2)
+            review_count.append(len(review))
+        else:
+            avg_ratings.append(0)
+            review_count.append(0)
+
+    
+    if not user_session is None:
+        my_recipes = saved_recipes
+    else:
+        my_recipes = []
+
+    template_variables = {
+        "letters": uppercase_alphabet,
+        "recipes": recipes,
+        "saved_recipes": my_recipes,
+        "avg_ratings": avg_ratings,
+        "review_count": review_count,
+        "limit": paginate.page_size,
+        "total_records": paginate.total_records,
+        "total_pages": paginate.total_pages,
+        "start_index": paginate.start_index,
+        "end_index": paginate.end_index,
+        "page_num": paginate.page,
+        "page_size": paginate.page_size,
+        "current_letter": starts_with
+    }
+
+    print(starts_with)
+
+    return render_template("az_recipes.html", **template_variables)
 
 
 @app.route("/recipe/<recipe_id>")
