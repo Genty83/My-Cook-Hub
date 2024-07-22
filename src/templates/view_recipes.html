@@ -4,14 +4,15 @@
 
 {% block content %}
 
+{% set letter = "A" %}
 
-<section class="flex-col gap-lg padding-lg">
+<section class="flex-col gap-lg padding-horz-responsive">
     <h2>View Recipes</h2>
 
     <div class="flex-col gap-sm">
         <div class="flex-row gap-sm">
             <a href="" class="tab-btn tab-active">All Recipes</a>
-            <a href="" class="tab-btn tab-inactive">A - Z</a>
+            <a href="{{ url_for('az_recipes', starts_with=letter) }}" class="tab-btn tab-inactive">A - Z</a>
         </div>
         <div class="h_seperator"></div>
     </div>
