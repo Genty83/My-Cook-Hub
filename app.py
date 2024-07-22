@@ -8,6 +8,8 @@ from src import app, mongo
 from flask import render_template, redirect, request, session, flash, url_for
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
+import math
+from src.functions import Pagination
 
 
 # Constants
@@ -170,23 +172,15 @@ def view_recipes():
     View recipes page. Shows all available recipe cards
     """
 
-    if request.method == "POST":
-        page_size = 4
-        page_num = int(request.form.get("page"))
-    else:
-        page_size = 4
-        page_num  = 1
+    paginate = Pagination(RECIPE_DB,
+        request.form.get("page"),
+        request.form.get("records_select")
+    )   
+    recipes = paginate.get_data()
 
-    recipes = list(
-        RECIPE_DB.aggregate([
-                {'$match': {}}, 
-                {'$skip':  page_size * (page_num - 1)}, 
-                {'$limit':  page_size}
-            ])
-        )
+    start_index = recipes[0]["recipe_index"]
+    end_index = recipes[-1]["recipe_index"]
 
-    total_records = len(list(RECIPE_DB.find()))
-    total_pages = round(total_records / page_size)
     reviews = []
     avg_ratings = []
     review_count = []
@@ -232,9 +226,13 @@ def view_recipes():
         "avg_ratings": avg_ratings,
         "review_count": review_count,
         "current_page": url_for('view_recipes'),
-        "limit": page_size,
-        "total_records": total_records,
-        "total_pages": total_pages
+        "limit": paginate.page_size,
+        "total_records": paginate.total_records,
+        "total_pages": paginate.total_pages,
+        "start_index": start_index,
+        "end_index": end_index,
+        "page_num": paginate.page,
+        "page_size": paginate.page_size
     }
     
     return render_template(
