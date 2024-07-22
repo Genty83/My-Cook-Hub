@@ -1,0 +1,96 @@
+<!-- A TO Z RECIPES TEMPLATE -->
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<section class="flex-col gap-lg padding-horz-responsive">
+    <h2>A To Z Recipes</h2>
+
+    <div class="flex-col gap-sm">
+        <div class="flex-row gap-sm">
+            <a href="{{ url_for('view_recipes') }}" class="tab-btn tab-inactive">All Recipes</a>
+            <a href="" class="tab-btn tab-active">A - Z</a>
+        </div>
+        <div class="h_seperator"></div>
+    </div>
+
+    <div class="letter-search-wrapper">
+        {% for letter in letters %}
+            {% if letter == current_letter %}
+                <a href="{{ url_for('az_recipes', starts_with=letter) }}" class="letter-btn letter-btn-active">{{ letter }}</a>
+            {% else %}
+                <a href="{{ url_for('az_recipes', starts_with=letter) }}" class="letter-btn">{{ letter }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="flex-row gap-sm flex-center-align">
+        <p>
+            Showing <strong>{{ start_index }} - {{ end_index }}</strong> of <strong>{{ total_records }}</strong> Recipes
+        </p>
+    </div>
+
+    <div class="view-recipe-content padding-lg gap-md">
+        {% if recipes|length > 0 %}
+            {% for recipe in recipes %}
+                <div class="recipe-card">
+                    <img src="{{ recipe.recipe_img.src }}" alt="{{ recipe.recipe_img.alt }}">
+                    <div class="flex-col padding-md gap-md">
+                        <a href="{{ url_for('recipe', recipe_id=recipe._id) }}" class="card-title">{{ recipe.recipe_name }}</a>
+                        
+                        {% include "star_rating.html" %}
+
+                        <p> {{ review_count[loop.index0] }} Reviews</p>
+                    </div>
+                    {% if session.user %}
+                        {% if recipe._id|string in saved_recipes %}
+                            <form action="{{ url_for('remove_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
+                                method="POST">
+                                <button type="submit" class="card-btn card-delete-btn tooltip" tooltip-text="Remove Recipe" aria-label="Remove recipe">
+                                    <i class="fa-solid fa-eraser"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <form action="{{ url_for('save_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
+                                method="POST">
+                                <button type="submit" class="card-btn card-add-btn tooltip" tooltip-text="Save Recipe" aria-label="Save recipe">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>  
+            {% endfor %}
+        {% else %}
+            <h2>Sorry, There are no recipes available!!</h2>
+        {% endif %}
+    </div>
+
+    <form class="pagination flex-row" action="{{ url_for('az_recipes', starts_with=current_letter) }}" method="post">
+        <input class="pagination-btn" name="page" type="submit" value="<">
+        {% for x in range(total_pages) %}
+            {% if loop.index0 == page_num - 1 %}
+                <input class="pagination-btn pagination-active" name="page" type="submit" value="{{ x + 1 }}">
+            {% else %}
+                <input class="pagination-btn" name="page" type="submit" value="{{ x + 1 }}">
+            {% endif %}
+        {% endfor %}
+        <input class="pagination-btn" name="page" type="submit" value=">">
+        <div class="flex-row gap-md flex-center-align padding-md">
+            <p>Showing</p>
+            <select class="pagination-select" name="records_select" id="records_select" onchange="this.form.submit()">
+                <option value="{{ page_size }}" selected>{{ page_size }}</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+            <p>Records</p>
+        </div>
+    </form>
+
+</section>
+
+{% endblock %}
