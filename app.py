@@ -9,7 +9,12 @@ from flask import render_template, redirect, request, session, flash, url_for
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 import math
-from src.functions import Pagination
+from src.models import RecipesModel
+
+
+
+
+
 
 
 # Constants
@@ -172,11 +177,11 @@ def view_recipes():
     View recipes page. Shows all available recipe cards
     """
 
-    paginate = Pagination(RECIPE_DB,
-        request.form.get("page"),
-        request.form.get("records_select")
-    )   
-    recipes = paginate.get_data()
+    paginate = RecipesModel()
+    recipes = paginate.fetch_records(
+        request.form.get("records_select"),
+        request.form.get("page")
+    )
 
     reviews = []
     avg_ratings = []
@@ -223,13 +228,13 @@ def view_recipes():
         "avg_ratings": avg_ratings,
         "review_count": review_count,
         "current_page": url_for('view_recipes'),
-        "limit": paginate.page_size,
+        "limit": paginate.limit,
         "total_records": paginate.total_records,
         "total_pages": paginate.total_pages,
         "start_index": paginate.start_index,
         "end_index": paginate.end_index,
-        "page_num": paginate.page,
-        "page_size": paginate.page_size
+        "page_num": paginate.page_number,
+        "page_size": paginate.limit
     }
     
     return render_template(
@@ -240,11 +245,12 @@ def view_recipes():
 def az_recipes(starts_with):
 
 
-    paginate = Pagination(RECIPE_DB,
-        request.form.get("page"),
-        request.form.get("records_select")
-    )   
-    recipes = paginate.get_recipes(starts_with)
+    recipe_model = RecipesModel()  
+    recipes = recipe_model.fetch_records_that_start_with(
+        starts_with,
+        request.form.get("records_select"),
+        request.form.get("page")
+    )
     uppercase_alphabet = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
 
     reviews = []
@@ -291,17 +297,15 @@ def az_recipes(starts_with):
         "saved_recipes": my_recipes,
         "avg_ratings": avg_ratings,
         "review_count": review_count,
-        "limit": paginate.page_size,
-        "total_records": paginate.total_records,
-        "total_pages": paginate.total_pages,
-        "start_index": paginate.start_index,
-        "end_index": paginate.end_index,
-        "page_num": paginate.page,
-        "page_size": paginate.page_size,
+        "limit": recipe_model.limit,
+        "total_records": recipe_model.total_records,
+        "total_pages": recipe_model.total_pages,
+        "start_index": recipe_model.start_index,
+        "end_index": recipe_model.end_index,
+        "page_num": recipe_model.page_number,
+        "page_size": recipe_model.limit,
         "current_letter": starts_with
     }
-
-    print(starts_with)
 
     return render_template("az_recipes.html", **template_variables)
 
