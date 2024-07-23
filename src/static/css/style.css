@@ -22,6 +22,7 @@
     --base-red-hover: hsl(0, 78%, 36%);
     --base-green: hsl(137, 74%, 51%);
     --base-green-hover: hsl(137, 71%, 44%);
+    --btn-disabled-clr: hsl(240, 7%, 97%);
     /* Base properties */
     --base-transition: all 0.8s ease-out 0.2s;
     --base-radius: 10px;
@@ -965,6 +966,11 @@ strong {
 .pagination {
     justify-content: center;
     align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+.pagination-input-container {
+    display: flex;
 }
 .pagination-select {
     height: 35px;
@@ -976,6 +982,12 @@ strong {
 }
 .pagination-select:hover {
     background-color: var(--light-two-clr);
+}
+.btn-disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: var(--btn-disabled-clr);
+    color: var(--light-two-clr);
 }
 
 /* ###### A-Z RECIPES SECTION ###### */
@@ -1185,6 +1197,9 @@ strong {
     /* Footer middle wrapper */
     .footer-middle-wrapper {
         --footer-middle-grid-cols: 2;
+    }
+    .pagination {
+        flex-direction: row;
     }
 }
 
