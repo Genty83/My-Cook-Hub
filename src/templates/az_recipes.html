@@ -68,16 +68,28 @@
         {% endif %}
     </div>
 
-    <form class="pagination flex-row" action="{{ url_for('az_recipes', starts_with=current_letter) }}" method="post">
-        <input class="pagination-btn" name="page" type="submit" value="<">
-        {% for x in range(total_pages) %}
-            {% if loop.index0 == page_num - 1 %}
-                <input class="pagination-btn pagination-active" name="page" type="submit" value="{{ x + 1 }}">
+    <form class="pagination" action="{{ url_for('az_recipes', starts_with=current_letter) }}" method="post">
+        <div class="pagination-input-container">
+            {% if page_num <= 1 %}
+                <input class="pagination-btn btn-disabled" name="page" type="submit" value="<">
             {% else %}
-                <input class="pagination-btn" name="page" type="submit" value="{{ x + 1 }}">
+                <input class="pagination-btn" name="page" type="submit" value="<">
             {% endif %}
-        {% endfor %}
-        <input class="pagination-btn" name="page" type="submit" value=">">
+
+            {% for x in range(total_pages) %}
+                {% if loop.index0 == page_num - 1 %}
+                    <input class="pagination-btn pagination-active" name="page" type="submit" value="{{ x + 1 }}">
+                {% else %}
+                    <input class="pagination-btn" name="page" type="submit" value="{{ x + 1 }}">
+                {% endif %}
+            {% endfor %}
+            
+            {% if page_num == total_pages or total_pages == 0 %}
+                <input class="pagination-btn btn-disabled" name="page" type="submit" value=">">
+            {% else %}
+                <input class="pagination-btn" name="page" type="submit" value=">">
+            {% endif %}
+        </div>
         <div class="flex-row gap-md flex-center-align padding-md">
             <p>Showing</p>
             <select class="pagination-select" name="records_select" id="records_select" onchange="this.form.submit()">
