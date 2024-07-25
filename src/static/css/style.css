@@ -89,7 +89,6 @@ strong {
 .gap-md {
     gap: 0.5rem;
 }
-
 .gap-lg {
     gap: 1rem;
 }
@@ -98,7 +97,6 @@ strong {
 }
 
 /* ###### FONT SIZE CLASSES ###### */
-
 .font-xsm {
     font-size: 0.7rem;
 }
@@ -143,6 +141,11 @@ strong {
     width: 100%;
     height: 1px;
     background-color: var(--light-two-clr);
+}
+.footer-seperator {
+    width: 50%;
+    height: 1px;
+    background-color: var(--blue-one-clr);
 }
 
 /* ###### STAR RATING CLASSES ###### */
@@ -270,7 +273,7 @@ strong {
 .icon-btn:hover {
     background-color: var(--light-two-clr);
 }
-
+/* Tab button */
 .tab-btn {
     min-height: 40px;
     padding: 0 1rem;
@@ -297,7 +300,6 @@ strong {
 .btn-sm {
     height: 30px;
     padding: 0 0.5rem;
-    
 }
 .btn-md {
     height: 40px;
@@ -612,7 +614,6 @@ strong {
     justify-content: center;
     align-items: center;
 }
-
 .top-seperator {
     height: 1px;
     width: 100%;
@@ -778,7 +779,7 @@ strong {
     gap: 1rem;
 }
 
-/* UI ELEMENTS */
+/* ###### UI ELEMENTS ###### */
 
 /* Form Combo */
 .form-combo {
@@ -802,7 +803,6 @@ strong {
 .form-combo i {
     color: var(--blue-one-clr);
 }
-
 .form-combo select {
     width: 100%;
     height: 100%;
@@ -882,7 +882,7 @@ strong {
     color: var(--blue-one-clr);
 }
 
-
+/* ###### LINKS ###### */
 .footer-link {
     color: var(--light-two-clr);
     display: flex;
@@ -897,13 +897,6 @@ strong {
 }
 .footer-link i {
     color: var(--blue-one-clr);
-}
-
-/* Seperators */
-.footer-seperator {
-    width: 50%;
-    height: 1px;
-    background-color: var(--blue-one-clr);
 }
 
 /* Fieldset */
