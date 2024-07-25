@@ -9,12 +9,7 @@ from flask import render_template, redirect, request, session, flash, url_for
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 import math
-from src.models import RecipesModel
-
-
-
-
-
+from src.models import RecipesModel, UserAccountModel
 
 
 # Constants
@@ -28,7 +23,7 @@ def home():
     """ Re-routes to the home page  """
 
     recipes = list(RECIPE_DB.find())
-    most_recent = list(RECIPE_DB.find().sort('_id',-1).limit(2))
+    most_recent = list(RECIPE_DB.find().sort('_id', -1).limit(2))
     featured = random.sample(recipes, 1)
 
     if len(recipes) < 4:
@@ -42,7 +37,7 @@ def home():
         )
 
 
-# Create recipe page
+# Get Started page
 @app.route("/get_started", methods=["GET","POST"])
 def get_started():
     
@@ -177,64 +172,31 @@ def view_recipes():
     View recipes page. Shows all available recipe cards
     """
 
-    paginate = RecipesModel()
-    recipes = paginate.fetch_records(
+    # Create model
+    recipe_model = RecipesModel()
+    account_model = UserAccountModel(session.get("user"))
+
+    recipes = recipe_model.fetch_records(
         request.form.get("records_select"),
         request.form.get("page")
     )
+    account_model.get_saved_recipes()
 
-    reviews = []
-    avg_ratings = []
-    review_count = []
-    filtered_recipes = []
-
-    user_session = session.get("user")
-
-    if not user_session is None:
-        saved_recipes = ACCOUNT_DB.find_one(
-            {"username": user_session}).get('my_recipes', [])
-    else:
-        saved_recipes = []
-    
-
-    # Loop through recipes and add lists of ratings to reviews list
-    for index, value in enumerate(recipes):
-        lst = []
-        for index in value["reviews"]:
-            lst.append(index.get("rating"))
-        reviews.append(lst)
-
-
-    # Loop through reviews and add values
-    #  to avg_ratings list & review_count list
-    for review in reviews:
-        if review:
-            avg_ratings.append(round(mean(review) * 2) / 2)
-            review_count.append(len(review))
-        else:
-            avg_ratings.append(0)
-            review_count.append(0)
-
-    
-    if not user_session is None:
-        my_recipes = saved_recipes
-    else:
-        my_recipes = []
 
     # Create a dictionary of all required template variables
     template_variables = {
         "recipes": recipes,
-        "saved_recipes": my_recipes,
-        "avg_ratings": avg_ratings,
-        "review_count": review_count,
+        "saved_recipes": account_model.saved_recipes,
+        "avg_ratings": recipe_model.avg_ratings,
+        "review_count": recipe_model.review_count,
         "current_page": url_for('view_recipes'),
-        "limit": paginate.limit,
-        "total_records": paginate.total_records,
-        "total_pages": paginate.total_pages,
-        "start_index": paginate.start_index,
-        "end_index": paginate.end_index,
-        "page_num": paginate.page_number,
-        "page_size": paginate.limit
+        "limit": recipe_model.limit,
+        "total_records": recipe_model.total_records,
+        "total_pages": recipe_model.total_pages,
+        "start_index": recipe_model.start_index,
+        "end_index": recipe_model.end_index,
+        "page_num": recipe_model.page_number,
+        "page_size": recipe_model.limit
     }
     
     return render_template(
@@ -245,58 +207,26 @@ def view_recipes():
 def az_recipes(starts_with):
 
 
-    recipe_model = RecipesModel()  
+    # Create model
+    recipe_model = RecipesModel()
+    account_model = UserAccountModel(session.get("user"))
+
+
     recipes = recipe_model.fetch_records_that_start_with(
         starts_with,
         request.form.get("records_select"),
         request.form.get("page")
     )
+    account_model.get_saved_recipes()
     uppercase_alphabet = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
 
-    reviews = []
-    avg_ratings = []
-    review_count = []
-    filtered_recipes = []
-
-    user_session = session.get("user")
-
-    if not user_session is None:
-        saved_recipes = ACCOUNT_DB.find_one(
-            {"username": user_session}).get('my_recipes', [])
-    else:
-        saved_recipes = []
-    
-
-    # Loop through recipes and add lists of ratings to reviews list
-    for index, value in enumerate(recipes):
-        lst = []
-        for index in value["reviews"]:
-            lst.append(index.get("rating"))
-        reviews.append(lst)
-
-
-    # Loop through reviews and add values
-    #  to avg_ratings list & review_count list
-    for review in reviews:
-        if review:
-            avg_ratings.append(round(mean(review) * 2) / 2)
-            review_count.append(len(review))
-        else:
-            avg_ratings.append(0)
-            review_count.append(0)
-
-    
-    if not user_session is None:
-        my_recipes = saved_recipes
-    else:
-        my_recipes = []
 
     template_variables = {
         "letters": uppercase_alphabet,
         "recipes": recipes,
-        "saved_recipes": my_recipes,
-        "avg_ratings": avg_ratings,
-        "review_count": review_count,
+        "saved_recipes": account_model.saved_recipes,
+        "avg_ratings": recipe_model.avg_ratings,
+        "review_count": recipe_model.review_count,
         "limit": recipe_model.limit,
         "total_records": recipe_model.total_records,
         "total_pages": recipe_model.total_pages,
@@ -316,51 +246,30 @@ def recipe(recipe_id):
     Recipe view: Shows the full recipe
     """ 
 
-    recipe_id = recipe_id
-    user_session = session.get("user")
-    recipe = RECIPE_DB.find_one({"_id": ObjectId(recipe_id)})
-    reviews = list(RECIPE_DB.find_one(
-        {"_id": ObjectId(recipe_id)}).get('reviews'))
-    ratings = []
+    # Create model
+    recipe_model = RecipesModel()
+    account_model = UserAccountModel(session.get("user"))
+
+    recipe = recipe_model.get_recipe(recipe_id)
+
+    recipe_model.get_recipe_reviews(recipe_id)
 
     # Get list of meals related to recipe name
     related_recipes = list(
         RECIPE_DB.find({"$text": {"$search": recipe["recipe_name"]}}))
 
-    # Get list of meals by relevent meal type
-    meals = list(RECIPE_DB.find({"meal_type": recipe["meal_type"]}))
-    if (len(meals)) < 3:
-        similar_meals = random.sample(meals, len(meals))
-    else:
-        similar_meals = random.sample(meals, 3)
-
-    
-    if reviews:
-        for dct in reviews:
-            ratings.append(dct["rating"])
-        avg_rating = round(mean(ratings) * 2) / 2
-    else:
-        avg_rating = 0
-
-    total_reviews = len(ratings)
-
-    if not user_session is None:
-        saved_recipes = ACCOUNT_DB.find_one(
-            {"username": session["user"]}).get('my_recipes', [])
-    else:
-        saved_recipes = []
 
     # Create a dictionary of all required template variables
     template_variables = {
     "recipe": recipe,
     "recipe_id": recipe_id,
-    "avg_rating": avg_rating,
-    "total_reviews": total_reviews,
-    "saved_recipes": saved_recipes,
-    "current_page": url_for('view_recipes', recipe=recipe_id),
+    "avg_rating": recipe_model.avg_rating,
+    "total_reviews": recipe_model.total_reviews,
+    "saved_recipes": account_model.saved_recipes,
+    "current_page": url_for('view_recipes'),
     "related_recipes": related_recipes,
-    "similar_meals": similar_meals,
-    "reviews": reviews
+    "similar_meals": recipe_model.get_similar_recipes(recipe_id, 3),
+    "reviews": recipe_model.reviews
     }
 
     return  render_template("recipe.html", **template_variables)
@@ -388,13 +297,10 @@ def remove_recipe(recipe_id):
     """
     
     if request.method == "POST":
-        ACCOUNT_DB.update_one(
-            {"username": session["user"]},
-            {"$pull": {"my_recipes": recipe_id}}
-        )
-        flash("Recipe Successfully Removed From Your Recipes!!", "info")
+        account = UserAccountModel(session.get("user"))
+        account.remove_saved_recipe(recipe_id)
 
-    return redirect("view_recipes")
+    return redirect(url_for("view_recipes"))
 
 
 @app.route("/delete_recipe/<recipe_id>", methods=["GET","POST"])
@@ -512,27 +418,13 @@ def account():
     """
 
     if request.method == "POST":
+        account_model = UserAccountModel(request.form.get("username"))
 
-        user = {"username": request.form.get("username").lower()}
-        existing_user = ACCOUNT_DB.find_one(user)
-
-        if account.existing_user:
+        if account_model.user_data:
             flash("Username already exists", "error")
             return redirect(url_for("account"))
-
-        new_user = {
-            "first_name": request.form.get("fname").lower(),
-            "last_name": request.form.get("lname").lower(),
-            "username": request.form.get("username").lower(),
-            "date_of_birth": request.form.get("dob").lower(),
-            "email": request.form.get("email").lower(),
-            "password": generate_password_hash(request.form.get("password")),
-            "my_recipes": [],
-            "subscribed": False
-        }
-
-        ACCOUNT_DB.insert_one(new_user)
-        flash("Account Creation Successful", "success")
+        # Add new user
+        account_model.add_new_user()
 
     return render_template("account.html")
 
@@ -545,27 +437,9 @@ def sign_in():
     functionality to sign the user in.
     """
     if request.method == "POST":
-        # check if username already exists in database
-        existing_user = mongo.db.account.find_one(
-            {"username": request.form.get("username").lower()})
-
-        if existing_user:
-            # ensure hashed password matches user input
-            if check_password_hash(
-                    existing_user["password"], request.form.get("password")):
-                session["user"] = request.form.get("username").lower()
-                flash(f"Welcome, {request.form.get("username")}", "success")
-                return redirect("/")
-            else:
-                # invalid password match
-                flash("Incorrect Username and/or Password", "error")
-                return redirect(url_for("sign_in"))
-        else:
-            # username doesn't exist
-            flash("Incorrect Username and/or Password", "error")
-            return redirect(url_for("sign_in"))
+        account_model = UserAccountModel(request.form.get("username").lower())
+        account_model.enter_session()
             
-
     return render_template("sign_in.html")
 
 
