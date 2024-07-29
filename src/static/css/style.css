@@ -269,6 +269,8 @@ strong {
     background-color: transparent;
     transition: var(--base-transition);
     border-radius: 5px;
+    display: grid;
+    place-items: center;
 }
 .icon-btn:hover {
     background-color: var(--light-two-clr);
@@ -291,9 +293,10 @@ strong {
     background-color: var(--light-four-clr);
     color: var(--dark-one-clr);
     transition: var(--base-transition);
-}
-.tab-inactive:hover {
-    background-color: var(--light-two-clr);
+
+    &:hover {
+        background-color: var(--light-two-clr);
+    }
 }
 
 /* Button sizes */
@@ -317,30 +320,32 @@ strong {
 /* Tooltip */
 .tooltip {
     position: relative;
-}
-.tooltip::before {
-    content: attr(tooltip-text);
-    background-color: var(--dark-one-clr);
-    color: var(--light-three-clr);
-    text-wrap: nowrap;
-    font-size: 0.7rem;
-    border-radius: var(--base-radius);
-    border: 1px solid var(--light-two-clr);
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-    transform: translate(-100%, 100%);
-    opacity: 0;
-    height: 30px;
-    padding: 0 0.5rem;
-    display: grid;
-    place-items: center;
-    font-weight: 500;
-    transition: opacity 1s;
-    z-index: 99999;
-}
-.tooltip:hover::before {
-    opacity: 1;
+
+    &::before {
+        content: attr(tooltip-text);
+        background-color: var(--dark-one-clr);
+        color: var(--light-three-clr);
+        text-wrap: nowrap;
+        font-size: 0.7rem;
+        border-radius: var(--base-radius);
+        border: 1px solid var(--light-two-clr);
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        transform: translate(-100%, 100%);
+        opacity: 0;
+        height: 30px;
+        padding: 0 0.5rem;
+        display: grid;
+        place-items: center;
+        font-weight: 500;
+        transition: opacity 1s;
+        z-index: 99999;
+    }
+
+    &:hover::before {
+        opacity: 1;
+    }
 }
 
 /* ##### CARD STYLING  ##### */
@@ -434,6 +439,45 @@ strong {
     height: 200px;
 }
 
+/* ##### GET STARTED CARD STYLING  ##### */
+
+.get-started-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
+    background-color: var(--light-four-clr);
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    gap: 1rem;
+    border-radius: var(--base-radius);
+    transition: var(--base-transition);
+
+    &:hover {
+        background-color: var(--light-two-clr);
+    }
+}
+.img-wrapper {
+    min-width: 280px;
+    width: 280px;
+    height: 100%;
+    min-height: 300px;
+    background-color: var(--light-three-clr);
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    border-radius: var(--base-radius);
+}
+.img-wrapper img {
+    width: 100%;
+    object-fit: cover;
+}
+.get-started-card-content {
+    display: grid;
+    justify-content: center;
+    gap: 0.5rem;
+    align-items: center;
+}
+
 /* Links */
 .link-underline {
     color: var(--dark-one-clr);
@@ -479,6 +523,34 @@ strong {
     transform: translateX(-50%);
     z-index: 8000;
     display: none;
+}
+
+
+.side-menu {
+    position: absolute;
+    width: 0;
+    height: 100%;
+    background-color: var(--dark-two-clr);
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 999999;
+    transition: var(--base-transition);
+}
+
+.side-menu-btn {
+    height: 40px;
+    width: 100%;
+    border-radius: var(--base-radius);
+    transition: var(--base-transition);
+    color: var(--light-three-clr);
+    display: flex;
+    align-items: center;
+    padding-left: 0.4rem;
+
+    &:hover {
+        background-color: var(--dark-three-clr);
+    }
 }
 
 /* ###### BANNER SECTION ###### */
