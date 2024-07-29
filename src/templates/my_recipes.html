@@ -4,8 +4,16 @@
 
 {% block content %}
 
-<section class="padding-lg">
+<section class="flex-col gap-lg padding-horz-responsive">
     <h2>{{ username }}'s Recipes</h2>
+    <div class="h_seperator"></div>
+
+    <div class="flex-row gap-sm flex-center-align">
+        <p>
+            Showing <strong>{{ start_index }} - {{ end_index }}</strong> of <strong>{{ total_records }}</strong> Recipes
+        </p>
+    </div>
+
     <div class="my_recipes-content padding-lg gap-md">
         {% for recipe in my_recipes %}
             <div class="recipe-card">
@@ -30,6 +38,43 @@
             {% endif %}
         {% endfor %}
     </div>
+
+    <form class="pagination" action="{{ url_for('my_recipes') }}" method="post">
+        <div class="pagination-input-container">
+            {% if page_num == 1 %}
+                <input class="pagination-btn btn-disabled" name="page" type="submit" value="<">
+            {% else %}
+                <input class="pagination-btn" name="page" type="submit" value="<">
+            {% endif %}
+
+            {% for x in range(total_pages) %}
+                {% if loop.index0 == page_num - 1 %}
+                    <input class="pagination-btn pagination-active" name="page" type="submit" value="{{ x + 1 }}">
+                {% else %}
+                    <input class="pagination-btn" name="page" type="submit" value="{{ x + 1 }}">
+                {% endif %}
+            {% endfor %}
+            
+            {% if page_num == total_pages or total_pages == 0 %}
+                <input class="pagination-btn btn-disabled" name="page" type="submit" value=">">
+            {% else %}
+                <input class="pagination-btn" name="page" type="submit" value=">">
+            {% endif %}
+
+        </div>
+        
+        <div class="flex-row gap-md flex-center-align padding-md">
+            <p>Showing</p>
+            <select class="pagination-select" name="records_select" id="records_select" onchange="this.form.submit()">
+                <option value="{{ page_size }}" selected>{{ page_size }}</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+            <p>Records</p>
+        </div>
+    </form>
 </section>
 
 {% endblock %}
