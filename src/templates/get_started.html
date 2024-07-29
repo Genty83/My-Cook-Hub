@@ -7,11 +7,52 @@
 <section class="get-started-section padding-horz-responsive gap-lg flex-col">
     <h1>Get Started</h1>
     <div class="h_seperator"></div>
-    <div class="get-started-top-content gap-lg">
-
-        
-    </div>
     
+    <div class="flex-col gap-lg padding-horz-responsive">
+
+        <div class="get-started-card padding-md">
+            <div class="img-wrapper">
+                <img src="https://th.bing.com/th/id/OIP.FikNPvaKq_sWA9ipHrf_3AHaHa?pid=ImgDet&w=190&h=190&c=7&dpr=1.4" alt="">
+            </div>
+            <div class="get-started-card-content">
+                <h2>Create Account</h2>
+                <p>
+                    To get started, create a user account.
+                    It is completely free to join and gains you access to all the additional features!
+                </p>
+                <a href="{{ url_for('account') }}" class="btn std-btn btn-lg">Create Acount</a>
+            </div>
+        </div>
+
+        <div class="get-started-card padding-md">
+            <div class="img-wrapper">
+                <img src="https://img.freepik.com/free-vector/access-control-system-abstract-concept_335657-3180.jpg" alt="">
+            </div>
+            <div class="get-started-card-content">
+                <h2>Sign In</h2>
+                <p>
+                    Sign in to your account to gain access to your personal cookbook.
+                    You can also create your own recipes 
+                </p>
+                <a href="{{ url_for('sign_in') }}" class="btn std-btn btn-lg">Sign In</a>
+            </div>
+        </div>
+
+        <div class="get-started-card padding-md">
+            <div class="img-wrapper">
+                <img src="https://th.bing.com/th/id/OIP.z80LqROydiZ1GKOG_Yj-lwHaFL?w=250&h=180&c=7&r=0&o=5&dpr=1.4&pid=1.7" alt="">
+            </div>
+            <div class="get-started-card-content">
+                <h2>View Recipes</h2>
+                <p>
+                    View other users recipes, if you like what you see, add the recipes
+                    to your personal cookbook. 
+                </p>
+                <a href="{{ url_for('view_recipes') }}" class="btn std-btn btn-lg">View recipes</a>
+            </div>
+        </div>
+
+    </div>
      
 </section>
 
