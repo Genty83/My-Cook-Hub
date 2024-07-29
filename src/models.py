@@ -33,7 +33,9 @@ class UserAccountModel:
     def get_saved_recipes(self):
         """ Method: Gets the users saved recipes """
 
-        if session.get("user") == self.username:
+        if self.username is None:
+            return
+        else:
             self.saved_recipes = self.user_data.get('my_recipes', [])
 
         return self.saved_recipes
@@ -107,6 +109,7 @@ class RecipesModel:
         self.reviews = []
         self.avg_ratings = []
         self.review_count = []
+        self.my_recipes = []
 
         # Loop through recipes and add lists of ratings to reviews list
         for index, value in enumerate(self.all_records):
@@ -127,6 +130,35 @@ class RecipesModel:
                 self.review_count.append(0)
 
     # Methods 
+
+    def get_saved_recipes(self, username):
+        """ Gets the user saved recipes """
+
+        saved_recipes = ACCOUNT_DATABASE.find_one(
+            {"username": username}).get('my_recipes', [])
+
+        saved_recipe_ids = [ObjectId(x) for x in saved_recipes]
+        self.my_recipes = list(
+            RECIPE_DATABASE.find({'_id': {'$in': saved_recipe_ids}}))
+
+        # Loop through recipes and add lists of ratings to reviews list
+        for index, value in enumerate(self.my_recipes):
+            lst = []
+            for index in value["reviews"]:
+                lst.append(index.get("rating"))
+            self.reviews.append(lst)
+        
+        # Loop through reviews and add values
+        # to avg_ratings list & review_count list
+        for review in self.reviews:
+            if review:
+                self.avg_ratings.append(round(mean(review) * 2) / 2)
+                self.review_count.append(len(review))
+            else:
+                self.avg_ratings.append(0)
+                self.review_count.append(0)
+
+        return saved_recipes
 
     def get_similar_recipes(self, recipe_id, amount):
         """ Get list of meals by relevent meal type """
@@ -169,6 +201,37 @@ class RecipesModel:
         """
 
         query = {"recipe_name": {"$regex": f"^{starts_with}"}}
+        self.total_records = len(list(RECIPE_DATABASE.find(query)))
+
+        # Check limit for errors
+        self.limit = self.check_limit_value(limit)
+        # Set the total pages
+        self.total_pages = math.ceil(self.total_records / self.limit)
+        # Set page number
+        self.page_number = self.check_page_number(page_num, self.total_pages)
+
+        skip = self.limit * (self.page_number - 1)
+        data = list(
+            RECIPE_DATABASE.find(query).skip(skip).limit(self.limit))
+
+        self.start_index = 1 + skip
+        self.end_index = len(data) + skip
+        
+        return data
+
+
+    def fetch_my_recipes(
+        self, username: str, limit: int | str = 5, page_num: int | str = 1):
+        """ 
+        Fetches the given amount of records thats starts with a given letter  
+        """
+
+        saved_recipes = ACCOUNT_DATABASE.find_one(
+            {"username": username}).get('my_recipes', [])
+
+        saved_recipe_ids = [ObjectId(x) for x in saved_recipes]
+
+        query = {'_id': {'$in': saved_recipe_ids}}
         self.total_records = len(list(RECIPE_DATABASE.find(query)))
 
         # Check limit for errors
