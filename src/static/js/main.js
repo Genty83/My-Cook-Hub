@@ -40,3 +40,17 @@ function toggleAlertWindow() {
         alertWin.style.display = 'none';
     }
 }
+
+/** Function to toggle the side menu */
+function toggleSideMenu() {
+    
+    var sideMenu = document.querySelector('.side-menu')
+
+    if (sideMenu.getBoundingClientRect().width == 0) {
+        sideMenu.style.width = '250px';
+        sideMenu.style.padding = '0.5rem';
+    } else {
+        sideMenu.style.width = '0px';
+        sideMenu.style.padding = '0';
+    }
+}
