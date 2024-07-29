@@ -2,12 +2,10 @@
 
 import os
 import random
-from statistics import mean
 from datetime import date
 from src import app, mongo
 from flask import render_template, redirect, request, session, flash, url_for
 from bson.objectid import ObjectId
-from werkzeug.security import generate_password_hash, check_password_hash
 import math
 from src.models import RecipesModel, UserAccountModel
 
@@ -180,6 +178,7 @@ def view_recipes():
         request.form.get("records_select"),
         request.form.get("page")
     )
+    
     account_model.get_saved_recipes()
 
 
@@ -211,7 +210,6 @@ def az_recipes(starts_with):
     recipe_model = RecipesModel()
     account_model = UserAccountModel(session.get("user"))
 
-
     recipes = recipe_model.fetch_records_that_start_with(
         starts_with,
         request.form.get("records_select"),
@@ -238,6 +236,42 @@ def az_recipes(starts_with):
     }
 
     return render_template("az_recipes.html", **template_variables)
+
+
+@app.route("/my_recipes", methods=["GET","POST"])
+def my_recipes():
+    """ Shows the users saved recipes """
+
+    # Create model
+    recipe_model = RecipesModel()
+    account_model = UserAccountModel(session.get("user"))
+
+    saved_recipes = recipe_model.get_saved_recipes(session["user"])
+    my_recipes = recipe_model.fetch_my_recipes(
+        session.get("user"),
+        request.form.get("records_select"),
+        request.form.get("page")
+    )
+
+    # Create a dictionary of all required template variables
+    template_variables = {
+        "username": session["user"], 
+        "recipes": recipe_model.all_records, 
+        "my_recipes": my_recipes,
+        "saved_recipes": saved_recipes, 
+        "avg_ratings": recipe_model.avg_ratings,
+        "review_count": recipe_model.review_count,
+        "limit": recipe_model.limit,
+        "total_records": recipe_model.total_records,
+        "total_pages": recipe_model.total_pages,
+        "start_index": recipe_model.start_index,
+        "end_index": recipe_model.end_index,
+        "page_num": recipe_model.page_number,
+        "page_size": recipe_model.limit
+    }
+
+    return render_template("my_recipes.html", **template_variables)
+
 
 
 @app.route("/recipe/<recipe_id>")
@@ -314,57 +348,6 @@ def delete_recipe(recipe_id):
         flash("The recipe was successfully deleted!!", "info")
 
     return redirect(url_for("view_recipes"))
-
-
-@app.route("/my_recipes", methods=["GET","POST"])
-def my_recipes():
-    """ Shows the users saved recipes """
-
-    if session["user"]:
-        user = session["user"]
-        # grab the session user's username from the database
-        username = ACCOUNT_DB.find_one({"username": user})["username"]
-        saved_recipes = ACCOUNT_DB.find_one(
-            {"username": user}).get('my_recipes', [])
-        
-        saved_recipe_ids = [ObjectId(x) for x in saved_recipes]
-        my_recipes = list(RECIPE_DB.find({'_id': {'$in': saved_recipe_ids}}))
-
-        recipes = list(RECIPE_DB.find())
-        reviews = []
-        avg_ratings = []
-        review_count = []
-
-        # Loop through recipes and add lists of ratings to reviews list
-        for index, value in enumerate(my_recipes):
-            lst = []
-            for index in value["reviews"]:
-                lst.append(index.get("rating"))
-            reviews.append(lst)
-        
-        # Loop through reviews and add values
-        # to avg_ratings list & review_count list
-        for review in reviews:
-            if review:
-                avg_ratings.append(round(mean(review) * 2) / 2)
-                review_count.append(len(review))
-            else:
-                avg_ratings.append(0)
-                review_count.append(0)
-
-        # Create a dictionary of all required template variables
-        template_variables = {
-            "username": username, 
-            "recipes": recipes, 
-            "my_recipes": my_recipes,
-            "saved_recipes": saved_recipes, 
-            "avg_ratings": avg_ratings,
-            "review_count": review_count
-        }
-
-        return render_template("my_recipes.html", **template_variables)
-
-    return redirect(url_for("sign_in"))
 
 
 @app.route("/search/<recipe_id>", methods=["GET", "POST"])
