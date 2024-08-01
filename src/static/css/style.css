@@ -525,7 +525,7 @@ strong {
     display: none;
 }
 
-
+/* ###### SIDE MENU ###### */
 .side-menu {
     position: absolute;
     width: 0;
@@ -547,11 +547,13 @@ strong {
     display: flex;
     align-items: center;
     padding-left: 0.4rem;
+    position: relative;
 
     &:hover {
         background-color: var(--dark-three-clr);
     }
 }
+
 
 /* ###### BANNER SECTION ###### */
 .banner {
@@ -809,24 +811,32 @@ strong {
     color: var(--light-three-clr);
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 1rem;
     padding: 5%;
     text-wrap: nowrap;
+
+    & a {
+        color: var(--light-three-clr);
+        font-size: 0.9rem;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    
 }
 
 /* ##### SIGN IN/OUT FORM ##### */
 .sign-in-out-form {
-    width: 50%;
+    width: 90%;
     height: auto;
     border: 1px solid var(--light-two-clr);
     border-radius: var(--base-radius);
     box-shadow: 3px 3px 6px var(--light-two-clr);
     background-color: var(--light-three-clr);
     padding: 1rem;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -100%);
     z-index: 99999;
 }
 .sign-in-out-form form {
@@ -1287,11 +1297,15 @@ strong {
     }
     /* Create account form */
     .create-account-form {
-        width: 50%;
+        width: 60%;
         flex-direction: row;
     }
     .recipe-img-wrapper {
         flex-direction: row;
+    }
+
+    .sign-in-out-form {
+        width: 60%;
     }
 }
 
