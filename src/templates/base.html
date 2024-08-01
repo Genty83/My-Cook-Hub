@@ -18,10 +18,10 @@
 
         <!-- Logo -->
         <div class="flex-row flex-row-center-space-between">
-        <a class="logo logo-light" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
-        <a id="side-menu-btn" class="icon-btn tooltip" href="#" tooltip-text="Open Side Menu" onclick="toggleSideMenu()">
-            <i class="fa-solid fa-bars"></i>
-        </a>
+            <a class="logo logo-light" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
+            <a id="side-menu-btn" class="icon-btn tooltip" href="#" tooltip-text="Open Side Menu" onclick="toggleSideMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </a>
         </div>
         <a class="side-menu-btn" href="{{ url_for('home') }}">Home</a>
         <a class="side-menu-btn" href="{{ url_for('view_recipes') }}">View Recipes</a>
@@ -29,7 +29,11 @@
             <a class="side-menu-btn" href="{{ url_for('my_recipes') }}">My Recipes</a>
             <a class="side-menu-btn" href="{{ url_for('create_recipe') }}">Create Recipe</a>
         {% endif %}
-
+        {% if session.user %}
+                <a class="side-menu-btn" href="{{ url_for('sign_out') }}">Sign Out</a>
+        {% else %}
+            <a class="side-menu-btn" href="{{ url_for('sign_in') }}">Sign In</a>
+        {% endif %}
     </aside>
 
     <!-- BANNER -->
