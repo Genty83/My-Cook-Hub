@@ -102,7 +102,7 @@ Additional shades of the primary colors were used on certain elements:
 
 ## Wireframes
 
-[Figma](https://www.balsamiq.com/) was used to develop the initial concept of the main page of the application - the 'Recipes' page - as well as the Profile page, which follows a similar approach. The developer wanted to keep the main layout of this page a common theme across other pages of the application. However, the ideas for other pages were conceived as the project grew.
+[Balsamiq](https://www.balsamiq.com/) was used to develop the initial concept of the website. The developer wanted to keep the main layout of this page a common theme across other pages of the application. However, the ideas for other pages were conceived as the project grew.
 
 
 | PAGE | DESKTOP WIREFRAME | TABLET WIREFRAME | MOBILE WIREFRAME
