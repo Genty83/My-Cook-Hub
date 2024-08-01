@@ -1,5 +1,7 @@
 # My Cook Hub
 
+![My Cook Hub Mockup](src/static/images/mockup.png)
+
 ## Introduction
 
 My Cook Hub is a website for cooking enthusiasts to create and store there home made recipes. The user can also retrieve the recipes from the database to use as and when they please.
@@ -177,3 +179,371 @@ This schema is used to store details of a user after they have created their acc
 
 ## Recipe
 
+This is the main schema in which information about recipes is stored. Each key in the schema is manipulated in different ways, such as:
+
+
+<details>
+<summary>Model</summary>
+
+- `_id`: ObjectId (Automatically generated unique identifier)
+- `recipe_name`: String (Recipe Name)
+- `recipe_desc`: String (Recipe Description)
+- `meal_type`: String (Meal Type)
+- `servings`: String (Serving Size)
+- `cook_time`: String (Cook time)
+- `prep_time`: String (Preperation time)
+- `ingredients`: Array (Individual ingredients)
+  - `0`: String (First ingredient)
+  - `1`: String (Second ingredient)
+  - `2`: String (Third ingredient)
+- `method`: Array (Individual method steps)
+  - `0`: String (Step 1)
+  - `1`: String (Step 2)
+  - `2`: String (Step 3)
+- `created_by`: String (User who created the recipe)
+- `recipe_img`: Object ('src' and 'alt' of the image provided)
+  - `src`: String
+  - `alt`: String
+- `reviews`: Array (Shows the review description and rating)
+  - `0`: object 
+    - `review_desc`: String
+    - `rating`: Double
+- `recipe_index`: Int32
+
+</details>
+
+<details>
+<summary>Example</summary>
+
+```json
+{
+  "_id": ObjectId("668442e12839f32f50759f62"), 
+  "recipe_name": "Dijon Pork", 
+  "recipe_desc": "This delicious, creamy pork dish is so easy to make, that it is sure to become a family favourite.", 
+  "meal_type": "Dinner", 
+  "servings": "4", 
+  "cook_time": "50 minutes", 
+  "prep_time": "15 minutes", 
+  "ingredients": 
+  [
+    "Low calorie cooking spray", 
+    "1 onion, peeled and sliced", 
+    "1 garlic clove, peeled and crushed"
+  ], 
+  "method": 
+  [
+    "Spray a large pan with low calorie cooking spray and place over a medium heat. Add the onion and fry for 10-15 minutes, stirring occasionally, until softened and golden. Add the garlic and slices of pork. Seal the pork for 1-2 minutes on each side."
+  ], 
+  "created_by": "Craig", 
+  "date": "02/07/2024", 
+  "recipe_img": 
+  {
+    "src": "https://th.bing.com/th/id/OIP.65VULgo_wqHo4owZyV13EgHaHa?w=203&h=203&c=7&r=0&o=5&dpr=1.1&pid=1.7", 
+    "alt": "Image of Dijon Pork recipe."
+  }, 
+  "reviews": 
+  [
+    {"review_desc": "This recipe was amazing!", "rating": 5.0}, 
+    {"review_desc": "I love this recipe!", "rating": 4.5}
+  ], 
+  "recipe_index": 1
+}
+
+```
+</details>
+
+## CRUD Functionality
+
+The main purpose of this application is to provide users with the ability to Create (add), Read (locate, search for), Update (edit) & Delete (delete, remove) records.
+
+## Create
+
+- Users can create their own account in order to start using features such as adding a recipe, saving a recipe, etc.
+- Users can create their own recipe to be shown on the View Recipes page and in the My Recipes page.
+
+## Read
+
+- Users can search for specific recipes using the Search bar on the Recipe page.
+
+## Update
+
+- Users can edit a recipe they have created.
+
+## Delete
+
+- Users can delete a recipe they have created.
+  - A pop-up/modal has been used in this instance, in order to utilise the benefits of defensive programming.
+- Users can remove a recipe from their My Recipes page.
+
+# Features
+
+- The application was designed from a mobile-first perspective.
+- The application is responsive on all screen sizes:
+  - This allows the user to [view the website on a variety of screen sizes](#user-stories).
+
+## General
+
+### Navbar
+
+There are two different navbars depending on whether or not a user is logged in.
+
+The Navbar is present on all pages in the application.
+
+### User Navbar
+
+![User Navbar](src/static/images/navbar.png)
+
+- __Logo/Title__ - These are both clickable elements and take the user to the Home page.
+- __Home__ - This takes the user back to the Home page.
+- __View Recipes__ - This takes the user to the section where all recipes are listed.
+- __My Recipe__ - This takes the user to a page where they can view there saved recipes.
+  - _Users won't be able to add/edit/delete a recipe if they are not logged in._
+- __Create Recipe__ - This takes you to the create recipe page.
+- __sign Out__ - This button signs the user out and send them to the sign in page.
+
+### Non-User Navbar
+
+![Non-User Navbar](src/static/images/non-user-navbar.png)
+
+The Non-User Navbar consists of:
+
+- __Logo/Title__ - These are both clickable elements and take the user to the Home page.
+- __Home__ - This takes the user back to the Home page.
+- __View Recipes__ - This takes the user to the section where all recipes are listed.
+- __Create Account__ - This takes the user to the create account page.
+- __sign In__ - This button signs the user to the sign in page.
+
+### Side Navbar
+
+On screen sizes smaller than 661px, the navigation links are moved to the sidebar and a hamburger icon 
+is added to the navbar.
+There is also a humburger icon present on the side menu to allow the user to close the menu.
+
+| USER | NON-USER |
+| :-- | :-- |
+| ![Side Navbar](src/static/images/side-menu.png) | ![Side Navbar](src/static/images/non-user-side-menu.png) |
+
+## Landing Page
+
+<details>
+<summary>Landing Page Image</summary>
+
+![Landing Page](src/static/images/Home-page.png)
+
+</details>
+
+### Landing Page Features
+
+The Landing page consists of the following:
+- Hero Image.
+  - The main image used for the site.
+- Recently Added Cards.
+  - This shows the user the latest 2 recipes addedto the database.
+- More Recipes Cards.
+  - This shows the user 4 random recipes from the database.
+- Featured Recipe Card.
+  - Selects on randow recipe from the database to use as the featured recipe.
+- Several clickable buttons which link to their respective pages:
+  - __Get Started__ - This takes the user to the Get Started page.
+  - __Sign In__ - This takes the user to the Sign In page.
+
+
+## Get Started Page
+
+<details>
+<summary>Get Started Page Image</summary>
+
+![Get Started Page](src/static/images/get-started-page.png)
+
+</details>
+
+### Get Started Page Features
+
+The Get Started page is designed to assist the user with getting started using the site and consists of the following:
+- Create Account Card.
+  - This card takes the user to the create account page.
+- Sign In Card.
+  - This card takes the user to the sign in page.
+- View Recipes Card.
+  - This card takes the user to the view recipes page.
+
+
+## View Recipes Page
+
+<details>
+<summary>View Recipes Page Image</summary>
+
+![View Recipes Page](src/static/images/view-recipes-page.png)
+![A - Z Recipes Page](src/static/images/a-z-recipes-page.png)
+
+</details>
+
+### View Recipes Page Features
+
+The view recipes page contains the following:
+
+- All Recipes Tab:
+  - Allows the user to view all recipes.
+  - Pagination was used to allow the user to limit the amount of recipes to be displayed.
+- A -Z Recipes Tab:
+  - Allows the user user to search all recipes that start with a letter.
+  - Pagination was used to allow the user to limit the amount of recipes to be displayed.
+- Recipe Cards:
+  - These allow the user to view each recipe in brief detail.
+  - The user can click on the title to go to the recipe page and view the full recipe.
+  - When the user is logged in, they have the option to add and remove the recipe to and from the users cookbook.
+
+## Recipe Page
+
+<details>
+<summary>Recipe Page Image</summary>
+
+![Recipe Page](src/static/images/recipe-page.png)
+
+</details>
+
+### Recipe Page Features
+
+The Recipes page contains the following:
+
+
+
+# Technologies Used
+
+## Languages
+
+- [HTML](https://en.wikipedia.org/wiki/HTML)
+- [CSS](https://en.wikipedia.org/wiki/CSS)
+- [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
+- [Python](https://en.wikipedia.org/wiki/Python_(programming_language))
+
+## Frameworks, Libraries & Programs
+
+- [Codeanywhere](https://app.codeanywhere.com/)
+  - Codeanywhere was used for writing, committing and pushing the code to GitHub.
+
+- [Font Awesome](https://fontawesome.com/)
+  - Font Awesome was used to add icons/images to the computer and player tiles.
+
+- [Flask](https://flask.palletsprojects.com/en/3.0.x/)
+  - Flask was used as the web application framework for use with Python.
+
+- [Jinja](https://jinja.palletsprojects.com/en/3.1.x/)
+  - Jinja was used as the templating engine for this application.
+
+- [MongoDB](https://www.mongodb.com/)
+  - MongoDB was used as the data platform for this application to perform CRUD functionality.
+
+
+- [Chrome DevTools](https://developer.chrome.com/docs/devtools/)
+  - Chrome DevTools was used throughout the development of the website to test ideas and responsiveness, as well as test functionality of the application and debug issues that arose.
+
+- [W3C Markup Validator](https://validator.w3.org/)
+  - W3C Markup Validator was used to validate the HTML code.
+
+- [W3C CSS Validator](https://jigsaw.w3.org/css-validator/)
+  - W3C CSS Validator was used to validate the CSS code.
+
+- [JSLint](https://www.jslint.com/)
+  - JSLint was used to validate the JavaScript.
+
+- [CI Python Linter](https://pep8ci.herokuapp.com/)
+  - The CI Python Linter was used to validate the Python.
+
+# Testing
+
+A large amount of testing was undertaken throughout the project in order to assess if the application was working as expected.
+
+Family also participated in testing the application's functionality and expressed any concerns or ideas they had with function, layout and user experience.
+
+Please see a detailed breakdown of the testing carried out for this application in [TESTING.md](TESTING.md).
+
+# Finished Product
+
+
+# Deployment
+
+This website was developed using [Codeanywhere](https://codeanywhere.com/solutions/collaborate), then committed and pushed to GitHub using the Codeanywhere terminal.
+
+## Heroku Deployment
+
+The project was deployed to Heroku using the following steps:
+
+1. Create a `requirements.txt` file using the terminal command:
+
+   ```bash
+   pip freeze > requirements.txt
+   ```
+
+2. Create a `Procfile` with the terminal command:
+
+   ```bash
+   echo web: python app.py > Procfile
+   ```
+
+3. `git add` and `git commit` the new requirements and Procfile and then `git push` the project to GitHub.
+4. Create a new app on the [Herkou website](https://dashboard.heroku.com/apps) by clicking the "New" button in your dashboard. Give it a name and assign the region to Europe.
+5. From the Heroku dashboard of your newly created application, click on "Deploy" > "Deployment Method" and select GitHub.
+6. Confirm the linking of the Heroku app to the correct GitHub repository.
+7. In the Heroku dashboard for the application, click on "Settings" > "Reveal Config Vars".
+8. Set the following config vars:
+
+    | KEY | VALUE |
+    | :-- | :-- |
+    | IP | 0.0.0.0 |
+    | PORT | 5000 |
+    | SECRET_KEY | ANY_SECRET_KEY* |
+    | MONGO_URI | `mongodb+srv://<username>:<password>@<cluster_name>.hrljbrx.mongodb.net/<database_name>?retryWrites=true&w=majority` |
+    | DEBUG | TRUE** |
+
+    - *Denotes a value that is specific to your app.
+
+    - **This is set to true to enable us to see any bugs on the live site. __Please change to FALSE after deployment.__
+
+    - To get your MONGO_URI read the MongoDB Atlas documentation [here](https://www.mongodb.com/docs/atlas/getting-started/).
+
+9. In the Heroku dashboard, click "Deploy".
+10. In the "Manual Deployment" section of this page, make sure the "Master Branch" is selected and then click "Deploy Branch".
+
+## Local Development
+
+### How to Fork
+
+To fork the repository:
+
+1. Log in (or sign up) to Github.
+2. Go to the repository for this project, [My CookBook](https://github.com/DanHodgson12/my-cook-book).
+3. Click the Fork button in the top right corner.
+
+### Making a Local Clone
+
+To clone the repository:
+
+1. Log in (or sign up) to GitHub.
+
+2. Go to the repository for this project, [My Cook Hub]().
+
+3. In the "Clone with HTTPs" section, copy the clone URL for the repository.
+
+4. Open the terminal in your code editor and change the current working directory to the location you want to use for the cloned directory.
+
+5. Type `git clone`, then paste the URL you copied in Step 3, the press Enter:
+
+    ```bash
+    git clone https://
+    ```
+
+6. Install the packages from the requirements.txt file by running the following command in the Terminal:
+
+    ```bash
+    pip3 install -r requirements.txt
+    ```
+
+7. Your local clone will now be created.
+
+# Credits
+
+## Content
+
+- All content was written by the developer.
+- Example recipes were taken from the [BBC Food Recipe website](https://www.bbc.co.uk/food/recipes/).
