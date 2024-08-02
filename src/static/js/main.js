@@ -44,7 +44,7 @@ function toggleAlertWindow() {
 /** Function to toggle the side menu */
 function toggleSideMenu() {
     
-    var sideMenu = document.querySelector('.side-menu')
+    var sideMenu = document.querySelector('.side-menu');
 
     if (sideMenu.getBoundingClientRect().width == 0) {
         sideMenu.style.width = '250px';
