@@ -16,19 +16,20 @@ ACCOUNT_DATABASE = mongo.db.account
 
 
 class UserAccountModel:
-    """ Base model for user account database """ 
+    """
+    Base model for user account database
+    """
 
     def __init__(self, username: str = None):
         # Instance properties
         self.username = username
 
         # Additional properties
-        if not self.username is None:
+        if self.username is not None:
             self.user_data = ACCOUNT_DATABASE.find_one(
                 {"username": self.username.lower()})
 
         self.saved_recipes = []
-
 
     def get_saved_recipes(self):
         """ Method: Gets the users saved recipes """
@@ -40,7 +41,6 @@ class UserAccountModel:
 
         return self.saved_recipes
 
-
     def remove_saved_recipe(self, recipe_id):
         """ Removes a saved recipe from the database """
 
@@ -50,7 +50,6 @@ class UserAccountModel:
                 {"$pull": {"my_recipes": recipe_id}}
             )
             flash("Recipe Successfully Removed From Your Recipes!!", "info")
-
 
     def add_new_user(self):
         """ Adds a new user to the account database """
@@ -68,7 +67,6 @@ class UserAccountModel:
         flash("Account Creation Successful", "success")
 
         return ACCOUNT_DATABASE.insert_one(new_user)
-
 
     def enter_session(self):
         """ Enters the user into a session """
@@ -118,7 +116,6 @@ class RecipesModel:
                 lst.append(index.get("rating"))
             self.reviews.append(lst)
 
-
         # Loop through reviews and add values
         #  to avg_ratings list & review_count list
         for review in self.reviews:
@@ -129,8 +126,7 @@ class RecipesModel:
                 self.avg_ratings.append(0)
                 self.review_count.append(0)
 
-    # Methods 
-
+    # Methods
     def get_saved_recipes(self, username):
         """ Gets the user saved recipes """
 
@@ -147,7 +143,7 @@ class RecipesModel:
             for index in value["reviews"]:
                 lst.append(index.get("rating"))
             self.reviews.append(lst)
-        
+
         # Loop through reviews and add values
         # to avg_ratings list & review_count list
         for review in self.reviews:
@@ -172,8 +168,6 @@ class RecipesModel:
 
         return similar_meals
 
-
-
     def fetch_records(self, limit: int | str = 5, page_num: int | str = 1):
         """ Fetches the given amount of records from the database """
 
@@ -193,13 +187,12 @@ class RecipesModel:
 
         return data
 
-
     def fetch_records_that_start_with(
-        self, starts_with: str, limit: int | str = 5, page_num: int | str = 1):
-        """ 
-        Fetches the given amount of records thats starts with a given letter  
+        self, starts_with: str,
+            limit: int | str = 5, page_num: int | str = 1):
         """
-
+        Fetches the given amount of records thats starts with a given letter
+        """
         query = {"recipe_name": {"$regex": f"^{starts_with}"}}
         self.total_records = len(list(RECIPE_DATABASE.find(query)))
 
@@ -216,14 +209,14 @@ class RecipesModel:
 
         self.start_index = 1 + skip
         self.end_index = len(data) + skip
-        
+
         return data
 
-
     def fetch_my_recipes(
-        self, username: str, limit: int | str = 5, page_num: int | str = 1):
-        """ 
-        Fetches the given amount of records thats starts with a given letter  
+        self, username: str,
+            limit: int | str = 5, page_num: int | str = 1):
+        """
+        Fetches the given amount of records thats starts with a given letter
         """
 
         saved_recipes = ACCOUNT_DATABASE.find_one(
@@ -247,9 +240,8 @@ class RecipesModel:
 
         self.start_index = 1 + skip
         self.end_index = len(data) + skip
-        
-        return data
 
+        return data
 
     def get_recipe_reviews(self, recipe_id):
         """ """
@@ -268,15 +260,13 @@ class RecipesModel:
 
         return self
 
-
     def get_recipe(self, recipe_id):
         """ Returns a recipe object for the given id passed in """
         return RECIPE_DATABASE.find_one({"_id": ObjectId(recipe_id)})
 
-
     @staticmethod
     def check_limit_value(limit) -> int:
-        """ 
+        """
         Checks for none type on the limit passed in and converts it
         into an integer value
         """
@@ -284,10 +274,9 @@ class RecipesModel:
             limit = 5
         return int(limit)
 
-    
     @staticmethod
     def check_page_number(page_num, total_pages) -> int:
-        """ 
+        """
         Static method: checks and converts the page number
         into an integer value
         """

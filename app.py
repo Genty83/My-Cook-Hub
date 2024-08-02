@@ -36,18 +36,18 @@ def home():
 
 
 # Get Started page
-@app.route("/get_started", methods=["GET","POST"])
+@app.route("/get_started", methods=["GET", "POST"])
 def get_started():
-    
-    """ """
+
+    """ Displays the get started page """
 
     return render_template("get_started.html")
 
 
 # Create recipe page
-@app.route("/create_recipe", methods=["GET","POST"])
+@app.route("/create_recipe", methods=["GET", "POST"])
 def create_recipe():
-    
+
     """
     Create recipe view:
     Displays the user form for creating a new recipe.
@@ -89,7 +89,7 @@ def create_recipe():
             "servings": request.form.get("servings"),
             "cook_time": request.form.get("cook_time"),
             "prep_time": request.form.get("prep_time"),
-            "ingredients": ingredients_lst, 
+            "ingredients": ingredients_lst,
             "method": steps_lst,
             "created_by": session["user"],
             "date": date.today().strftime("%d/%m/%Y"),
@@ -106,9 +106,9 @@ def create_recipe():
     return render_template("create_recipe.html")
 
 
-@app.route("/edit_recipe/<recipe_id>", methods=["GET","POST"])
+@app.route("/edit_recipe/<recipe_id>", methods=["GET", "POST"])
 def edit_recipe(recipe_id):
-    
+
     """
     Function to allow the user to edit the selected recipe.
     """
@@ -150,7 +150,7 @@ def edit_recipe(recipe_id):
             "servings": request.form.get("servings"),
             "cook_time": request.form.get("cook_time"),
             "prep_time": request.form.get("prep_time"),
-            "ingredients": ingredients_lst, 
+            "ingredients": ingredients_lst,
             "method": steps_lst,
             "created_by": session["user"],
             "date": date.today().strftime("%d/%m/%Y"),
@@ -160,13 +160,13 @@ def edit_recipe(recipe_id):
         RECIPE_DB.update_one(
             {"_id": ObjectId(recipe_id)}, {'$set': edited_recipe})
         flash("Recipe Successfully Updated", "success")
-        
+
     return render_template("edit_recipe.html", recipe=recipe)
 
 
-@app.route("/view_recipes", methods=["GET","POST"])
+@app.route("/view_recipes", methods=["GET", "POST"])
 def view_recipes():
-    """ 
+    """
     View recipes page. Shows all available recipe cards
     """
 
@@ -178,9 +178,8 @@ def view_recipes():
         request.form.get("records_select"),
         request.form.get("page")
     )
-    
-    account_model.get_saved_recipes()
 
+    account_model.get_saved_recipes()
 
     # Create a dictionary of all required template variables
     template_variables = {
@@ -197,14 +196,13 @@ def view_recipes():
         "page_num": recipe_model.page_number,
         "page_size": recipe_model.limit
     }
-    
+
     return render_template(
         "view_recipes.html", **template_variables)
 
 
-@app.route("/az_recipes/<starts_with>", methods=["GET","POST"])
+@app.route("/az_recipes/<starts_with>", methods=["GET", "POST"])
 def az_recipes(starts_with):
-
 
     # Create model
     recipe_model = RecipesModel()
@@ -217,7 +215,6 @@ def az_recipes(starts_with):
     )
     account_model.get_saved_recipes()
     uppercase_alphabet = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
-
 
     template_variables = {
         "letters": uppercase_alphabet,
@@ -238,7 +235,7 @@ def az_recipes(starts_with):
     return render_template("az_recipes.html", **template_variables)
 
 
-@app.route("/my_recipes", methods=["GET","POST"])
+@app.route("/my_recipes", methods=["GET", "POST"])
 def my_recipes():
     """ Shows the users saved recipes """
 
@@ -255,10 +252,10 @@ def my_recipes():
 
     # Create a dictionary of all required template variables
     template_variables = {
-        "username": session["user"], 
-        "recipes": recipe_model.all_records, 
+        "username": session["user"],
+        "recipes": recipe_model.all_records,
         "my_recipes": my_recipes,
-        "saved_recipes": saved_recipes, 
+        "saved_recipes": saved_recipes,
         "avg_ratings": recipe_model.avg_ratings,
         "review_count": recipe_model.review_count,
         "limit": recipe_model.limit,
@@ -273,12 +270,11 @@ def my_recipes():
     return render_template("my_recipes.html", **template_variables)
 
 
-
 @app.route("/recipe/<recipe_id>")
 def recipe(recipe_id):
     """
     Recipe view: Shows the full recipe
-    """ 
+    """
 
     # Create model
     recipe_model = RecipesModel()
@@ -292,21 +288,20 @@ def recipe(recipe_id):
     related_recipes = list(
         RECIPE_DB.find({"$text": {"$search": recipe["recipe_name"]}}))
 
-
     # Create a dictionary of all required template variables
     template_variables = {
-    "recipe": recipe,
-    "recipe_id": recipe_id,
-    "avg_rating": recipe_model.avg_rating,
-    "total_reviews": recipe_model.total_reviews,
-    "saved_recipes": account_model.saved_recipes,
-    "current_page": url_for('view_recipes'),
-    "related_recipes": related_recipes,
-    "similar_meals": recipe_model.get_similar_recipes(recipe_id, 3),
-    "reviews": recipe_model.reviews
+        "recipe": recipe,
+        "recipe_id": recipe_id,
+        "avg_rating": recipe_model.avg_rating,
+        "total_reviews": recipe_model.total_reviews,
+        "saved_recipes": account_model.saved_recipes,
+        "current_page": url_for('view_recipes'),
+        "related_recipes": related_recipes,
+        "similar_meals": recipe_model.get_similar_recipes(recipe_id, 3),
+        "reviews": recipe_model.reviews
     }
 
-    return  render_template("recipe.html", **template_variables)
+    return render_template("recipe.html", **template_variables)
 
 
 @app.route("/save_recipe/<recipe_id>", methods=["GET", "POST"])
@@ -324,12 +319,12 @@ def save_recipe(recipe_id):
     return redirect(request.args.get('current_page'))
 
 
-@app.route("/remove_recipe/<recipe_id>", methods=["GET","POST"])
+@app.route("/remove_recipe/<recipe_id>", methods=["GET", "POST"])
 def remove_recipe(recipe_id):
     """
-    Removes the recipe from the users recipe list. 
+    Removes the recipe from the users recipe list.
     """
-    
+
     if request.method == "POST":
         account = UserAccountModel(session.get("user"))
         account.remove_saved_recipe(recipe_id)
@@ -337,12 +332,12 @@ def remove_recipe(recipe_id):
     return redirect(url_for("view_recipes"))
 
 
-@app.route("/delete_recipe/<recipe_id>", methods=["GET","POST"])
+@app.route("/delete_recipe/<recipe_id>", methods=["GET", "POST"])
 def delete_recipe(recipe_id):
     """
-    Deletes the recipe from the database. 
+    Deletes the recipe from the database.
     """
-    
+
     if request.method == "POST":
         RECIPE_DB.delete_one({"_id": ObjectId(recipe_id)})
         flash("The recipe was successfully deleted!!", "info")
@@ -361,15 +356,14 @@ def search(recipe_id):
     recipe = RECIPE_DB.find_one({"_id": ObjectId(recipe_id)})
 
     if not recipes:
-        
+
         flash("No Recipe Found!!", "warning")
         return redirect(url_for("recipe", recipe_id=recipe_id))
 
-    return render_template("recipe.html",recipe_id=recipe_id,
-        recipe=recipe, recipes=recipes
-    )
+    return render_template(
+        "recipe.html", recipe_id=recipe_id, recipe=recipe, recipes=recipes)
 
-    
+
 @app.route("/review/<recipe_id>", methods=["GET", "POST"])
 def review(recipe_id):
     """
@@ -377,7 +371,7 @@ def review(recipe_id):
     """
 
     if request.method == "POST":
-        
+
         review = {
             "review_desc": request.form.get("review_desc"),
             "rating": float(request.form.get("rating")),
@@ -393,7 +387,7 @@ def review(recipe_id):
     return redirect(url_for("recipe", recipe_id=recipe_id))
 
 
-# Account page 
+# Account page
 @app.route("/account", methods=["GET", "POST"])
 def account():
     """
@@ -412,7 +406,7 @@ def account():
     return render_template("account.html")
 
 
-# Sign in page 
+# Sign in page
 @app.route("/sign_in", methods=["GET", "POST"])
 def sign_in():
     """
@@ -422,7 +416,7 @@ def sign_in():
     if request.method == "POST":
         account_model = UserAccountModel(request.form.get("username").lower())
         account_model.enter_session()
-            
+
     return render_template("sign_in.html")
 
 
@@ -440,7 +434,7 @@ def sign_out():
 
 if __name__ == "__main__":
     app.run(
-        host = os.environ.get("IP"),
-        port = int(os.environ.get("PORT")),
-        debug = os.environ.get("DEBUG")
+        host=os.environ.get("IP"),
+        port=int(os.environ.get("PORT")),
+        debug=os.environ.get("DEBUG")
     )
