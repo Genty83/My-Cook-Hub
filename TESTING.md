@@ -39,7 +39,6 @@ The developer chose to use manual testing as the main form of testing throughout
 
 - [Google Chrome DevTools](https://developer.chrome.com/docs/devtools/)
   - Google Chrome DevTools was used throughout the development process to test, explore and make changes to the HTML and CSS of the webpage.
-  - Google Chrome DevTools was used throughout the development process to test, explore and make changes to the JavaScript controlling certain elements being utilised from Materialize.
 
 - Responsiveness
   - [Responsive Design Checker](https://www.responsivedesignchecker.com/) was used to check responsiveness across a variety of devices and screen sizes.
@@ -140,22 +139,23 @@ Other than the above, there were a few legitimate errors/warnings with the HTML 
 
 ### CSS
 
-The W3C CSS Validator returned no errors in the code.
-![CSS Validation]()
+The W3C CSS Validator returned no errors.
+![CSS Validation](src/static/images/css-validator.png)
 
 ### JavaScript
 
 The JSHint Validation returned a few errors in the code for undefined variables:
 
-- `$` - This was ignored as it is required for functions using jQuery.
-- `M` - This was ignored as it is used for initialisation whilst using Materialize.
+- One missing semi-colon warning was raised which was corrected.
+- The 5 un-used variables were ignored as these are function names which were called using the onclick method in the HTML files.
 
-![JSHint Validation]()
+![JSHint Validation](src/static/images/js-hint-errors.png)
 
 ### Python
 
 The CI Python Linter returned no errors in the code.
-![Python Validation]()
+![Python Validation - app.py]()
+![Python Validation - models.py]()
 
 ## Lighthouse Report
 
