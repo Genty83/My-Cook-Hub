@@ -1,9 +1,4 @@
-<!-- 
- HERO TEMPLATE: ALL MARKUP RELATED TO THE ERO SECTION GOES IN THIS FILE.
--->
-
 <section class="hero-wrapper">
-    
     <img src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Main Image" class="hero-img">
     <div class="hero-overlay">
         <h1>
@@ -18,7 +13,9 @@
         </p>
         <div class="flex-row gap-md">
             <a href="{{ url_for('get_started') }}" class="btn std-btn btn-lg">Get Started<i class="fa-solid fa-arrow-right"></i></a>
-            <a href="{{ url_for('sign_in') }}" class="btn std-btn-var-2 btn-lg">Sign In<i class="fa-solid fa-arrow-right"></i></a>
+            {% if not session.user %}
+                <a href="{{ url_for('sign_in') }}" class="btn std-btn-var-2 btn-lg">Sign In<i class="fa-solid fa-arrow-right"></i></a>
+            {% endif %}
         </div>
     </div>
 </section>

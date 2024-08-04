@@ -1,5 +1,4 @@
 <!-- CREATE RECIPES TEMPLATE -->
-
 {% extends "base.html" %}
 
 {% block content %}
@@ -29,7 +28,7 @@
                     {% if recipe._id|string in saved_recipes %}
                         <form action="{{ url_for('remove_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
                             method="POST">
-                            <button type="submit" class="card-btn card-delete-btn tooltip" tooltip-text="Remove Recipe" aria-label="Remove recipe">
+                            <button type="submit" class="card-btn card-delete-btn" title="Remove Recipe" aria-label="Remove recipe">
                                 <i class="fa-solid fa-eraser"></i>
                             </button>
                         </form>
