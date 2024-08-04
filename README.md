@@ -275,6 +275,8 @@ The main purpose of this application is to provide users with the ability to Cre
   - A pop-up/modal has been used in this instance, in order to utilise the benefits of defensive programming.
 - Users can remove a recipe from their My Recipes page.
 
+[Back to top ⇧](#my-cook-hub)
+
 # Features
 
 - The application was designed from a mobile-first perspective.
@@ -405,6 +407,14 @@ The view recipes page contains the following:
 ### Recipe Page Features
 
 The Recipes page contains the following:
+- Searchbar:
+  - This allows the user to quickly search a recipe using keywords.
+- Recipe Image (Optional):
+ - Shows an image of the recipe.
+- Rating:
+  - This shows the average rating out of 5 stars based on user reviews.
+
+
 
 
 
@@ -547,3 +557,18 @@ To clone the repository:
 
 - All content was written by the developer.
 - Example recipes were taken from the [BBC Food Recipe website](https://www.bbc.co.uk/food/recipes/).
+
+## Media
+
+- [Font Awesome](https://fontawesome.com/icons) was used for providing the icons used in the application.
+
+## Code
+
+
+- [W3Schools](https://www.w3schools.com/) & [Stack Overflow](https://stackoverflow.co/teams/) were consulted on a regular basis to help overcome roadblocks in the developer's coding knowledge.
+
+# Acknowledgements
+
+- My family, for their valuable opinions and unconditional support.
+- My mentor, Marcel, for his encouraging feedback and patience during my learning journey.
+- Code Institute, for its wonderful learning platform and supportive community.
