@@ -38,7 +38,7 @@ FIRST...
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: system-ui, sans-serif;
 }
 body {
     position: relative;
@@ -293,10 +293,9 @@ strong {
     background-color: var(--light-four-clr);
     color: var(--dark-one-clr);
     transition: var(--base-transition);
-
-    &:hover {
-        background-color: var(--light-two-clr);
-    }
+}
+.tab-inactive:hover {
+    background-color: var(--light-two-clr);
 }
 
 /* Button sizes */
@@ -315,37 +314,6 @@ strong {
 .btn-max-height {
     height: 100%;
     width: auto;
-}
-
-/* Tooltip */
-.tooltip {
-    position: relative;
-
-    &::before {
-        content: attr(tooltip-text);
-        background-color: var(--dark-one-clr);
-        color: var(--light-three-clr);
-        text-wrap: nowrap;
-        font-size: 0.7rem;
-        border-radius: var(--base-radius);
-        border: 1px solid var(--light-two-clr);
-        position: absolute;
-        left: 0px;
-        bottom: 0px;
-        transform: translate(-100%, 100%);
-        opacity: 0;
-        height: 30px;
-        padding: 0 0.5rem;
-        display: grid;
-        place-items: center;
-        font-weight: 500;
-        transition: opacity 1s;
-        z-index: 99999;
-    }
-
-    &:hover::before {
-        opacity: 1;
-    }
 }
 
 /* ##### CARD STYLING  ##### */
@@ -451,10 +419,9 @@ strong {
     gap: 1rem;
     border-radius: var(--base-radius);
     transition: var(--base-transition);
-
-    &:hover {
-        background-color: var(--light-two-clr);
-    }
+}
+.get-started-card:hover {
+    background-color: var(--light-two-clr);
 }
 .img-wrapper {
     min-width: 280px;
@@ -548,12 +515,10 @@ strong {
     align-items: center;
     padding-left: 0.4rem;
     position: relative;
-
-    &:hover {
-        background-color: var(--dark-three-clr);
-    }
 }
-
+.side-menu-btn:hover {
+    background-color: var(--dark-three-clr);
+}
 
 /* ###### BANNER SECTION ###### */
 .banner {
@@ -816,16 +781,13 @@ strong {
     gap: 1rem;
     padding: 5%;
     text-wrap: nowrap;
-
-    & a {
-        color: var(--light-three-clr);
-        font-size: 0.9rem;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-    
+}
+.form-content-wrapper a {
+    color: var(--light-three-clr);
+    font-size: 0.9rem;
+}
+.form-content-wrapper:hover {
+    text-decoration: underline;
 }
 
 /* ##### SIGN IN/OUT FORM ##### */
@@ -904,7 +866,7 @@ strong {
     min-height: 100px;
     width: 100%;
     display: flex;
-    align-items: top;
+    align-items: first baseline;
     gap: 0.4rem;
     padding: 0.4rem;
     border-bottom: 1px solid var(--light-two-clr);
@@ -1140,7 +1102,7 @@ strong {
 }
 .recipe-list-item {
     display: flex;
-    align-items: top;
+    align-items: first baseline;
     gap: 0.5rem;
 }
 .recipe-list-item p {
