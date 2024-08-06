@@ -1,71 +1,29 @@
-
-
 <div class="review-container flex-row gap-md">
-    {% if avg_ratings[loop.index0] == 5 %}
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-    {% elif avg_ratings[loop.index0] == 4.5 %}
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star-half"></i>
-    {% elif avg_ratings[loop.index0] == 4 %}
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-    {% elif avg_ratings[loop.index0] == 3.5 %}
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star-half"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-    {% elif avg_ratings[loop.index0] == 3 %}
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-    {% elif avg_ratings[loop.index0] == 2.5 %}
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star-half"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-    {% elif avg_ratings[loop.index0] == 2 %}
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-    {% elif avg_ratings[loop.index0] == 1.5 %}
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star fa-solid fa-star-half"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-    {% elif avg_ratings[loop.index0] == 1 %}
-        <i class="rating-star fa-solid fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-    {% elif avg_ratings[loop.index0] == 0.5 %}
-        <i class="rating-star fa-solid fa-star-half"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
+
+    {% if recipe.average_rating == 0 %}
+        {% for x in range(5) %}
+            <i class="rating-star-light fa-regular fa-star"></i>
+        {% endfor %}
+
     {% else %}
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
-        <i class="rating-star-light fa-regular fa-star"></i>
+        {% if recipe.average_rating % 100 > 4 %}
+            {% set rating = recipe.average_rating | round | int - 1 %}
+        {% else %}
+            {% set rating = recipe.average_rating | round | int %}
+        {% endif %}
+        
+        {% for x in range(rating) %}
+            <i class="rating-star fa-solid fa-star"></i>
+        {% endfor %}
+
+        {% if recipe.average_rating % 100 > 4 %}
+            <i class="rating-star fa-solid fa-star-half"></i>
+        {% endif %}  
+
+        {% for x in range(5 - rating) %}
+            {% if recipe.average_rating < 4.4 %}
+                <i class="rating-star-light fa-regular fa-star"></i>
+            {% endif %}
+        {% endfor %}
     {% endif %}
 </div>

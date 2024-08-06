@@ -26,7 +26,7 @@
 
     <div class="flex-row gap-sm flex-center-align">
         <p>
-            Showing <strong>{{ start_index }} - {{ end_index }}</strong> of <strong>{{ total_records }}</strong> Recipes
+            Showing <strong>{{ recipe_model.start_index }} - {{ recipe_model.end_index }}</strong> of <strong>{{ recipe_model.total_records }}</strong> Recipes
         </p>
     </div>
 
@@ -40,10 +40,10 @@
                         
                         {% include "star_rating.html" %}
 
-                        <p> {{ review_count[loop.index0] }} Reviews</p>
+                        <p> {{ recipe.reviews|length }} Reviews</p>
                     </div>
                     {% if session.user %}
-                        {% if recipe._id|string in saved_recipes %}
+                        {% if recipe._id|string in account_model.saved_recipes %}
                             <form action="{{ url_for('remove_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
                                 method="POST">
                                 <button type="submit" class="card-btn card-delete-btn" title="Remove Recipe" aria-label="Remove recipe">
@@ -68,30 +68,32 @@
 
     <form class="pagination" action="{{ url_for('az_recipes', starts_with=current_letter) }}" method="post">
         <div class="pagination-input-container">
-            {% if page_num <= 1 %}
+            {% if recipe_model.page_number == 1 %}
                 <input class="pagination-btn btn-disabled" name="page" type="submit" value="<">
             {% else %}
                 <input class="pagination-btn" name="page" type="submit" value="<">
             {% endif %}
 
-            {% for x in range(total_pages) %}
-                {% if loop.index0 == page_num - 1 %}
+            {% for x in range(recipe_model.total_pages) %}
+                {% if loop.index0 == recipe_model.page_number - 1 %}
                     <input class="pagination-btn pagination-active" name="page" type="submit" value="{{ x + 1 }}">
                 {% else %}
                     <input class="pagination-btn" name="page" type="submit" value="{{ x + 1 }}">
                 {% endif %}
             {% endfor %}
             
-            {% if page_num == total_pages or total_pages == 0 %}
+            {% if recipe_model.page_number == recipe_model.total_pages or recipe_model.total_pages == 0 %}
                 <input class="pagination-btn btn-disabled" name="page" type="submit" value=">">
             {% else %}
                 <input class="pagination-btn" name="page" type="submit" value=">">
             {% endif %}
+
         </div>
+        
         <div class="flex-row gap-md flex-center-align padding-md">
             <p>Showing</p>
             <select class="pagination-select" name="records_select" id="records_select" onchange="this.form.submit()">
-                <option value="{{ page_size }}" selected>{{ page_size }}</option>
+                <option value="{{ recipe_model.limit }}" selected>{{ recipe_model.limit }}</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="20">20</option>
