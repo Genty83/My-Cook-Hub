@@ -103,7 +103,6 @@ class RecipesModel:
         self.limit = None
         self.avg_rating = None
         self.total_reviews = None
-
         self.reviews = []
         self.avg_ratings = []
         self.review_count = []
@@ -252,7 +251,7 @@ class RecipesModel:
         if self.reviews:
             for dct in self.reviews:
                 ratings.append(dct["rating"])
-            self.avg_rating = round(mean(ratings) * 2) / 2
+            self.avg_rating = round(mean(ratings), 1)
         else:
             self.avg_rating = 0
 
