@@ -95,7 +95,7 @@ def create_recipe():
             "date": date.today().strftime("%d/%m/%Y"),
             "recipe_img": recipe_img,
             "reviews": [],
-            "recipe_index": len(list(RECIPE_DB.find())) + 1
+            "average_rating": 0
         }
         # Add recipe to db
         RECIPE_DB.insert_one(new_recipe)
@@ -170,76 +170,54 @@ def view_recipes():
     View recipes page. Shows all available recipe cards
     """
 
-    # Create model
+    # Create models
     recipe_model = RecipesModel()
     account_model = UserAccountModel(session.get("user"))
 
+    # Fetch all recipes
     recipes = recipe_model.fetch_records(
         request.form.get("records_select"),
         request.form.get("page")
     )
 
+    # Get saved recipes
     account_model.get_saved_recipes()
 
-    # Create a dictionary of all required template variables
-    template_variables = {
-        "recipes": recipes,
-        "saved_recipes": account_model.saved_recipes,
-        "avg_ratings": recipe_model.avg_ratings,
-        "review_count": recipe_model.review_count,
-        "current_page": url_for('view_recipes'),
-        "limit": recipe_model.limit,
-        "total_records": recipe_model.total_records,
-        "total_pages": recipe_model.total_pages,
-        "start_index": recipe_model.start_index,
-        "end_index": recipe_model.end_index,
-        "page_num": recipe_model.page_number,
-        "page_size": recipe_model.limit
-    }
-
+    # Render template
     return render_template(
-        "view_recipes.html", **template_variables)
+        "view_recipes.html", recipes=recipes,
+        recipe_model=recipe_model, account_model=account_model)
 
 
 @app.route("/az_recipes/<starts_with>", methods=["GET", "POST"])
 def az_recipes(starts_with):
 
-    # Create model
+    # Create models
     recipe_model = RecipesModel()
     account_model = UserAccountModel(session.get("user"))
-
+    # Fetch recipes that start with letter
     recipes = recipe_model.fetch_records_that_start_with(
         starts_with,
         request.form.get("records_select"),
         request.form.get("page")
     )
+    # Get saved recipes
     account_model.get_saved_recipes()
-    uppercase_alphabet = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
+    # Create list of all letters in alphabet
+    letters = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
 
-    template_variables = {
-        "letters": uppercase_alphabet,
-        "recipes": recipes,
-        "saved_recipes": account_model.saved_recipes,
-        "avg_ratings": recipe_model.avg_ratings,
-        "review_count": recipe_model.review_count,
-        "limit": recipe_model.limit,
-        "total_records": recipe_model.total_records,
-        "total_pages": recipe_model.total_pages,
-        "start_index": recipe_model.start_index,
-        "end_index": recipe_model.end_index,
-        "page_num": recipe_model.page_number,
-        "page_size": recipe_model.limit,
-        "current_letter": starts_with
-    }
-
-    return render_template("az_recipes.html", **template_variables)
+    # Render template
+    return render_template(
+        "az_recipes.html", letters=letters, recipes=recipes,
+        current_letter=starts_with, recipe_model=recipe_model,
+        account_model=account_model)
 
 
 @app.route("/my_recipes", methods=["GET", "POST"])
 def my_recipes():
     """ Shows the users saved recipes """
 
-    # Create model
+    # Create models
     recipe_model = RecipesModel()
     account_model = UserAccountModel(session.get("user"))
 
@@ -250,24 +228,11 @@ def my_recipes():
         request.form.get("page")
     )
 
-    # Create a dictionary of all required template variables
-    template_variables = {
-        "username": session["user"],
-        "recipes": recipe_model.all_records,
-        "my_recipes": my_recipes,
-        "saved_recipes": saved_recipes,
-        "avg_ratings": recipe_model.avg_ratings,
-        "review_count": recipe_model.review_count,
-        "limit": recipe_model.limit,
-        "total_records": recipe_model.total_records,
-        "total_pages": recipe_model.total_pages,
-        "start_index": recipe_model.start_index,
-        "end_index": recipe_model.end_index,
-        "page_num": recipe_model.page_number,
-        "page_size": recipe_model.limit
-    }
-
-    return render_template("my_recipes.html", **template_variables)
+    return render_template(
+        "my_recipes.html", username=session["user"],
+        recipes=recipe_model.all_records, my_recipes=my_recipes,
+        recipe_model=recipe_model, account_model=account_model,
+        saved_recipes=saved_recipes)
 
 
 @app.route("/recipe/<recipe_id>")
@@ -275,7 +240,6 @@ def recipe(recipe_id):
     """
     Recipe view: Shows the full recipe
     """
-
     # Create model
     recipe_model = RecipesModel()
     account_model = UserAccountModel(session.get("user"))
@@ -383,6 +347,12 @@ def review(recipe_id):
             {"$addToSet": {"reviews": review}}
         )
         flash("Review Successfully Added!!", "success")
+        # Update average rating
+        avg_rating = RecipesModel().get_recipe_reviews(recipe_id).avg_rating
+        updated_rating = {"average_rating": avg_rating}
+
+        RECIPE_DB.update_one(
+            {"_id": ObjectId(recipe_id)}, {'$set': updated_rating})
 
     return redirect(url_for("recipe", recipe_id=recipe_id))
 
@@ -416,6 +386,7 @@ def sign_in():
     if request.method == "POST":
         account_model = UserAccountModel(request.form.get("username").lower())
         account_model.enter_session()
+        return redirect(url_for("home"))
 
     return render_template("sign_in.html")
 
