@@ -1,10 +1,50 @@
 """
-Module containing the base functions and classes used in the project
-"""
+Contains the database model classes to access the mongodb collections
 
+Classes
+--------
+
+==================  ==================================================
+Class               Description
+==================  ==================================================
+UserAccountModel    Class for managing user accounts
+RecipesModel         Class for performing crud actions on recipes
+==================  ==================================================
+
+Methods
+=======
+
+UserAccountModel
+----------------
+
+get_saved_recipes: Retrieves the saved recipes from the users account.
+remove_saved_recipe: Removes a recipe from the saved recipes list.
+add_new_user: Adds a new user to the database.
+enter_session: Enters the user into a new session.
+
+RecipesModel
+------------
+
+get_saved_recipes: Retrieves the saved recipes from the users account.
+get_similar_recipes: Retrieves a fixed amount of similer recipes.
+fetch_records: Fetches all records from the recipe database.
+fetch_records_that_start_with: Gets records that start with a letter.
+fetch_my_recipes: Fetches the users recipes.
+get_recipe_reviews: Retrieves all the reviews for the given recipe.
+get_recipe: Gets the recipe for the passed in id.
+
+Static methods
+--------------
+
+check_limit_value: Checks for none type on limit and coverts to int.
+check_page_number: Checks and converts the page number to an int value.
+
+"""
+# Imports
 import math
-from statistics import mean
 import random
+
+from statistics import mean
 from src import mongo
 from flask import request, session, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -13,6 +53,11 @@ from bson.objectid import ObjectId
 # Constants
 RECIPE_DATABASE = mongo.db.recipe
 ACCOUNT_DATABASE = mongo.db.account
+
+__all__ = [
+    "UserAccountModel",
+    "RecipesModel"
+]
 
 
 class UserAccountModel:

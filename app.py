@@ -1,12 +1,35 @@
-""" Main app file: This file is the entry point to the application """
+"""
+Main app file: This file is the entry point to the application
+
+Functions
+---------
+
+home: Renders the home page template
+get_started: Renders the get started page.
+create_recipe: Renders the create recipe page.
+edit_recipe: Renders the edit recipe page.
+view_recipes: Renders the view recipes page.
+az_recipes: Renders the a-z recipes page.
+my_recipes: Renders the my recipes page.
+recipe: Renders the full recipe page.
+save_recipe: Saves the recipe.
+remove_recipe: Removes the recipe from the users saved recipes.
+delete_recipe: Deletes the recipe from the database.
+review: Adds a user review to the recipe.
+account: Renders the create account page.
+sign_in: Renders the sign in page.
+sign_out: Renders the sign out page.
+
+"""
 
 import os
 import random
+import math
+
 from datetime import date
 from src import app, mongo
 from flask import render_template, redirect, request, session, flash, url_for
 from bson.objectid import ObjectId
-import math
 from src.models import RecipesModel, UserAccountModel
 
 
