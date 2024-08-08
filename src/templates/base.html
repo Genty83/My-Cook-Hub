@@ -1,185 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <!-- Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="My Cook Hub is an online recipe site for cooking enthusiasts">
-    <!-- Title Tag -->
-    <title>Document</title>
-    <!-- Link Tags -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" type="text/css">
-    <!-- Script Tags -->
-    <script src="{{ url_for('static', filename='js/main.js') }} " defer></script>
+	<!-- Meta Tags -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="My Cook Hub is an online recipe site for cooking enthusiasts">
+	<!-- Title Tag -->
+	<title>My Cook Hub</title>
+	<!-- Link Tags -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+		type="text/css">
+	<!-- Script Tags -->
+	<script src="{{ url_for('static', filename='js/main.js') }} " defer></script>
 </head>
+
 <body>
-    <!-- SIDE MENU -->
-    <aside class="side-menu flex-col gap-sm">
-        <!-- Logo -->
-        <div class="flex-row flex-row-center-space-between">
-            <a class="logo logo-light" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
-            <a class="icon-btn" href="#" title="Open Side Menu" onclick="toggleSideMenu()">
-                <i class="fa-solid fa-bars"></i>
-            </a>
-        </div>
-        <a class="side-menu-btn" href="{{ url_for('home') }}">Home</a>
-        <a class="side-menu-btn" href="{{ url_for('view_recipes') }}">View Recipes</a>
-        {% if session.user %}
-            <a class="side-menu-btn" href="{{ url_for('my_recipes') }}">My Recipes</a>
-            <a class="side-menu-btn" href="{{ url_for('create_recipe') }}">Create Recipe</a>
-        {% endif %}
-        {% if session.user %}
-                <a class="side-menu-btn" href="{{ url_for('sign_out') }}">Sign Out</a>
-        {% else %}
-            <a class="side-menu-btn" href="{{ url_for('sign_in') }}">Sign In</a>
-        {% endif %}
-    </aside>
+	<!-- SIDE MENU -->
+	<aside class="side-menu flex-col gap-sm">
+		<!-- Logo -->
+		<div class="flex-row flex-row-center-space-between">
+			<a class="logo logo-light" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
+			<a class="icon-btn" href="#" title="Open Side Menu" onclick="toggleSideMenu()">
+				<i class="fa-solid fa-bars"></i>
+			</a>
+		</div>
+		<a class="side-menu-btn" href="{{ url_for('home') }}">Home</a>
+		<a class="side-menu-btn" href="{{ url_for('view_recipes') }}">View Recipes</a>
+		{% if session.user %}
+		<a class="side-menu-btn" href="{{ url_for('my_recipes') }}">My Recipes</a>
+		<a class="side-menu-btn" href="{{ url_for('create_recipe') }}">Create Recipe</a>
+		{% endif %}
+		{% if session.user %}
+		<a class="side-menu-btn" href="{{ url_for('sign_out') }}">Sign Out</a>
+		{% else %}
+		<a class="side-menu-btn" href="{{ url_for('sign_in') }}">Sign In</a>
+		{% endif %}
+	</aside>
 
-    <!-- BANNER -->
-    <div class="banner padding-sm">
-        <p class="font-sm">
-            Join today to and start creating your perfect recipes!
-        </p>
-    </div>
-    <!-- HEADER SECTION -->
-     <header class="header-wrapper flex-row-center-space-between">
-        <!-- Logo -->
-         <a class="logo logo-dark" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
-         <!-- Navbar -->
-          <nav class="navbar">
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('view_recipes') }}">View Recipes</a></li>
-                {% if session.user %}
-                    <li><a href="{{ url_for('my_recipes') }}">My Recipes</a></li>
-                    <li><a href="{{ url_for('create_recipe') }}">Create Recipe</a></li>
-                {% endif %}
-            </ul>
-            <div class="nav-btns-wrapper">
-                {% if not session.user %}
-                    <a class="btn std-btn btn-md" href="{{ url_for('account') }}">
-                        <i class="fa-solid fa-user-plus"></i>Create Account
-                    </a>
-                {% endif %}
-                {% if session.user %}
-                    <a class="btn std-btn btn-md" href="{{ url_for('sign_out') }}">
-                        <i class="fa-solid fa-user"></i>Sign Out
-                    </a>
-                {% else %}
-                    <a class="btn std-btn btn-md" href="{{ url_for('sign_in') }}">
-                        <i class="fa-solid fa-user"></i>Sign In
-                    </a>
-                {% endif %}
-            </div>
-          </nav>
-          <div class="nav-icon-btns-wrapper">
-            <a class="icon-btn" href="#" title="Sign In">
-                <i class="fa-solid fa-user"></i>
-            </a>
-            {% if not session.user %}
-                <a id="side-menu-btn" class="icon-btn" href="#" title="Create Account">
-                    <i class="fa-solid fa-user-plus"></i>
-                </a>
-            {% endif %}
-            <a id="side-menu-btn" class="icon-btn" href="#" title="Open Side Menu" onclick="toggleSideMenu()">
-                <i class="fa-solid fa-bars"></i>
-            </a>
-          </div>
-     </header>
+	<!-- BANNER -->
+	<div class="banner padding-sm">
+		<p class="font-sm">
+			Join today to and start creating your perfect recipes!
+		</p>
+	</div>
+	<!-- HEADER SECTION -->
+	<header class="header-wrapper flex-row-center-space-between">
+		<!-- Logo -->
+		<a class="logo logo-dark" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
+		<!-- Navbar -->
+		<nav class="navbar">
+			<ul>
+				<li><a href="{{ url_for('home') }}">Home</a></li>
+				<li><a href="{{ url_for('view_recipes') }}">View Recipes</a></li>
+				{% if session.user %}
+				<li><a href="{{ url_for('my_recipes') }}">My Recipes</a></li>
+				<li><a href="{{ url_for('create_recipe') }}">Create Recipe</a></li>
+				{% endif %}
+			</ul>
+			<div class="nav-btns-wrapper">
+				{% if not session.user %}
+				<a class="btn std-btn btn-md" href="{{ url_for('account') }}">
+					<i class="fa-solid fa-user-plus"></i>Create Account
+				</a>
+				{% endif %}
+				{% if session.user %}
+				<a class="btn std-btn btn-md" href="{{ url_for('sign_out') }}">
+					<i class="fa-solid fa-user"></i>Sign Out
+				</a>
+				{% else %}
+				<a class="btn std-btn btn-md" href="{{ url_for('sign_in') }}">
+					<i class="fa-solid fa-user"></i>Sign In
+				</a>
+				{% endif %}
+			</div>
+		</nav>
+		<div class="nav-icon-btns-wrapper">
+			<a class="icon-btn" href="#" title="Sign In">
+				<i class="fa-solid fa-user"></i>
+			</a>
+			{% if not session.user %}
+			<a id="side-menu-btn" class="icon-btn" href="#" title="Create Account">
+				<i class="fa-solid fa-user-plus"></i>
+			</a>
+			{% endif %}
+			<a id="side-menu-btn" class="icon-btn" href="#" title="Open Side Menu" onclick="toggleSideMenu()">
+				<i class="fa-solid fa-bars"></i>
+			</a>
+		</div>
+	</header>
 
-        <!-- Flash messaging -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="flash-container {{ category }} flex-row-center-space-between padding-md">
-                        <ul>   
-                            <li>{{ message }}</li>
-                        </ul>
-                        <button class="btn close-btn" type="button" onclick="closeFlashWindow()">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-     
-     <!-- Main block -->
-      {% block content %}
-      {% endblock %}
+	<!-- Flash messaging -->
+	{% with messages = get_flashed_messages(with_categories=true) %}
+	{% if messages %}
+	{% for category, message in messages %}
+	<div class="flash-container {{ category }} flex-row-center-space-between padding-md">
+		<ul>
+			<li>{{ message }}</li>
+		</ul>
+		<button class="btn close-btn" type="button" onclick="closeFlashWindow()">
+			<i class="fa-solid fa-xmark"></i>
+		</button>
+	</div>
+	{% endfor %}
+	{% endif %}
+	{% endwith %}
 
-      <!-- Footer -->
-       <footer class="footer-wrapper">
+	<!-- Main block -->
+	{% block content %}
+	{% endblock %}
 
-        <!-- Top wrapper -->
-        <div class="footer-top-wrapper">
-            <!-- Logo -->
-            <a class="logo logo-light" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
-            <div class="flex-row-center-all gap-sm">
-                <a href="http://www.facebook.com" target="_blank" class="btn social-media-btn" title="Facebook" aria-label="Go To Facebook">
-                    <i class="fa-brands fa-facebook"></i>
-                </a>
-                <a href="http://www.instagram.com" target="_blank" class="btn social-media-btn" title="Instagram" aria-label="Go To Instagram">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="http://www.twitter.com" target="_blank" class="btn social-media-btn" title="Twitter" aria-label="Go To Twitter">
-                    <i class="fa-brands fa-twitter"></i>
-                </a>
-                <a href="http://www.youtube.com" target="_blank" class="btn social-media-btn" title="Youtube" aria-label="Go To Youtube">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
-            </div>
-        </div>
-        <!-- Footer top seperator -->
-         <div class="top-seperator"></div>
-        <!-- Middle wrapper -->
-        <div class="footer-middle-wrapper">
-            <div class="footer-content flex-col gap-md">
-                <h3>About Us</h3>
-                <div class="footer-seperator"></div>
-                <p>
-                    Welcome to my cook hub. Here, we love all things cooking! 
-                    Join us and create your own personal cook book.
-                    Create recipes, view and share with others.
-                </p>
-            </div>
-            <div class="footer-content flex-col gap-md">
-                <h3>Find Us</h3>
-                <div class="footer-seperator"></div>
-                <a href="http://www.facebook.com" target="_blank" class="footer-link"><i class="fa-brands fa-facebook"></i>Facebook</a>
-                <a href="http://www.instagram.com" target="_blank" class="footer-link"><i class="fa-brands fa-instagram"></i>Instagram</a>
-                <a href="http://www.twitter.com" target="_blank" class="footer-link"><i class="fa-brands fa-twitter"></i>Twitter</a>
-                <a href="http://www.youtube.com" target="_blank" class="footer-link"><i class="fa-brands fa-youtube"></i>Youtube</a>
-            </div>
-            <div class="footer-content flex-col gap-md">
-                <h3>Useful Links</h3>
-                <div class="footer-seperator"></div>
-                <a href="{{ url_for('home') }}" class="footer-link"><i class="fa-solid fa-home"></i>Home</a>
-                <a href="{{ url_for('view_recipes') }}" class="footer-link"><i class="fa-solid fa-circle-dot"></i>View Recipes</a>
-                {% if session.user %}
-                    <a href="{{ url_for('my_recipes') }}" class="footer-link"><i class="fa-solid fa-circle-dot"></i>My Recipes</a>
-                    <a href="{{ url_for('create_recipe') }}" class="footer-link"><i class="fa-solid fa-circle-dot"></i>Create Recipe</a>
-                {% endif %}
-            </div>
-            <div class="footer-content flex-col gap-md">
-                <h3>Subscribe To Our Newsletter</h3>
-                <div class="footer-seperator"></div>
-                <p>
-                    Subscribe to our newsletter and recieve all the latest news and updates! 
-                </p>
-                <div class="subscribe-input-wrapper">
-                    <input type="text" name="email" placeholder="Enter Email:">
-                    <button class="btn std-btn btn-max-height padding-sm" type="submit">Subscribe</button>
-                </div>
-            </div>
-        </div>
-        <!-- Bottom wrapper -->
-        <div class="footer-bottom-wrapper">
-            <p>
-                &#169; All rights reserved - Craig Gent
-            </p>
-        </div>
-       </footer>
+	<!-- Footer -->
+	<footer class="footer-wrapper">
+
+		<!-- Top wrapper -->
+		<div class="footer-top-wrapper">
+			<!-- Logo -->
+			<a class="logo logo-light" href="{{ url_for('home') }}"><i class="fa-solid fa-utensils"></i>My Cook Hub</a>
+			<div class="flex-row-center-all gap-sm">
+				<a href="http://www.facebook.com" target="_blank" class="btn social-media-btn" title="Facebook"
+					aria-label="Go To Facebook">
+					<i class="fa-brands fa-facebook"></i>
+				</a>
+				<a href="http://www.instagram.com" target="_blank" class="btn social-media-btn" title="Instagram"
+					aria-label="Go To Instagram">
+					<i class="fa-brands fa-instagram"></i>
+				</a>
+				<a href="http://www.twitter.com" target="_blank" class="btn social-media-btn" title="Twitter"
+					aria-label="Go To Twitter">
+					<i class="fa-brands fa-twitter"></i>
+				</a>
+				<a href="http://www.youtube.com" target="_blank" class="btn social-media-btn" title="Youtube"
+					aria-label="Go To Youtube">
+					<i class="fa-brands fa-youtube"></i>
+				</a>
+			</div>
+		</div>
+		<!-- Footer top seperator -->
+		<div class="top-seperator"></div>
+		<!-- Middle wrapper -->
+		<div class="footer-middle-wrapper">
+			<div class="footer-content flex-col gap-md">
+				<h3>About Us</h3>
+				<div class="footer-seperator"></div>
+				<p>
+					Welcome to my cook hub. Here, we love all things cooking!
+					Join us and create your own personal cook book.
+					Create recipes, view and share with others.
+				</p>
+			</div>
+			<div class="footer-content flex-col gap-md">
+				<h3>Find Us</h3>
+				<div class="footer-seperator"></div>
+				<a href="http://www.facebook.com" target="_blank" class="footer-link"><i
+						class="fa-brands fa-facebook"></i>Facebook</a>
+				<a href="http://www.instagram.com" target="_blank" class="footer-link"><i
+						class="fa-brands fa-instagram"></i>Instagram</a>
+				<a href="http://www.twitter.com" target="_blank" class="footer-link"><i
+						class="fa-brands fa-twitter"></i>Twitter</a>
+				<a href="http://www.youtube.com" target="_blank" class="footer-link"><i
+						class="fa-brands fa-youtube"></i>Youtube</a>
+			</div>
+			<div class="footer-content flex-col gap-md">
+				<h3>Useful Links</h3>
+				<div class="footer-seperator"></div>
+				<a href="{{ url_for('home') }}" class="footer-link"><i class="fa-solid fa-home"></i>Home</a>
+				<a href="{{ url_for('view_recipes') }}" class="footer-link"><i class="fa-solid fa-circle-dot"></i>View
+					Recipes</a>
+				{% if session.user %}
+				<a href="{{ url_for('my_recipes') }}" class="footer-link"><i class="fa-solid fa-circle-dot"></i>My Recipes</a>
+				<a href="{{ url_for('create_recipe') }}" class="footer-link"><i class="fa-solid fa-circle-dot"></i>Create
+					Recipe</a>
+				{% endif %}
+			</div>
+			<div class="footer-content flex-col gap-md">
+				<h3>Subscribe To Our Newsletter</h3>
+				<div class="footer-seperator"></div>
+				<p>
+					Subscribe to our newsletter and recieve all the latest news and updates!
+				</p>
+				<div class="subscribe-input-wrapper">
+					<input type="text" name="email" placeholder="Enter Email:">
+					<button class="btn std-btn btn-max-height padding-sm" type="submit">Subscribe</button>
+				</div>
+			</div>
+		</div>
+		<!-- Bottom wrapper -->
+		<div class="footer-bottom-wrapper">
+			<p>
+				&#169; All rights reserved - Craig Gent
+			</p>
+		</div>
+	</footer>
 
 </body>
+
 </html>

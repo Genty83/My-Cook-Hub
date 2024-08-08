@@ -1,168 +1,163 @@
-<!-- VIEW RECIPES TEMPLATE -->
-
 {% extends "base.html" %}
-
-
 {% block content %}
-
 <section class="flex-col gap-lg">
+	<div class="alert-window flex-col gap-lg padding-lg">
+		<h2>Warning!</h2>
+		<p>
+			Are you sure you want to delete this recipe?
+			<br>
+			This will permanently delete this recipe!!
+			<div>
+				<form action="{{ url_for('delete_recipe', recipe_id=recipe._id) }}" method="post" class="flex-row gap-sm">
+					<button type="submit" class="btn std-btn btn-md">Yes</button>
+					<button type="button" class="btn std-btn btn-md" onclick="toggleAlertWindow()">No</button>
+				</form>
+			</div>
+		</p>
+	</div>
 
-    <div class="alert-window flex-col gap-lg padding-lg">
-        <h2>Warning!</h2>
-        <p>
-            Are you sure you want to delete this recipe?
-            <br>
-            This will permanently delete this recipe!!
-            <div>
-                <form action="{{ url_for('delete_recipe', recipe_id=recipe._id) }}" method="post" class="flex-row gap-sm">
-                    <button type="submit" class="btn std-btn btn-md">Yes</button>
-                    <button type="button" class="btn std-btn btn-md" onclick="toggleAlertWindow()">No</button>
-                </form>
-            </div>
-        </p>
-    </div>
+	{% include "review_form.html" %}
+	{% include "reviews_board.html" %}
 
-    {% include "review_form.html" %}
-    {% include "reviews_board.html" %}
+	<div class="recipe-header flex-col gap-md padding-md">
+		<form action="{{ url_for('search', recipe_id=recipe._id) }}" method="post" class="searchbar">
+			<input type="text" name="search" id="search" minlength="3" placeholder="Search:" required>
+			<a href="{{ url_for('recipe', recipe_id=recipe._id) }}" class="btn icon-btn" title="Clear">
+				<i class="fa-solid fa-trash"></i>
+			</a>
+			<button class="btn icon-btn" type="submit" title="Search">
+				<i class="fa-solid fa-search"></i>
+			</button>
+		</form>
+		{% if recipes %}
+		<div class="search-results-window flex-col gap-md padding-md">
+			{% for r in recipes %}
+			<a class="search-result" href="{{ url_for('recipe', recipe_id=r._id) }}">
+				<img class="search-result-img" src="{{ r.recipe_img.src }}" alt="{{ r.recipe_img.alt }}">
+				{{ r.recipe_name }}
 
-    <div class="recipe-header flex-col gap-md padding-md">
-        <form action="{{ url_for('search', recipe_id=recipe._id) }}" method="post" class="searchbar">
-            <input type="text" name="search" id="search" minlength="3" placeholder="Search:" required>
-            <a href="{{ url_for('recipe', recipe_id=recipe._id) }}" class="btn icon-btn" title="Clear">
-                <i class="fa-solid fa-trash"></i>
-            </a>
-            <button class="btn icon-btn" type="submit" title="Search">
-                <i class="fa-solid fa-search"></i>
-            </button>
-        </form>
-        {% if recipes %}
-            <div class="search-results-window flex-col gap-md padding-md">
-                {% for r in recipes %}
-                    <a class="search-result" href="{{ url_for('recipe', recipe_id=r._id) }}">
-                        <img class="search-result-img" src="{{ r.recipe_img.src }}" alt="{{ r.recipe_img.alt }}">
-                        {{ r.recipe_name }}
+			</a>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+	<div class="recipe-section gap-lg padding-lg">
+		<!-- Recipe content wrapper -->
+		<div class="recipe-content flex-col gap-lg">
+			<p class="section-header">{{ recipe.recipe_name|title }}</p>
 
-                    </a>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </div>
-    <div class="recipe-section gap-lg padding-lg">
-        <!-- Recipe content wrapper -->
-        <div class="recipe-content flex-col gap-lg">
-            <p class="section-header">{{ recipe.recipe_name|title }}</p>
-    
-            <div class="flex-row flex-center-align gap-md">
-                {% if recipe.average_rating == 0 %}
-                    {% for x in range(5) %}
-                        <i class="rating-star-light fa-regular fa-star"></i>
-                    {% endfor %}
+			<div class="flex-row flex-center-align gap-md">
+				{% if recipe.average_rating == 0 %}
+				{% for x in range(5) %}
+				<i class="rating-star-light fa-regular fa-star"></i>
+				{% endfor %}
 
-                {% else %}
-                    {% if recipe.average_rating % 100 > 4 %}
-                        {% set rating = recipe.average_rating | round | int - 1 %}
-                    {% else %}
-                        {% set rating = recipe.average_rating | round | int %}
-                    {% endif %}
-                    
-                    {% for x in range(rating) %}
-                        <i class="rating-star fa-solid fa-star"></i>
-                    {% endfor %}
+				{% else %}
+				{% if recipe.average_rating % 100 > 4 %}
+				{% set rating = recipe.average_rating | round | int - 1 %}
+				{% else %}
+				{% set rating = recipe.average_rating | round | int %}
+				{% endif %}
 
-                    {% if recipe.average_rating % 100 > 4 %}
-                        <i class="rating-star fa-solid fa-star-half"></i>
-                    {% endif %}  
+				{% for x in range(rating) %}
+				<i class="rating-star fa-solid fa-star"></i>
+				{% endfor %}
 
-                    {% for x in range(5 - rating) %}
-                        {% if recipe.average_rating < 4.4 %}
-                            <i class="rating-star-light fa-regular fa-star"></i>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                <a class="link-underline" onclick="toggleReviewsBoard()">from {{ total_reviews }} reviews</a>
-            </div>
-    
-            <div class="flex-row gap-md">
-                {% if session["user"] %}
-                    <a class="btn social-media-btn" title="Leave Review" aria-label="Leave Review" onclick="toggleReviewForm()">
-                        <i class="fa-solid fa-face-smile"></i>
-                    </a>
-                {% endif %}
-                {% if recipe.created_by == session["user"] %}
-                    <a href="{{ url_for('edit_recipe', recipe_id=recipe._id) }}" class="btn social-media-btn" title="Edit Recipe" aria-label="Edit recipe">
-                        <i class="fa-solid fa-pencil"></i>
-                    </a>
-                    <a class="btn social-media-btn" title="Remove Recipe" aria-label="Remove recipe" onclick="toggleAlertWindow()">
-                        <i class="fa-solid fa-trash"></i>
-                    </a>
-                {% endif %}
-            </div>
-            <p>By <strong>{{ recipe.created_by }}</strong></p>
-    
-            <!-- Recipe image wrapper -->
-            <div class="recipe-img-wrapper gap-lg">
-            <img class="recipe-image" src="{{ recipe.recipe_img.src }}"
-                alt="Image of '{{ recipe.recipe_name|title }}' recipe."
-                title="Image of '{{ recipe.recipe_name|title }}' recipe.">
-                <div class="flex-col gap-md">
-                <p class="paragraph-light">Preperation Time</p>
-                <p class="paragraph-highlight">{{ recipe.prep_time }}</p>
-                <p class="paragraph-light">Cook Time</p>
-                <p class="paragraph-highlight">{{ recipe.cook_time }}</p>
-                <p class="paragraph-light">Serves</p>
-                <p class="paragraph-highlight">{{ recipe.servings}}</p>
-                <p class="paragraph-light">Meal Type</p>
-                <p class="paragraph-highlight">{{ recipe.meal_type}}</p>
-                <p class="paragraph-light">Date Created</p>
-                <p class="paragraph-highlight">{{ recipe.date}}</p>
-                </div>
-            </div>
-            <p>{{ recipe.recipe_desc }}</p>
-            <div class="h_seperator"></div>
-    
-             <h2>Ingredients</h2>
-             <ul class="flex-col gap-lg">
-                {% for ingredient in recipe.ingredients %}
-                    <li class="recipe-list-item"><p>{{ loop.index }}.</p>{{ingredient}}</li>
-                {% endfor %}
-            </ul>
-            <div class="h_seperator"></div>
-            <h2>Method</h2>
-            <ul class="flex-col gap-lg">
-                {% for x in recipe.method %}
-                    <li class="recipe-list-item"><p>{{ loop.index }}.</p>{{x}}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <!-- Recipe Banner Wrapper-->
-        <div class="recipe-banner flex-col gap-lg padding-lg">
-            <h2>Related Recipes</h2>
-            {% for x in related_recipes %}
-                <div class="banner-card flex-col gap-md">
-                    <img class="banner-image" src="{{ x.recipe_img.src }}"
-                    alt="Image of '{{ x.recipe_name|title }}' recipe."
-                    title="Image of '{{ x.recipe_name|title }}' recipe.">
-                    <a href="{{ url_for('recipe', recipe_id=x._id) }}" class="link-underline">{{ x.recipe_name }}</a>
-                    <p><strong>By </strong>{{ x.created_by }}</p>
-                </div>
-            {% endfor %}
-            <div class="h_seperator"></div>
-            <h2>More {{ recipe.meal_type }} Recipes</h2>
-            <div class="overflow-container">
-                {% for x in similar_meals %}
-                    <div class="banner-card flex-col gap-md">
-                        <img class="banner-image" src="{{ x.recipe_img.src }}"
-                        alt="Image of '{{ x.recipe_name|title }}' recipe."
-                        title="Image of '{{ x.recipe_name|title }}' recipe.">
-                        <a href="{{ url_for('recipe', recipe_id=x._id) }}" class="link-underline">{{ x.recipe_name }}</a>
-                        <p><strong>By </strong>{{ x.created_by }}</p>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="h_seperator"></div>
-        </div>
-    
-    </div>
+				{% if recipe.average_rating % 100 > 4 %}
+				<i class="rating-star fa-solid fa-star-half"></i>
+				{% endif %}
+
+				{% for x in range(5 - rating) %}
+				{% if recipe.average_rating < 4.4 %}
+				<i class="rating-star-light fa-regular fa-star"></i>
+				{% endif %}
+				{% endfor %}
+				{% endif %}
+				<a class="link-underline" onclick="toggleReviewsBoard()">from {{ total_reviews }} reviews</a>
+			</div>
+
+			<div class="flex-row gap-md">
+				{% if session["user"] %}
+				<a class="btn social-media-btn" title="Leave Review" aria-label="Leave Review" onclick="toggleReviewForm()">
+					<i class="fa-solid fa-face-smile"></i>
+				</a>
+				{% endif %}
+				{% if recipe.created_by == session["user"] %}
+				<a href="{{ url_for('edit_recipe', recipe_id=recipe._id) }}" class="btn social-media-btn" title="Edit Recipe"
+					aria-label="Edit recipe">
+					<i class="fa-solid fa-pencil"></i>
+				</a>
+				<a class="btn social-media-btn" title="Remove Recipe" aria-label="Remove recipe" onclick="toggleAlertWindow()">
+					<i class="fa-solid fa-trash"></i>
+				</a>
+				{% endif %}
+			</div>
+			<p>By <strong>{{ recipe.created_by }}</strong></p>
+
+			<!-- Recipe image wrapper -->
+			<div class="recipe-img-wrapper gap-lg">
+				<img class="recipe-image" src="{{ recipe.recipe_img.src }}"
+					alt="Image of '{{ recipe.recipe_name|title }}' recipe."
+					title="Image of '{{ recipe.recipe_name|title }}' recipe.">
+				<div class="flex-col gap-md">
+					<p class="paragraph-light">Preperation Time</p>
+					<p class="paragraph-highlight">{{ recipe.prep_time }}</p>
+					<p class="paragraph-light">Cook Time</p>
+					<p class="paragraph-highlight">{{ recipe.cook_time }}</p>
+					<p class="paragraph-light">Serves</p>
+					<p class="paragraph-highlight">{{ recipe.servings}}</p>
+					<p class="paragraph-light">Meal Type</p>
+					<p class="paragraph-highlight">{{ recipe.meal_type}}</p>
+					<p class="paragraph-light">Date Created</p>
+					<p class="paragraph-highlight">{{ recipe.date}}</p>
+				</div>
+			</div>
+			<p>{{ recipe.recipe_desc }}</p>
+			<div class="h_seperator"></div>
+
+			<h2>Ingredients</h2>
+			<ul class="flex-col gap-lg">
+				{% for ingredient in recipe.ingredients %}
+				<li class="recipe-list-item">
+					<p>{{ loop.index }}.</p>{{ingredient}}
+				</li>
+				{% endfor %}
+			</ul>
+			<div class="h_seperator"></div>
+			<h2>Method</h2>
+			<ul class="flex-col gap-lg">
+				{% for x in recipe.method %}
+				<li class="recipe-list-item">
+					<p>{{ loop.index }}.</p>{{x}}
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<!-- Recipe Banner Wrapper-->
+		<div class="recipe-banner flex-col gap-lg padding-lg">
+			<h2>Related Recipes</h2>
+			{% for x in related_recipes %}
+			<div class="banner-card flex-col gap-md">
+				<img class="banner-image" src="{{ x.recipe_img.src }}" alt="Image of '{{ x.recipe_name|title }}' recipe."
+					title="Image of '{{ x.recipe_name|title }}' recipe.">
+				<a href="{{ url_for('recipe', recipe_id=x._id) }}" class="link-underline">{{ x.recipe_name }}</a>
+				<p><strong>By </strong>{{ x.created_by }}</p>
+			</div>
+			{% endfor %}
+			<div class="h_seperator"></div>
+			<h2>More {{ recipe.meal_type }} Recipes</h2>
+			<div class="overflow-container">
+				{% for x in similar_meals %}
+				<div class="banner-card flex-col gap-md">
+					<img class="banner-image" src="{{ x.recipe_img.src }}" alt="Image of '{{ x.recipe_name|title }}' recipe."
+						title="Image of '{{ x.recipe_name|title }}' recipe.">
+					<a href="{{ url_for('recipe', recipe_id=x._id) }}" class="link-underline">{{ x.recipe_name }}</a>
+					<p><strong>By </strong>{{ x.created_by }}</p>
+				</div>
+				{% endfor %}
+			</div>
+			<div class="h_seperator"></div>
+		</div>
+	</div>
 </section>
-
 {% endblock %}

@@ -1,29 +1,28 @@
 <div class="review-container flex-row gap-md">
+	{% if recipe.average_rating == 0 %}
+	{% for x in range(5) %}
+	<i class="rating-star-light fa-regular fa-star"></i>
+	{% endfor %}
 
-    {% if recipe.average_rating == 0 %}
-        {% for x in range(5) %}
-            <i class="rating-star-light fa-regular fa-star"></i>
-        {% endfor %}
+	{% else %}
+	{% if recipe.average_rating % 100 > 4 %}
+	{% set rating = recipe.average_rating | round | int - 1 %}
+	{% else %}
+	{% set rating = recipe.average_rating | round | int %}
+	{% endif %}
 
-    {% else %}
-        {% if recipe.average_rating % 100 > 4 %}
-            {% set rating = recipe.average_rating | round | int - 1 %}
-        {% else %}
-            {% set rating = recipe.average_rating | round | int %}
-        {% endif %}
-        
-        {% for x in range(rating) %}
-            <i class="rating-star fa-solid fa-star"></i>
-        {% endfor %}
+	{% for x in range(rating) %}
+	<i class="rating-star fa-solid fa-star"></i>
+	{% endfor %}
 
-        {% if recipe.average_rating % 100 > 4 %}
-            <i class="rating-star fa-solid fa-star-half"></i>
-        {% endif %}  
+	{% if recipe.average_rating % 100 > 4 %}
+	<i class="rating-star fa-solid fa-star-half"></i>
+	{% endif %}
 
-        {% for x in range(5 - rating) %}
-            {% if recipe.average_rating < 4.4 %}
-                <i class="rating-star-light fa-regular fa-star"></i>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+	{% for x in range(5 - rating) %}
+	{% if recipe.average_rating < 4.4 %}
+	<i class="rating-star-light fa-regular fa-star"></i>
+	{% endif %}
+	{% endfor %}
+	{% endif %}
 </div>

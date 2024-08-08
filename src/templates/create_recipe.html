@@ -6,124 +6,110 @@
 
 <section class="base-section">
 
-    <div class="create_recipe_form">
+	<div class="create_recipe_form">
 
-        <form action="{{ url_for('create_recipe') }}" method="post">
+		<form action="{{ url_for('create_recipe') }}" method="post">
+			<h3>Create New Recipe</h3>
+			<fieldset class="f-set">
+				<legend>Recipe Name/Description/Image</legend>
+				<div class="form-input">
+					<i class="fa-solid fa-pen"></i>
+					<input id="recipe_name" name="recipe_name" type="text" minlength="5" maxlength="35" placeholder="Recipe Name:"
+						required aria-label="Recipe Name">
+				</div>
+				<div class="form-textarea">
+					<i class="fa-solid fa-pen"></i>
+					<textarea id="recipe_desc" name="recipe_desc" minlength="5" maxlength="700" placeholder="Recipe Description"
+						required aria-label="Recipe Description"></textarea>
+				</div>
+				<div class="form-input">
+					<i class="fa-solid fa-image"></i>
+					<input id="recipe_img" name="recipe_img" type="text" minlength="5" maxlength="180"
+						placeholder="e.g. https://img.freepik.com/free-photo/default-title_422131-141:" aria-label="Recipe Image">
+				</div>
+			</fieldset>
 
-            <h3>Create New Recipe</h3>
+			<fieldset class="f-set auto-cols">
+				<legend>Overview</legend>
+				<div class="form-input">
+					<i class="fa-solid fa-clock"></i>
+					<input id="prep_time" name="prep_time" type="text" minlength="5" maxlength="15" placeholder="Prep Time:"
+						required aria-label="Prep Time">
+				</div>
+				<div class="form-input">
+					<i class="fa-solid fa-clock"></i>
+					<input id="cook_time" name="cook_time" type="text" minlength="5" maxlength="15" placeholder="Cook Time:"
+						required aria-label="Cook Time">
+				</div>
+				<div class="form-input">
+					<i class="fa-solid fa-clock"></i>
+					<input id="servings" name="servings" type="text" minlength="1" maxlength="5" placeholder="Servings:" required
+						aria-label="Servings">
+				</div>
+				<div class="form-combo">
+					<i class="fa-solid fa-bowl-food"></i>
+					<select id="meal_type" name="meal_type" required aria-label="Select Meal Type">
+						<option value="" disabled selected>Meal Type:</option>
+						<option value="Breakfast">Breakfast</option>
+						<option value="Lunch">Lunch</option>
+						<option value="Dinner">Dinner</option>
+						<option value="Dessert">Dessert</option>
+						<option value="Baking">Baking</option>
+						<option value="Brunch">Brunch</option>
+						<option value="Side Dishes">Side Dishes</option>
+						<option value="Drinks and Cocktails">Drinks and Cocktails</option>
+					</select>
+				</div>
+			</fieldset>
 
-            <fieldset class="f-set">
-                <legend>Recipe Name/Description/Image</legend>
+			<fieldset class="f-set">
+				<legend>Ingredients</legend>
+				<table class="form-tbl">
+					<thead>
+						<tr>
+							<th class="tbl-col-1">No</th>
+							<th>Ingredient</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for x in range(1, 31) %}
+						<tr>
+							<td><strong>{{x}}.</strong></td>
+							<td>
+								<textarea id="ingredient-{{x}}" name="ingredients[]" aria-label="Add Ingredient"></textarea>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</fieldset>
 
-                <div class="form-input">
-                    <i class="fa-solid fa-pen"></i>
-                    <input id="recipe_name" name="recipe_name" type="text" minlength="5"
-                        maxlength="35" placeholder="Recipe Name:" required>
-                </div>
+			<fieldset class="f-set">
+				<legend>Recipe Steps</legend>
+				<table class="form-tbl">
+					<thead>
+						<tr>
+							<th class="tbl-col-1">Step</th>
+							<th>Method</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for x in range(1, 21) %}
+						<tr>
+							<td><strong>{{x}}.</strong></td>
+							<td>
+								<textarea id="step_desc-{{x}}" name="step_desc[]" minlength="5" maxlength="500"
+									aria-label="Add Step Description "></textarea>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</fieldset>
+			<button class="btn std-btn btn-lg" type="submit"><i class="fa-solid fa-plus"></i>Add recipe</button>
+		</form>
 
-                <div class="form-textarea">
-                    <i class="fa-solid fa-pen"></i>
-                    <textarea id="recipe_desc" name="recipe_desc" minlength="5"
-                        maxlength="700" placeholder="Recipe Description" required></textarea>
-                </div>
-
-                <div class="form-input">
-                    <i class="fa-solid fa-image"></i>
-                    <input id="recipe_img" name="recipe_img" type="text" minlength="5"
-                        maxlength="180" placeholder="e.g. https://img.freepik.com/free-photo/default-title_422131-141:">
-                </div>
-
-
-
-            </fieldset>
-
-            <fieldset class="f-set auto-cols">
-                <legend>Overview</legend>
-
-                <div class="form-input">
-                    <i class="fa-solid fa-clock"></i>
-                    <input id="prep_time" name="prep_time" type="text" minlength="5"
-                        maxlength="15" placeholder="Prep Time:" required>
-                </div>
-                <div class="form-input">
-                    <i class="fa-solid fa-clock"></i>
-                    <input id="cook_time" name="cook_time" type="text" minlength="5"
-                        maxlength="15" placeholder="Cook Time:" required>
-                </div>
-                <div class="form-input">
-                    <i class="fa-solid fa-clock"></i>
-                    <input id="servings" name="servings" type="text" minlength="1"
-                        maxlength="5" placeholder="Servings:" required>
-                </div>
-                <div class="form-combo">
-                    <i class="fa-solid fa-bowl-food"></i>
-                    <select id="meal_type" name="meal_type" required>
-                        <option value="" disabled selected>Meal Type:</option>
-                        <option value="Breakfast">Breakfast</option>
-                        <option value="Lunch">Lunch</option>
-                        <option value="Dinner">Dinner</option>
-                        <option value="Dessert">Dessert</option>
-                        <option value="Baking">Baking</option>
-                        <option value="Brunch">Brunch</option>
-                        <option value="Side Dishes">Side Dishes</option>
-                        <option value="Drinks and Cocktails">Drinks and Cocktails</option>
-                    </select>
-                </div>
-                
-            </fieldset>
-
-            <fieldset class="f-set">
-                <legend>Ingredients</legend>
-                <table class="form-tbl">
-                    <thead>
-                        <tr>
-                            <th class="tbl-col-1">No</th>
-                            <th>Ingredient</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for x in range(1, 31) %}
-                            <tr>
-                                <td><strong>{{x}}.</strong></td>
-                                <td>
-                                    <textarea id="ingredient-{{x}}" name="ingredients[]">
-
-                                    </textarea>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </fieldset>
-
-            <fieldset class="f-set">
-                <legend>Recipe Steps</legend>
-                <table class="form-tbl">
-                    <thead>
-                        <tr>
-                            <th class="tbl-col-1">Step</th>
-                            <th>Method</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for x in range(1, 21) %}
-                            <tr>
-                                <td><strong>{{x}}.</strong></td>
-                                <td>
-                                    <textarea id="step_desc-{{x}}" name="step_desc[]" minlength="5" maxlength="500">
-
-                                    </textarea>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </fieldset>
-            <button class="btn std-btn btn-lg" type="submit"><i class="fa-solid fa-plus"></i>Add recipe</button>
-        </form>
-
-    </div>
+	</div>
 </section>
 
 {% endblock %}
-

@@ -1,0 +1,32 @@
+<div class="pagination-input-container">
+  {% if recipe_model.page_number == 1 %}
+  <input class="pagination-btn btn-disabled" name="page" type="submit" value="<">
+  {% else %}
+  <input class="pagination-btn" name="page" type="submit" value="<">
+  {% endif %}
+
+  {% for x in range(recipe_model.total_pages) %}
+  {% if loop.index0 == recipe_model.page_number - 1 %}
+  <input class="pagination-btn pagination-active" name="page" type="submit" value="{{ x + 1 }}">
+  {% else %}
+  <input class="pagination-btn" name="page" type="submit" value="{{ x + 1 }}">
+  {% endif %}
+  {% endfor %}
+
+  {% if recipe_model.page_number == recipe_model.total_pages or recipe_model.total_pages == 0 %}
+  <input class="pagination-btn btn-disabled" name="page" type="submit" value=">">
+  {% else %}
+  <input class="pagination-btn" name="page" type="submit" value=">">
+  {% endif %}
+</div>
+<div class="flex-row gap-md flex-center-align padding-md">
+  <p>Showing</p>
+  <select class="pagination-select" name="records_select" id="records_select" onchange="this.form.submit()">
+    <option value="{{ recipe_model.limit }}" selected>{{ recipe_model.limit }}</option>
+    <option value="5">5</option>
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="30">30</option>
+  </select>
+  <p>Records</p>
+</div>

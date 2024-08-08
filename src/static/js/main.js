@@ -16,7 +16,7 @@ function toggleReviewForm() {
     } else {
         reviewForm.style.display = "none";
     }
-    
+
 }
 
 /** Function to toggle reviews board */
@@ -43,7 +43,7 @@ function toggleAlertWindow() {
 
 /** Function to toggle the side menu */
 function toggleSideMenu() {
-    
+
     var sideMenu = document.querySelector('.side-menu');
 
     if (sideMenu.getBoundingClientRect().width == 0) {

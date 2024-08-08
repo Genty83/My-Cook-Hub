@@ -1,108 +1,72 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-
 <section class="flex-col gap-lg padding-horz-responsive">
-    <h2>A To Z Recipes</h2>
+	<h2>A To Z Recipes</h2>
 
-    <div class="flex-col gap-sm">
-        <div class="flex-row gap-sm">
-            <a href="{{ url_for('view_recipes') }}" class="tab-btn tab-inactive">All Recipes</a>
-            <a href="" class="tab-btn tab-active">A - Z</a>
-        </div>
-        <div class="h_seperator"></div>
-    </div>
+	<div class="flex-col gap-sm">
+		<div class="flex-row gap-sm">
+			<a href="{{ url_for('view_recipes') }}" class="tab-btn tab-inactive">All Recipes</a>
+			<a href="" class="tab-btn tab-active">A - Z</a>
+		</div>
+		<div class="h_seperator"></div>
+	</div>
 
-    <div class="letter-search-wrapper">
-        {% for letter in letters %}
-            {% if letter == current_letter %}
-                <a href="{{ url_for('az_recipes', starts_with=letter) }}" class="letter-btn letter-btn-active">{{ letter }}</a>
-            {% else %}
-                <a href="{{ url_for('az_recipes', starts_with=letter) }}" class="letter-btn">{{ letter }}</a>
-            {% endif %}
-        {% endfor %}
-    </div>
+	<div class="letter-search-wrapper">
+		{% for letter in letters %}
+		{% if letter == current_letter %}
+		<a href="{{ url_for('az_recipes', starts_with=letter) }}" class="letter-btn letter-btn-active">{{ letter }}</a>
+		{% else %}
+		<a href="{{ url_for('az_recipes', starts_with=letter) }}" class="letter-btn">{{ letter }}</a>
+		{% endif %}
+		{% endfor %}
+	</div>
 
-    <div class="flex-row gap-sm flex-center-align">
-        <p>
-            Showing <strong>{{ recipe_model.start_index }} - {{ recipe_model.end_index }}</strong> of <strong>{{ recipe_model.total_records }}</strong> Recipes
-        </p>
-    </div>
+	<div class="flex-row gap-sm flex-center-align">
+		<p>
+			Showing <strong>{{ recipe_model.start_index }} - {{ recipe_model.end_index }}</strong> of
+			<strong>{{ recipe_model.total_records }}</strong> Recipes
+		</p>
+	</div>
 
-    <div class="view-recipe-content padding-lg gap-md">
-        {% if recipes|length > 0 %}
-            {% for recipe in recipes %}
-                <div class="recipe-card">
-                    <img src="{{ recipe.recipe_img.src }}" alt="{{ recipe.recipe_img.alt }}">
-                    <div class="flex-col padding-md gap-md">
-                        <a href="{{ url_for('recipe', recipe_id=recipe._id) }}" class="card-title">{{ recipe.recipe_name }}</a>
-                        
-                        {% include "star_rating.html" %}
+	<div class="view-recipe-content padding-lg gap-md">
+		{% if recipes|length > 0 %}
+		{% for recipe in recipes %}
+		<div class="recipe-card">
+			<img src="{{ recipe.recipe_img.src }}" alt="{{ recipe.recipe_img.alt }}">
+			<div class="flex-col padding-md gap-md">
+				<a href="{{ url_for('recipe', recipe_id=recipe._id) }}" class="card-title">{{ recipe.recipe_name }}</a>
 
-                        <p> {{ recipe.reviews|length }} Reviews</p>
-                    </div>
-                    {% if session.user %}
-                        {% if recipe._id|string in account_model.saved_recipes %}
-                            <form action="{{ url_for('remove_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
-                                method="POST">
-                                <button type="submit" class="card-btn card-delete-btn" title="Remove Recipe" aria-label="Remove recipe">
-                                    <i class="fa-solid fa-eraser"></i>
-                                </button>
-                            </form>
-                        {% else %}
-                            <form action="{{ url_for('save_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
-                                method="POST">
-                                <button type="submit" class="card-btn card-add-btn" title="Save Recipe" aria-label="Save recipe">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                            </form>
-                        {% endif %}
-                    {% endif %}
-                </div>  
-            {% endfor %}
-        {% else %}
-            <h2>Sorry, There are no recipes available!!</h2>
-        {% endif %}
-    </div>
+				{% include "star_rating.html" %}
 
-    <form class="pagination" action="{{ url_for('az_recipes', starts_with=current_letter) }}" method="post">
-        <div class="pagination-input-container">
-            {% if recipe_model.page_number == 1 %}
-                <input class="pagination-btn btn-disabled" name="page" type="submit" value="<">
-            {% else %}
-                <input class="pagination-btn" name="page" type="submit" value="<">
-            {% endif %}
+				<p> {{ recipe.reviews|length }} Reviews</p>
+			</div>
+			{% if session.user %}
+			{% if recipe._id|string in account_model.saved_recipes %}
+			<form action="{{ url_for('remove_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
+				method="POST">
+				<button type="submit" class="card-btn card-delete-btn" title="Remove Recipe" aria-label="Remove recipe">
+					<i class="fa-solid fa-eraser"></i>
+				</button>
+			</form>
+			{% else %}
+			<form action="{{ url_for('save_recipe', current_page=url_for('view_recipes'), recipe_id=recipe._id) }}"
+				method="POST">
+				<button type="submit" class="card-btn card-add-btn" title="Save Recipe" aria-label="Save recipe">
+					<i class="fa-solid fa-plus"></i>
+				</button>
+			</form>
+			{% endif %}
+			{% endif %}
+		</div>
+		{% endfor %}
+		{% else %}
+		<h2>Sorry, There are no recipes available!!</h2>
+		{% endif %}
+	</div>
 
-            {% for x in range(recipe_model.total_pages) %}
-                {% if loop.index0 == recipe_model.page_number - 1 %}
-                    <input class="pagination-btn pagination-active" name="page" type="submit" value="{{ x + 1 }}">
-                {% else %}
-                    <input class="pagination-btn" name="page" type="submit" value="{{ x + 1 }}">
-                {% endif %}
-            {% endfor %}
-            
-            {% if recipe_model.page_number == recipe_model.total_pages or recipe_model.total_pages == 0 %}
-                <input class="pagination-btn btn-disabled" name="page" type="submit" value=">">
-            {% else %}
-                <input class="pagination-btn" name="page" type="submit" value=">">
-            {% endif %}
-
-        </div>
-        
-        <div class="flex-row gap-md flex-center-align padding-md">
-            <p>Showing</p>
-            <select class="pagination-select" name="records_select" id="records_select" onchange="this.form.submit()">
-                <option value="{{ recipe_model.limit }}" selected>{{ recipe_model.limit }}</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-            </select>
-            <p>Records</p>
-        </div>
-    </form>
-
+	<form class="pagination" action="{{ url_for('az_recipes', starts_with=current_letter) }}" method="post">
+		{% include "pagination.html" %}
+	</form>
 </section>
-
 {% endblock %}

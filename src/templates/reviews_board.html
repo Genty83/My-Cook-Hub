@@ -1,17 +1,15 @@
-
 <div class="reviews-board flex-col gap-lg padding-lg">
-
-    <div class="flex-row flex-row-center-space-between">
-        <p class="form-heading">{{ recipe.recipe_name }} Reviews</p>
-        <button class="btn icon-btn tootip" type="button" tooltip-text="Close" onclick="toggleReviewsBoard()">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-    </div>
-    {% for obj in reviews %}
-        <div class="review-wrapper flex-col gap-lg padding-md">
-            <p>Rated By <strong>{{ obj.created_by }}</strong></p>
-            <p>{{ obj.review_desc }}</p>
-            <p>Rating: {{ obj.rating }} <i class="rating-star fa-solid fa-star"></i></p>
-        </div>
-    {% endfor %}
+	<div class="flex-row flex-row-center-space-between">
+		<p class="form-heading">{{ recipe.recipe_name }} Reviews</p>
+		<button class="btn icon-btn tootip" type="button" tooltip-text="Close" onclick="toggleReviewsBoard()">
+			<i class="fa-solid fa-xmark"></i>
+		</button>
+	</div>
+	{% for obj in reviews %}
+	<div class="review-wrapper flex-col gap-lg padding-md">
+		<p>Rated By <strong>{{ obj.created_by }}</strong></p>
+		<p>{{ obj.review_desc }}</p>
+		<p>Rating: {{ obj.rating }} <i class="rating-star fa-solid fa-star"></i></p>
+	</div>
+	{% endfor %}
 </div>
