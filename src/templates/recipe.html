@@ -59,15 +59,24 @@
 				{% set rating = recipe.average_rating | round | int %}
 				{% endif %}
 
+				{% set half_star_count = 0 %}
+
 				{% for x in range(rating) %}
 				<i class="rating-star fa-solid fa-star"></i>
 				{% endfor %}
 
 				{% if recipe.average_rating % 100 > 4 %}
 				<i class="rating-star fa-solid fa-star-half"></i>
+				{% set half_star_count = 1 %}
 				{% endif %}
 
-				{% for x in range(5 - rating) %}
+				{% if recipe.average_rating == 5 %}
+				{% set rng = 4 %}
+				{% else %}
+				{% set rng = 5 %}
+				{% endif %}
+
+				{% for x in range(rng - rating - half_star_count) %}
 				{% if recipe.average_rating < 4.4 %}
 				<i class="rating-star-light fa-regular fa-star"></i>
 				{% endif %}

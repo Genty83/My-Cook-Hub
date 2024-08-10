@@ -5,7 +5,7 @@
 			<i class="fa-solid fa-xmark"></i>
 		</button>
 	</div>
-	{% for obj in reviews %}
+	{% for obj in recipe.reviews %}
 	<div class="review-wrapper flex-col gap-lg padding-md">
 		<p>Rated By <strong>{{ obj.created_by }}</strong></p>
 		<p>{{ obj.review_desc }}</p>

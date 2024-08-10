@@ -31,6 +31,7 @@ from src import app, mongo
 from flask import render_template, redirect, request, session, flash, url_for
 from bson.objectid import ObjectId
 from src.models import RecipesModel, UserAccountModel
+from statistics import mean
 
 
 # Constants
@@ -279,7 +280,6 @@ def recipe(recipe_id):
     template_variables = {
         "recipe": recipe,
         "recipe_id": recipe_id,
-        "avg_rating": recipe_model.avg_rating,
         "total_reviews": recipe_model.total_reviews,
         "saved_recipes": account_model.saved_recipes,
         "current_page": url_for('view_recipes'),
@@ -371,7 +371,8 @@ def review(recipe_id):
         )
         flash("Review Successfully Added!!", "success")
         # Update average rating
-        avg_rating = RecipesModel().get_recipe_reviews(recipe_id).avg_rating
+        reviews = RECIPE_DB.find_one({"_id": ObjectId(recipe_id)}).get("reviews")
+        avg_rating = round(mean([x.get("rating") for x in reviews]),1)
         updated_rating = {"average_rating": avg_rating}
 
         RECIPE_DB.update_one(
