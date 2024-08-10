@@ -6,7 +6,7 @@
 
 My Cook Hub is a website for cooking enthusiasts to create and store there home made recipes. The user can also retrieve the recipes from the database to use as and when they please.
 
-Visit the deployed site [here]().
+Visit the deployed site [here](https://my-cook-hub-3d2de6e4989e.herokuapp.com/).
 
 ## Table of Contents
 
