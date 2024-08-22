@@ -269,7 +269,9 @@ class RecipesModel:
         return data
 
     def get_recipe_reviews(self, recipe_id):
-        """ """
+        """
+        Gets a list of the reviews for the recipe
+        """
         self.reviews = list(RECIPE_DATABASE.find_one(
             {"_id": ObjectId(recipe_id)}).get('reviews'))
 
