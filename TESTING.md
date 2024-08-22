@@ -153,9 +153,11 @@ The JSHint Validation returned a few errors in the code for undefined variables:
 
 ### Python
 
-The CI Python Linter returned no errors in the code.
-![Python Validation - app.py]()
-![Python Validation - models.py]()
+The CI Python Linter returned a few small errors on each file. These have now been resolved.
+
+![Python Validation - app.py](src/static/images/App%20Py%20Linter.png)
+
+![Python Validation - models.py](src/static/images/Models%20Py%20Linter.png)
 
 ## Lighthouse Report
 
@@ -163,5 +165,13 @@ Lighthouse in Google Chrome Dev Tools was used to test performance, accessibilit
 
 Suggestions were made to optimise SEO by adding 'meta' tags to each page. However, this was ignored as meta tags were included in the base template and were being duplicated via Jinja.
 
-Page | Report
---- | ---
+Page | Report | Comments
+--- | --- | ---
+LANDING PAGE : | ![Landing Page Lighthouse](src/static/images/Landing%20Page%20Lighthouse.png) | Best practices was lower than expected due to the image from pexels being used in the hero section.
+GET STARTED PAGE : | ![Get Started Page Lighthouse](src/static/images/Get%20Started%20Lighthouse.png) | No Issues
+VIEW RECIPES PAGE : | ![View Recipes Page Lighthouse](src/static/images/View%20Recipes%20Lighthouse.png) | No Issues
+AZ RECIPES PAGE : | ![AZ Recipe Pages Lighthouse](src/static/images/AZ%20Recipes%20Lighthouse.png) | No Issues
+MY RECIPES PAGE : | ![My Recipes Page Lighthouse](src/static/images/My%20Recipes%20Lighthouse.png) | No Issues
+RECIPE PAGE : | ![Recipe Page Lighthouse](src/static/images/Recipe%20Lighthouse.png) | No Issues
+CREATE RECIPE PAGE : | ![Create Recipe Lighthouse](src/static/images/Create%20Recipe%20Lighthouse.png) | No Issues
+EDIT RECIPE PAGE : | ![Edit Recipe Lighthouse](src/static/images/Edit%20Recipe%20Lighthouse.png) | No Issues
