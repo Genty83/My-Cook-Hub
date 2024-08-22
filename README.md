@@ -105,15 +105,13 @@ Additional shades of the primary colors were used on certain elements:
 [Balsamiq](https://www.balsamiq.com/) was used to develop the initial concept of the website. The developer wanted to keep the main layout of this page a common theme across other pages of the application. However, the ideas for other pages were conceived as the project grew.
 
 
-| PAGE | DESKTOP WIREFRAME | TABLET WIREFRAME | MOBILE WIREFRAME
-| :-- | :-- | :-- | :--
-| LANDING PAGE | ![Desktop Landing Page](src/static/images/Desktop%20Landing%20Page%20Wireframe.png) | :-- | :--
-| GET STARTED PAGE | ![Desktop Landing Page](src/static/images/Desktop%20Get%20Started%20Page%20Wireframe.png) | :-- | :--
-| VIEW RECIPES PAGE | ![View Recipes Page](src/static/images/Desktop%20View%20Recipes%20Wireframe.png) | :-- | :--
-| MY RECIPES PAGE | ![My Recipes Page](src/static/images/Desktop%20My%20Recipes%20Wireframe.png) | :-- | :--
-| RECIPE PAGE | ![Recipe Page](src/static/images/Desktop%20Recipe%20Page%20Wireframe.png) | ![Recipe Page](src/static/images/Tablet%20Recipe%20Page%20Wireframe.png) | ![Recipe Page](src/static/images/Moblie%20Recipe%20Page%20Wireframe.png)
-| CREATE RECIPE PAGE | ![Create Recipe Page](src/static/images/Desktop%20Create%20Recipe%20Wireframe.png) | ![Create Recipe Page](src/static/images/Tablet%20Create%20Recipe%20Wireframe.png) | ![Create Recipe Page](src/static/images/Mobile%20Create%20Recipe%20Wireframe.png)
-| EDIT RECIPE PAGE | ![Edit Recipe Page](src/static/images/Desktop%20Edit%20Recipe%20Wireframe.png) | ![Edit Recipe Page](src/static/images/Tablet%20Edit%20Recipe%20Wireframe.png) | ![Edit Recipe Page](src/static/images/Mobile%20Edit%20Recipe%20Wireframe.png)
+| PAGE | DESKTOP WIREFRAME | MOBILE WIREFRAME
+| :-- | :-- | :-- 
+| LANDING PAGE | ![Desktop Landing Page](src/static/images/Desktop%20Landing%20Page%20Wireframe.png) | ![Mobile Landing Page](src/static/images/Mobile%20Landing%20Page%20Wireframe.png)
+| GET STARTED PAGE | ![Desktop Landing Page](src/static/images/Desktop%20Get%20Started%20Page%20Wireframe.png) | ![Mobile Get Started Page](src/static/images/Mobile%20Get%20Started%20Wireframe.png)
+| VIEW RECIPES PAGE | ![View Recipes Page](src/static/images/Desktop%20View%20Recipes%20Wireframe.png) | ![Mobile View Recipes Page](src/static/images/Mobile%20View%20Recipes%20Page.png)
+| MY RECIPES PAGE | ![My Recipes Page](src/static/images/Desktop%20My%20Recipes%20Wireframe.png) | ![Mobile My Recipes Page](src/static/images/Mobile%20View%20Recipes%20Page.png)
+| RECIPE PAGE | ![Recipe Page](src/static/images/Desktop%20Recipe%20Page%20Wireframe.png) | ![Mobile Recipe Page](src/static/images/Moblie%20Recipe%20Page%20Wireframe.png)
 
 # Relational vs Non-Relational Database
 
@@ -413,9 +411,63 @@ The Recipes page contains the following:
  - Shows an image of the recipe.
 - Rating:
   - This shows the average rating out of 5 stars based on user reviews.
+- Recipe Information
+  - This shows the over of the recipe.
+- Recipe Description
+  - The full description of the recipe.
+- Ingredients
+  - This shows a list of the required ingredients for the recipe.
+- Method
+  - This shows the cooking steps for the required recipe.
 
+## View Recipes Page
 
+<details>
+<summary>My Recipes Page Image</summary>
 
+![My Recipes Page](src/static/images/my-recipes-page.png)
+
+</details>
+
+### My Recipes Page Features
+
+The view recipes page contains the following:
+
+- All Recipes Tab:
+  - Allows the user to view all recipes.
+  - Pagination was used to allow the user to limit the amount of recipes to be displayed.
+- Recipe Cards:
+  - These allow the user to view each recipe in brief detail.
+  - The user can click on the title to go to the recipe page and view the full recipe.
+  - When the user is logged in, they have the option to add and remove the recipe to and from the users cookbook.
+
+## Create/Edit Recipe Page
+
+<details>
+<summary>Create/Edit Recipe Page Image</summary>
+
+![Create/Edit Recipe Page](src/static/images/create-edit-recipe-page.png)
+
+</details>
+
+### Create/Edit Recipe Features
+
+- Create/Edit Recipe Form
+  - This contains all the user inputs for creating and editing recipes.
+
+## Create Account Page
+
+<details>
+<summary>Create Account Page Image</summary>
+
+![View Recipes Page](src/static/images/create-account-page.png)
+
+</details>
+
+### Create/Edit Recipe Features
+
+- Create Account Form
+  - This contains all the user inputs for creating a new user account.
 
 
 # Technologies Used
@@ -469,6 +521,19 @@ Family also participated in testing the application's functionality and expresse
 Please see a detailed breakdown of the testing carried out for this application in [TESTING.md](TESTING.md).
 
 # Finished Product
+
+<details>
+  <summary>
+    Home Page
+  </summary>
+
+  Desktop View | Mobile View
+  --- | ---
+
+  ![Home Desktop]() | ![Home Mobile]()
+
+</details>
+
 
 
 # Deployment
