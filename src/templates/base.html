@@ -77,7 +77,7 @@
 			</div>
 		</nav>
 		<div class="nav-icon-btns-wrapper">
-			<a class="icon-btn" href="#" title="Sign In">
+			<a class="icon-btn" href="{{ url_for('account') }}" title="Sign In">
 				<i class="fa-solid fa-user"></i>
 			</a>
 			{% if not session.user %}
