@@ -371,8 +371,9 @@ def review(recipe_id):
         )
         flash("Review Successfully Added!!", "success")
         # Update average rating
-        reviews = RECIPE_DB.find_one({"_id": ObjectId(recipe_id)}).get("reviews")
-        avg_rating = round(mean([x.get("rating") for x in reviews]),1)
+        reviews = RECIPE_DB.find_one(
+            {"_id": ObjectId(recipe_id)}).get("reviews")
+        avg_rating = round(mean([x.get("rating") for x in reviews]), 1)
         updated_rating = {"average_rating": avg_rating}
 
         RECIPE_DB.update_one(

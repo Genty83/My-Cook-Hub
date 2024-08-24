@@ -187,7 +187,7 @@ class RecipesModel:
     def get_similar_recipes(self, recipe_id, amount):
         """ Get list of meals by relevent meal type """
 
-        recipe = {"meal_type": self.get_recipe(recipe_id)["meal_type"]} 
+        recipe = {"meal_type": self.get_recipe(recipe_id)["meal_type"]}
         meals = list(RECIPE_DATABASE.find())
 
         if (len(meals)) < amount:
@@ -296,7 +296,8 @@ class RecipesModel:
         Checks for none type on the limit passed in and converts it
         into an integer value
         """
-        if limit is None: limit = 5
+        if limit is None: 
+            limit = 5
         return int(limit)
 
     @staticmethod
@@ -305,7 +306,9 @@ class RecipesModel:
         Static method: checks and converts the page number
         into an integer value
         """
-        if page_num == "<" or page_num is None: page_num = 1
-        elif page_num == ">": page_num = total_pages
+        if page_num == "<" or page_num is None: 
+            page_num = 1
+        elif page_num == ">": 
+            page_num = total_pages
 
         return int(page_num)
