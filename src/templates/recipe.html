@@ -7,13 +7,14 @@
 			Are you sure you want to delete this recipe?
 			<br>
 			This will permanently delete this recipe!!
-			<div>
-				<form action="{{ url_for('delete_recipe', recipe_id=recipe._id) }}" method="post" class="flex-row gap-sm">
-					<button type="submit" class="btn std-btn btn-md">Yes</button>
-					<button type="button" class="btn std-btn btn-md" onclick="toggleAlertWindow()">No</button>
-				</form>
-			</div>
 		</p>
+		<div>
+			<form action="{{ url_for('delete_recipe', recipe_id=recipe._id) }}" method="post" class="flex-row gap-sm">
+				<button type="submit" class="btn std-btn btn-md">Yes</button>
+				<button type="button" class="btn std-btn btn-md" onclick="toggleAlertWindow()">No</button>
+			</form>
+		</div>
+
 	</div>
 
 	{% include "review_form.html" %}
