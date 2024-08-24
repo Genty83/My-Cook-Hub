@@ -77,15 +77,15 @@
 			</div>
 		</nav>
 		<div class="nav-icon-btns-wrapper">
-			<a class="icon-btn" href="{{ url_for('account') }}" title="Sign In">
+			<a class="icon-btn" href="{{ url_for('sign_in') }}" title="Sign In">
 				<i class="fa-solid fa-user"></i>
 			</a>
 			{% if not session.user %}
-			<a id="side-menu-btn" class="icon-btn" href="#" title="Create Account">
+			<a id="side-menu-btn" class="icon-btn" href="{{ url_for('account') }}" title="Create Account">
 				<i class="fa-solid fa-user-plus"></i>
 			</a>
 			{% endif %}
-			<a id="side-menu-btn" class="icon-btn" href="#" title="Open Side Menu" onclick="toggleSideMenu()">
+			<a id="side-menu-btn" class="icon-btn" title="Open Side Menu" onclick="toggleSideMenu()">
 				<i class="fa-solid fa-bars"></i>
 			</a>
 		</div>
