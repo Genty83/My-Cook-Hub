@@ -81,7 +81,7 @@
 				<i class="fa-solid fa-user"></i>
 			</a>
 			{% if not session.user %}
-			<a id="side-menu-btn" class="icon-btn" href="{{ url_for('account') }}" title="Create Account">
+			<a class="icon-btn" href="{{ url_for('account') }}" title="Create Account">
 				<i class="fa-solid fa-user-plus"></i>
 			</a>
 			{% endif %}
