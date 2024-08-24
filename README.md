@@ -529,8 +529,95 @@ Please see a detailed breakdown of the testing carried out for this application 
 
   Desktop View | Mobile View
   --- | ---
+  ![Home Desktop](src/static/images/Home%20Desktop.png) | ![Home Mobile](src/static/images/Home%20Mobile.png)
 
-  ![Home Desktop]() | ![Home Mobile]()
+</details>
+
+<details>
+  <summary>
+    Get Started Page
+  </summary>
+
+  Desktop View | Mobile View
+  --- | ---
+  ![Get Started Desktop](src/static/images/get-started-page.png) | ![Get Started Mobile](src/static/images/Get%20Started%20Mobile.png)
+
+</details>
+
+<details>
+  <summary>
+    Sign In Page
+  </summary>
+
+  Desktop View | Mobile View
+  --- | ---
+  ![Sign In Desktop](src/static/images/sign-in-page.png) | ![Sign In Mobile]()
+
+</details>
+
+<details>
+  <summary>
+    Create Account Page
+  </summary>
+
+  Desktop View | Mobile View
+  --- | ---
+  ![Create Account Desktop](src/static/images/create-account-page.png) | ![Create Account Mobile](src/static/images/)
+
+</details>
+
+<details>
+  <summary>
+    View Recipes Page
+  </summary>
+
+  Desktop View | Mobile View
+  --- | ---
+  ![View Recipes Desktop](src/static/images/view-recipes-page.png) | ![View Recipes Mobile](src/static/images/View%20Recipes%20Mobile.png)
+
+</details>
+
+<details>
+  <summary>
+    AZ Recipes Page
+  </summary>
+
+  Desktop View | Mobile View
+  --- | ---
+  ![AZ Recipes Desktop](src/static/images/a-z-recipes-page.png) | ![AZ Recipes Mobile](src/static/images/AZ%20Recipes%20Mobile.png)
+
+</details>
+
+<details>
+  <summary>
+    My Recipes Page
+  </summary>
+
+  Desktop View | Mobile View
+  --- | ---
+  ![My Recipes Desktop](src/static/images/my-recipes-page.png) | ![My Recipes Mobile](src/static/images/My%20Recipes%20Mobile.png)
+
+</details>
+
+<details>
+  <summary>
+    Recipe Page
+  </summary>
+
+  Desktop View | Mobile View
+  --- | ---
+  ![Recipe Desktop](src/static/images/recipe-page.png) | ![Recipe Mobile](src/static/images/Recipe%20Mobile.png)
+
+</details>
+
+<details>
+  <summary>
+    Create/Edit Page
+  </summary>
+
+  Desktop View | Mobile View
+  --- | ---
+  ![Create/Edit Desktop](src/static/images/create-edit-recipe-page.png) | ![Create/Edit Mobile](src/static/images/mobile-create-recipe-page.png)
 
 </details>
 
