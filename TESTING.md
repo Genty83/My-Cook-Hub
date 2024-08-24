@@ -144,35 +144,35 @@ Other than the above, there were a few legitimate errors/warnings with the HTML 
 
 ![View Recipes](src/static/images/html-validator-no-errors.png)
 
-#### home.html
+#### az_recipes.html
+
+- Validator returned no errors.
+
+![AZ Recipes](src/static/images/html-validator-no-errors.pn)
+
+#### recipe.html
 
 - 
 
-![home]()
+![Recipe]()
 
-#### home.html
+#### create_recipe.html
 
-- 
+- No errors where found on this page.
 
-![home]()
+![Create recipe](src/static/images/html-validator-no-errors.png)
 
-#### home.html
+#### sign_in.html
 
-- 
+- No errors were found when validating this page.
 
-![home]()
+![Sign In](src/static/images/html-validator-no-errors.png)
 
-#### home.html
+#### account.html
 
-- 
+- Some errors were generated in the validator due to the input tag with a type of date. These errors have now been resolved.
 
-![home]()
-
-#### home.html
-
-- 
-
-![home]()
+![Account](src/static/images/html-validator-account-page.png)
 
 ### CSS
 
