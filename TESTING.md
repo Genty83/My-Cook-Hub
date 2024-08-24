@@ -78,6 +78,7 @@ Status | Links Displayed | Pass/Fail
 --- | --- | ---
 
 
+
 #### Nav Links Functionality
 
 Link | Outcome | Pass/Fail
@@ -125,17 +126,53 @@ The W3C Markup Validator returned multiple errors and warnings with a lot of the
 
 Other than the above, there were a few legitimate errors/warnings with the HTML on the following pages:
 
-#### base.html
+#### home.html
 
-![base.html]()
+- 
 
-- This section element contained the flashed messages provided using Jinja templating language. This warning was ignored as the flashed messages performed without issue.
+![Home]()
 
-#### add_recipe.html & edit_recipe.html
+#### get_started.html
 
-![add_recipe.html & edit_recipe.html]()
+- 
 
-- These errors showed up for both pages. The code targeted is being used in placeholder text for a text area - the `&#10` makes each piece of text appear on a new line. These errors were ignored as the code performed without issue.
+![Get Started]()
+
+#### view_recipes.html
+
+- 
+
+![home]()
+
+#### home.html
+
+- 
+
+![home]()
+
+#### home.html
+
+- 
+
+![home]()
+
+#### home.html
+
+- 
+
+![home]()
+
+#### home.html
+
+- 
+
+![home]()
+
+#### home.html
+
+- 
+
+![home]()
 
 ### CSS
 
