@@ -128,21 +128,21 @@ Other than the above, there were a few legitimate errors/warnings with the HTML 
 
 #### home.html
 
-- 
+- The validator showed a duplicate id. This was removed to clear the error.
 
-![Home]()
+![Home](src/static/images/html-validator-home.png)
 
 #### get_started.html
 
-- 
+- No errors where found when validating this page.
 
-![Get Started]()
+![Get Started](src/static/images/html-validator-no-errors.png)
 
 #### view_recipes.html
 
-- 
+- No errors where found when validating this page.
 
-![home]()
+![View Recipes](src/static/images/html-validator-no-errors.png)
 
 #### home.html
 
