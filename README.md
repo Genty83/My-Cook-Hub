@@ -323,6 +323,23 @@ There is also a humburger icon present on the side menu to allow the user to clo
 | :-- | :-- |
 | ![Side Navbar](src/static/images/side-menu.png) | ![Side Navbar](src/static/images/non-user-side-menu.png) |
 
+### Footer
+
+The footer consists contains the following:
+
+#### Footer top section
+  - Site logo: This takes you back to the landing page when clicked.
+  - Social media icon buttons: These take you to the relevent social media site, opened in a new tab.
+
+#### Footer Middle Section
+  - About Us: Contains a small paragraph describing what the site does.
+  - Find Us: Contains links to social media pages.
+  - Useful Links: Contains the links to the main pages.
+  - Subscribe to our newsletter: Contains a form where you can subscribe to the newsletter.
+
+
+![Footer](src/static/images/footer-desktop.png)
+
 ## Landing Page
 
 <details>
@@ -551,7 +568,7 @@ Please see a detailed breakdown of the testing carried out for this application 
 
   Desktop View | Mobile View
   --- | ---
-  ![Sign In Desktop](src/static/images/sign-in-page.png) | ![Sign In Mobile]()
+  ![Sign In Desktop](src/static/images/sign-in-page.png) | ![Sign In Mobile](src/static/images/sign-in-mobile.png)
 
 </details>
 
@@ -562,7 +579,7 @@ Please see a detailed breakdown of the testing carried out for this application 
 
   Desktop View | Mobile View
   --- | ---
-  ![Create Account Desktop](src/static/images/create-account-page.png) | ![Create Account Mobile](src/static/images/)
+  ![Create Account Desktop](src/static/images/create-account-page.png) | ![Create Account Mobile](src/static/images/create-account-mobile.png)
 
 </details>
 
@@ -674,7 +691,7 @@ The project was deployed to Heroku using the following steps:
 To fork the repository:
 
 1. Log in (or sign up) to Github.
-2. Go to the repository for this project, [My CookBook](https://github.com/DanHodgson12/my-cook-book).
+2. Go to the repository for this project, [My Cook Hub](https://github.com/Genty83/My-Cook-Hub).
 3. Click the Fork button in the top right corner.
 
 ### Making a Local Clone
@@ -683,7 +700,7 @@ To clone the repository:
 
 1. Log in (or sign up) to GitHub.
 
-2. Go to the repository for this project, [My Cook Hub]().
+2. Go to the repository for this project, [My Cook Hub](https://github.com/Genty83/My-Cook-Hub).
 
 3. In the "Clone with HTTPs" section, copy the clone URL for the repository.
 
