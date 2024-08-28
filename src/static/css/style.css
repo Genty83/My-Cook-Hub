@@ -497,7 +497,7 @@ strong {
 
 /* ###### SIDE MENU ###### */
 .side-menu {
-  position: absolute;
+  position: fixed;
   width: 0;
   height: 100%;
   background-color: var(--dark-two-clr);
