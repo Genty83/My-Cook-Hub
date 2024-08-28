@@ -76,14 +76,17 @@ Logo and header both reload the home page when clicked, as expected | Pass
 
 Status | Links Displayed | Pass/Fail
 --- | --- | ---
-
-
+SignIn/Out button | Signs the user in and changes text to sign user out | Pass
+Create Account button | Directs the user to the create account page | Pass
 
 #### Nav Links Functionality
 
 Link | Outcome | Pass/Fail
 --- | --- | ---
-
+Home | Redirects to the home page | Pass
+View Recipes | Redirects the user to the voew recipes page | Pass
+My Recipes | Displayed as hidden when not signed in and redirects to my recipes page when signed in | Pass
+Create Recipe | Displayed as hidden when not signed in and redirects to my create recipe page when signed in | Pass
 
 #### Side Nav
 
@@ -148,15 +151,21 @@ Other than the above, there were a few legitimate errors/warnings with the HTML 
 
 - Validator returned no errors.
 
-![AZ Recipes](src/static/images/html-validator-no-errors.pn)
+![AZ Recipes](src/static/images/html-validator-no-errors.png)
 
 #### recipe.html
 
-- 
+- Validator returned no errors.
 
-![Recipe]()
+![Recipe](src/static/images/html-validator-no-errors.png)
 
 #### create_recipe.html
+
+- No errors where found on this page.
+
+![Create recipe](src/static/images/html-validator-no-errors.png)
+
+#### my_recipes.html
 
 - No errors where found on this page.
 
