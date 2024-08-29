@@ -440,7 +440,7 @@ def subscribe():
             return
         else:
             flash("You are now subscribed and will recieve your newsletter shortly!", "success")
-            return redirect(request.url)
+    return redirect(request.url)
 
 
 
