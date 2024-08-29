@@ -435,7 +435,7 @@ def subscribe():
     if request.method == "POST":
         account_model = UserAccountModel(session.get("user"))
 
-        if request.form.get("") == account_model.user_data.get("email"):
+        if request.form.get("email") == account_model.user_data.get("email"):
             flash("You are already subscribed to our newsletter!", "warning")
             return
         else:
