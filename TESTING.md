@@ -71,6 +71,9 @@ The web application was tested across a wide variety of devices using [Google Ch
 Outcome | Pass/Fail
 --- | ---
 Logo and header both reload the home page when clicked, as expected | Pass
+Nav links are hidden on smaller | Pass
+Nav buttons are hidden on smaller screens and replaced with icon buttons | Pass
+All links shown correctly depending on User or Non-User | Pass
 
 #### Nav Links Displayed
 
@@ -88,31 +91,182 @@ View Recipes | Redirects the user to the voew recipes page | Pass
 My Recipes | Displayed as hidden when not signed in and redirects to my recipes page when signed in | Pass
 Create Recipe | Displayed as hidden when not signed in and redirects to my create recipe page when signed in | Pass
 
-#### Side Nav
+#### Side Navbar
 
 Outcome | Pass/Fail
 --- | ---
+Navbar collapses to side nav on smaller screens | Pass
+Navbar expands on screens larger larger screens | Pass
+Burger Icon opens and closes sidenav as expected | Pass
+All links work as expected | Pass
 
+### Footer
 
----
+Outcome | Pass/Fail
+--- | ---
+All links redirect the user to the correct page | Pass
+All social media links open in a new tab and link to the site described | Pass
+Submitting the subscribe form updates the database | Pass
+Submitting the subscribe form shows the success flash message if submitted sucessfully | Pass
+Submitting the subscribe form shows the warning flash message if the user is already subscribed | Pass
 
 ### Home
 
 Outcome | Pass/Fail
 --- | ---
+Text displayed clearly with no formatting issues | Pass
+Sign In/Out button takes user to Sign In page as expected And Signs the user out as expected once signed in | Pass
+Create Account button takes user to Create Account page as expected | Pass
+Get Started button takes user to Get Started page as expected | Pass
 
-
----
-
-### View Recipes
+### Get Started Page
 
 Outcome | Pass/Fail
 --- | ---
+__Create Account__ button Redirects the user to the create account page | Pass
+__Sign In__ button redirects user to the sign in page | Pass
+__View Recipes__ button directs the user to the view recipes page | Pass
+
+### Sign In Page
+
+Outcome | Pass/Fail
+--- | ---
+A flash error message for validation displays if no text entered in Username or Password field | Pass
+Submitting the form successfully checks if the username and password belong to the same user | Pass
+Submitting the form with correct information signs the user in and takes them to the home page | Pass
+Submitting the form with correct information displays the appropriate flash message at the top of the screen | Pass
+Submitting the form with incorrect information prevents user from signing in | Pass
+Submitting the form with incorrect information displays a error flash message at the top of the screen | Pass
+Error flash message indicates either Username or Password incorrect | Pass
+
+### Create Account Page
+
+Outcome | Pass/Fail
+--- | ---
+A flash error message for validation displays if no text entered in Username or Password field | Pass
+Submitting the form successfully checks if the username belongs to the same user | Pass
+Submitting the form with correct information adds a new account to the database and takes them to the home page | Pass
+Submitting the form with correct information displayes the correct flash message | Pass
+Register functionality successfully hashes the user's password and displays as encrypted in the database | Pass
+Already have an account link takes user to sign in page as expected | Pass
+
+### View Recipes Page
+
+Outcome | Pass/Fail
+--- | ---
+Text displayed clearly with no formatting issues | Pass
+Tab buttons take user to correct page | Pass
+Recipe cards display the correct image and information | Pass
+Recipe Cards link take the user to the full recipe page | Pass
+Add/Remove recipe button is hidden on cards when user is signed out | Pass
+When present, the Add/Remove button successfully adds or removes the card to and from users My Recipes page | Pass
+When adding or removing recipes, the correct flash message is displayed to notify user of the action taken | Pass
+Pagination works as expected displaying the correct amount of records selected by the user | Pass
+Changing the records to be displayed dropdown updated the page with the changes | Pass
 
 
+### AZ Recipes Page
 
+Outcome | Pass/Fail
+--- | ---
+Text displayed clearly with no formatting issues | Pass
+Tab buttons take user to correct page | Pass
+Pressing a letter button displays only recipes that start with that letter | Pass
+Recipe cards display the correct image and information | Pass
+Recipe Cards link take the user to the full recipe page | Pass
+Add/Remove recipe button is hidden on cards when user is signed out | Pass
+When present, the Add/Remove button successfully adds or removes the card to and from users My Recipes page | Pass
+When adding or removing recipes, the correct flash message is displayed to notify user of the action taken | Pass
+Pagination works as expected displaying the correct amount of records selected by the user | Pass
+Changing the records to be displayed dropdown updated the page with the changes | Pass
+
+### My Recipes Page
+
+Outcome | Pass/Fail
+--- | ---
+Text displayed clearly with no formatting issues | Pass
+Tab buttons take user to correct page | Pass
+Recipe cards display the correct image and information | Pass
+Recipe Cards link take the user to the full recipe page | Pass
+Add/Remove recipe button is hidden on cards when user is signed out | Pass
+When present, the Add/Remove button successfully adds or removes the card to and from users My Recipes page | Pass
+When adding or removing recipes, the correct flash message is displayed to notify user of the action taken | Pass
+Pagination works as expected displaying the correct amount of records selected by the user | Pass
+Changing the records to be displayed dropdown updated the page with the changes | Pass
+
+### Recipe Page
+
+Outcome | Pass/Fail
+--- | ---
+Text displayed clearly with no formatting issues | Pass
+Images displayed correctly with no issues | Pass
+All recipe information is displayed correctly on the page | Pass
+Average rating correctly displayed | Pass
+Related recipes displaye correctly | Pass
+Clicking on link of related recipes displays that recipe | Pass
+Clicking on the reviews link opens up the reviews popup | Pass
+
+### Add review
+
+Outcome | Pass/Fail
+--- | ---
+Clicking the button opens up the add review form | Pass
+Submitting the form adds the review to the database | Pass
+Submitting the form with correct information displays the appropriate flash message at the top of the screen | Pass
+Submitting the form with incorrect information prevents user from submitting review | Pass
+The button displays the correct title text | Pass
+
+### Delete Recipe
+
+Outcome | Pass/Fail
+--- | ---
+Clicking the button displays the warning popup | Pass
+Selecting yes in the popup deletes the recipe from the database | Pass
+Delete recipe button is only visible on recipes created by the signed in user | Pass
+The button displays the correct title text | Pass
+
+### Edit Recipe
+
+Outcome | Pass/Fail
+--- | ---
+The edit recipe button is only visible on recipes created by the signed in user | Pass
+Pressing the edit button redirects the user to the edit recipe page | Pass
+The button displays the correct title text | Pass
+
+#### Search Bar
+
+Outcome | Pass/Fail
+--- | ---
+Successfully renders recipes related to keyword or keywords | Pass
+__Cancel__ button clears search bar as expected | Pass
+__Search__ button executes search function as expected | Pass
+
+### Create Recipe Page
+
+Outcome | Pass/Fail
+--- | ---
+form does not submit unless all the required fields are filled in | Pass
+Submitting the form displays the relevent flash message | Pass
+Submitting the form adds the recipe to the database | Pass
+
+### Edit Recipe Page
+
+Outcome | Pass/Fail
+--- | ---
+The form displays the correct recipe information in the fields | Pass
+Submitting the form updated the recipe in the database | Pass
+Submitting the form displays the relevent flash message | Pass
 
 ### Fixed Bugs
+
+- Fixed bug with side menu not staying in fixed position
+- Fixed bug with subscribing to newsletter
+
+### Known Bugs
+
+There is one minor issue i was unable to resolve when editing the recipe.
+You have to re-select the meal type from the select element.
+All other fields display the correct information.
 
 
 ## Code Validation
