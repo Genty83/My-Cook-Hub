@@ -439,6 +439,10 @@ def subscribe():
             flash("You are already subscribed to our newsletter!", "warning")
             return
         else:
+            mongo.db.account.update_one(
+                {"username": session["user"]},
+                {"$addToSet": {"subscribed": "True"}}
+            )
             flash("You are now subscribed and will recieve your newsletter shortly!", "success")
     return redirect(request.url)
 
