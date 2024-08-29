@@ -106,9 +106,6 @@ Outcome | Pass/Fail
 --- | ---
 All links redirect the user to the correct page | Pass
 All social media links open in a new tab and link to the site described | Pass
-Submitting the subscribe form updates the database | Pass
-Submitting the subscribe form shows the success flash message if submitted sucessfully | Pass
-Submitting the subscribe form shows the warning flash message if the user is already subscribed | Pass
 
 ### Home
 
@@ -260,7 +257,6 @@ Submitting the form displays the relevent flash message | Pass
 ### Fixed Bugs
 
 - Fixed bug with side menu not staying in fixed position
-- Fixed bug with subscribing to newsletter
 
 ### Known Bugs
 
