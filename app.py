@@ -428,7 +428,6 @@ def sign_out():
     return redirect(url_for("sign_in"))
 
 
-
 if __name__ == "__main__":
     app.run(
         host=os.environ.get("IP"),
