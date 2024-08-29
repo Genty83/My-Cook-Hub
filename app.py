@@ -428,6 +428,22 @@ def sign_out():
     return redirect(url_for("sign_in"))
 
 
+@app.route("/subscribe", methods=["GET", "POST"])
+def subscribe():
+    """ Subscribes the user to the newsletter """
+
+    if request.method == "POST":
+        account_model = UserAccountModel(session.get("user"))
+
+        if request.form.get("") == account_model.user_data.get("email"):
+            flash("You are already subscribed to our newsletter!", "warning")
+            return
+        else:
+            flash("You are now subscribed and will recieve your newsletter shortly!", "success")
+            return redirect(request.url)
+
+
+
 if __name__ == "__main__":
     app.run(
         host=os.environ.get("IP"),
